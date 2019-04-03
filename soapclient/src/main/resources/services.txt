@@ -1,0 +1,2 @@
+http://localhost:8080/services/orderService?wsdl
+http://localhost:8080/services/valueProviderService?wsdl

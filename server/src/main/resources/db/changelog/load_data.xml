@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="load_data_1" author="bopopov">
+        <loadData tableName="makes" file="db/data/make.csv">
+            <column name="name" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="load_data_2" author="bopopov">
+        <loadData tableName="models" file="db/data/model.csv">
+            <column name="name" type="STRING"/>
+            <column name="make_id" type="NUMERIC"/>
+            <column name="price" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="load_data_3" author="bopopov">
+        <loadData tableName="options" file="db/data/option.csv">
+            <column name="name" type="STRING"/>
+            <column name="price" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="load_data_4" author="bopopov">
+        <loadData tableName="clients" file="db/data/client.csv">
+            <column name="name" type="STRING"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

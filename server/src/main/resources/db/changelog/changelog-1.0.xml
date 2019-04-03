@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="201903291732_1" author="bopopov">
+        <createTable tableName="clients">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_2" author="bopopov">
+        <createTable tableName="makes">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_3" author="bopopov">
+        <createTable tableName="models">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="make_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_4" author="bopopov">
+        <createTable tableName="options">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_5" author="bopopov">
+        <createTable tableName="orders_options">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="option_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_6" author="bopopov">
+        <createTable tableName="orders">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="model_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201903291732_7" author="bopopov">
+        <addForeignKeyConstraint baseTableName="models"
+                                 baseColumnNames="make_id"
+                                 constraintName="model_make_fk"
+                                 referencedTableName="makes"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="201903291732_8" author="bopopov">
+        <addForeignKeyConstraint baseTableName="orders_options"
+                                 baseColumnNames="order_id"
+                                 constraintName="orders_fk"
+                                 referencedTableName="orders"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="201903291732_9" author="bopopov">
+        <addForeignKeyConstraint baseTableName="orders_options"
+                                 baseColumnNames="option_id"
+                                 constraintName="options_fk"
+                                 referencedTableName="options"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="201903291732_10" author="bopopov">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="client_id"
+                                 constraintName="clients_fk"
+                                 referencedTableName="clients"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="201903291732_11" author="bopopov">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="model_id"
+                                 constraintName="models_fk"
+                                 referencedTableName="models"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+</databaseChangeLog>

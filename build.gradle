@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(":soapclient")
+    compile project(":server")
+}
+
+// TODO: Make jar-builds for each instance of client and server
+
+// TODO: Make able to create classes required to communicate with SOAP-server
