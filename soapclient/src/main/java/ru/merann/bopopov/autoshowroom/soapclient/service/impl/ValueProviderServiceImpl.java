@@ -1,10 +1,9 @@
 package ru.merann.bopopov.autoshowroom.soapclient.service.impl;
 
+import org.springframework.shell.CompletionProposal;
 import org.springframework.stereotype.Component;
-import ru.merann.bopopov.autoshowroom.server.ws.Model;
-import ru.merann.bopopov.autoshowroom.server.ws.Status;
-import ru.merann.bopopov.autoshowroom.server.ws.ValueProviderWebService;
-import ru.merann.bopopov.autoshowroom.soapclient.service.ConsoleService;
+import ru.merann.bopopov.autoshowroom.server.ws.*;
+import ru.merann.bopopov.autoshowroom.soapclient.service.ConnectionService;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ValueProviderService;
 
 import java.util.List;
@@ -14,39 +13,67 @@ import java.util.stream.Collectors;
 public class ValueProviderServiceImpl implements ValueProviderService {
 
     private final ValueProviderWebService valueProviderWebService;
-    private String make;
-    private ConsoleService consoleService;
+    private final ConnectionService connectionService;
 
-    public ValueProviderServiceImpl(ConsoleService consoleService) {
-        this.consoleService = consoleService;
+    public ValueProviderServiceImpl(ConnectionService connectionService) {
+        this.connectionService = connectionService;
         ru.merann.bopopov.autoshowroom.server.ws.impl.ValueProviderService providerService =
                 new ru.merann.bopopov.autoshowroom.server.ws.impl.ValueProviderService();
         this.valueProviderWebService = providerService.getValueProviderServicePort();
     }
 
     @Override
-    public List<String> getMakes(String text) {
-        return valueProviderWebService.getMakes(text);
-    }
-
-    @Override
-    public List<Model> getModels(String make, String text) {
-        return valueProviderWebService.getModels(make, text);
-    }
-
-    @Override
-    public List<String> getOptions(String text) {
-        return valueProviderWebService.getOptions(text)
+    public List<CompletionProposal> getMakes(String text) {
+        return  valueProviderWebService.getMakes(text)
                 .stream()
-                .map(option -> option.getName() + " [Price:" + option.getPrice() + "]")
+                .map(CompletionProposal::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getStatuses() {
+    public List<CompletionProposal> getModels(String make, String text) {
+        return valueProviderWebService.getModels(make, text).stream().map(model -> {
+            String name = model.getName();
+            String price = model.getPrice().toString();
+            CompletionProposal proposal = new CompletionProposal(name);
+            proposal.displayText(String.format("%s [Price: %s]", name, price));
+            return proposal;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompletionProposal> getOptions(String text) {
+        return valueProviderWebService.getOptions(text).stream().map(option -> {
+            String name = option.getName();
+            String price = option.getPrice().toString();
+            CompletionProposal proposal = new CompletionProposal(name);
+            proposal.displayText(String.format("%s [Price: %s]", name, price));
+            return proposal;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompletionProposal> getStatuses() {
         return valueProviderWebService.getStatuses()
                 .stream()
                 .map(Status::value)
+                .collect(Collectors.toList())
+                .stream()
+                .map(CompletionProposal::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompletionProposal> getOrdersByClient() {
+        return valueProviderWebService.getOrdersByClient(connectionService.getUsername()).stream().map(order -> {
+            String id = order.getId().toString();
+            String make = order.getCar().getModel().getMake().getName();
+            String model = order.getCar().getModel().getName();
+            String price = String.valueOf((order.getCar().getModel().getPrice() + (order.getCar().getOptions().size() == 0 ? 0 :
+                    order.getCar().getOptions().stream().mapToLong(Option::getPrice).sum())));
+            CompletionProposal proposal = new CompletionProposal(id);
+            proposal.displayText(String.format("%s %s [Price: %s]", make, model, price));
+            return proposal;
+        }).collect(Collectors.toList());
     }
 }

@@ -27,10 +27,6 @@ public class StatusValueProvider implements ValueProvider {
 
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-        String text = completionContext.currentWordUpToCursor();
-        return providerService.getStatuses()
-                .stream()
-                .map(CompletionProposal::new)
-                .collect(Collectors.toList());
+        return providerService.getStatuses();
     }
 }

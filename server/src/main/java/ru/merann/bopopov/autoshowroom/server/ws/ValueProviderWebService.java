@@ -2,6 +2,7 @@ package ru.merann.bopopov.autoshowroom.server.ws;
 
 import ru.merann.bopopov.autoshowroom.server.model.Model;
 import ru.merann.bopopov.autoshowroom.server.model.Option;
+import ru.merann.bopopov.autoshowroom.server.model.Order;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
 
 import javax.jws.WebService;
@@ -17,4 +18,6 @@ public interface ValueProviderWebService {
     List<Option> getOptions(String text);
 
     List<Status> getStatuses();
+
+    List<Order> getOrdersByClient(String username);
 }

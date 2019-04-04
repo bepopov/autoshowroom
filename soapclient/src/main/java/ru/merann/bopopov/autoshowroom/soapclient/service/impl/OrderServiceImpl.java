@@ -6,9 +6,7 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
 import ru.merann.bopopov.autoshowroom.server.ws.*;
-import ru.merann.bopopov.autoshowroom.soapclient.valueproviders.MakeValueProvider;
-import ru.merann.bopopov.autoshowroom.soapclient.valueproviders.ModelValueProvider;
-import ru.merann.bopopov.autoshowroom.soapclient.valueproviders.StatusValueProvider;
+import ru.merann.bopopov.autoshowroom.soapclient.valueproviders.*;
 import ru.merann.bopopov.autoshowroom.soapclient.config.TableConfig;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ConnectionService;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ConsoleService;
@@ -37,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by &>\". Make and model are required params.")
-    public void createOrder(@ShellOption("--order") OrderSave orderSave) {
+    public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderSave orderSave) {
         // TODO: Add value provider for order
         Long orderId = webService.save(orderSave);
         orders.add(orderId);
@@ -46,11 +44,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @ShellMethod("Edit order. Syntax: edit-order --make <make> --model <model> --options <options separated by &>")
-    public void editOrder(@ShellOption(defaultValue = "") String order,
+    public void editOrder(@ShellOption(defaultValue = "", valueProvider = OrderIdValueProvider.class) String order,
                           @ShellOption(defaultValue = "", valueProvider = MakeValueProvider.class) String make,
                           @ShellOption(defaultValue = "", valueProvider = ModelValueProvider.class) String model,
-                          @ShellOption(defaultValue = "") List<String> options) {
-        // TODO: Add value providers for order and options
+                          @ShellOption(defaultValue = "", valueProvider = OptionValueProvider.class) List<String> options) {
         OrderChange orderChange = new OrderChange();
         //edit-order --order=10 --options="Зимняя резина"
         //edit-order --order 10 --options "Зимняя резина"
@@ -75,8 +72,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @ShellMethod("Delete order. Syntax: delete-order --order <id>")
-    public void deleteOrder(@ShellOption("--order") Long id) {
-        // TODO: Add value provider for order
+    public void deleteOrder(@ShellOption(value = "--order", valueProvider = OrderIdValueProvider.class) Long id) {
         webService.delete(id);
         consoleService.write("Order #%s was deleted.", id.toString());
     }

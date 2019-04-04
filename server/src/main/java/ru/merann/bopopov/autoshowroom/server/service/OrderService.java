@@ -19,4 +19,5 @@ public interface OrderService {
 
     List<Order> getOrderByClientAndStatus(String username, Status status);
 
+    List<Order> getOrdersByClient(String username);
 }

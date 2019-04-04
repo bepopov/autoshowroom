@@ -12,8 +12,15 @@ public class OptionServiceImpl implements OptionService {
 
     private OptionRepository optionRepository;
 
+    public OptionServiceImpl(OptionRepository optionRepository) {
+        this.optionRepository = optionRepository;
+    }
+
     @Override
     public List<Option> searchByText(String text) {
+        if (text == null) {
+            return optionRepository.findAll();
+        }
         return optionRepository.findAllByName(text);
     }
 }

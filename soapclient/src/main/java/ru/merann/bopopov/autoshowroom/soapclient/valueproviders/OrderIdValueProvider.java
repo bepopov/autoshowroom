@@ -11,31 +11,24 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class ModelValueProvider implements ValueProvider {
+public class OrderIdValueProvider implements ValueProvider {
 
     private ValueProviderService providerService;
 
-    public ModelValueProvider(ValueProviderService providerService) {
+    public OrderIdValueProvider(ValueProviderService providerService) {
         this.providerService = providerService;
     }
 
     @Override
     public boolean supports(MethodParameter parameter, CompletionContext completionContext) {
-        return parameter.getParameterType().isAssignableFrom(String.class) && Objects.requireNonNull(parameter.getParameterName()).equals("model");
+        return (parameter.getParameterType().isAssignableFrom(String.class) &&
+                Objects.requireNonNull(parameter.getParameterName()).equals("order")) ||
+                (parameter.getParameterType().isAssignableFrom(Long.class) &&
+                        Objects.requireNonNull(parameter.getParameterName()).equals("id"));
     }
 
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-        String text = completionContext.currentWordUpToCursor();
-        String make = null;
-        List<String> words = completionContext.getWords();
-        int index = words.indexOf("--make");
-        if (index + 1 < words.size()) {
-            make = words.get(index + 1);
-        }
-        if (make != null) {
-            return providerService.getModels(make, text);
-        }
-        return null;
+        return providerService.getOrdersByClient();
     }
 }

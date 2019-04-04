@@ -17,4 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByClientIdAndStatus(@Param("username") String username, @Param("status") Status status);
 
     Order findOneById(Long id);
+
+    @Query("from Order o where o.client.name = :username")
+    List<Order> findAllByClient(@Param("username") String username);
 }

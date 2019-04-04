@@ -29,35 +29,47 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long save(OrderSave orderRequest) {
-        Order order = new Order();
-        Car car = new Car();
+        if (orderRequest.getUsername() != null) {
+            Order order = new Order();
+            Car car = new Car();
 
-        Client client = clientRepository.findByName(orderRequest.getUsername());
-        Model model = modelRepository.findOneByName(orderRequest.getModel());
-        List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
+            Client client = clientRepository.findByName(orderRequest.getUsername());
+            Model model = modelRepository.findOneByName(orderRequest.getModel());
+            List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
 
-        car.setModel(model);
-        car.setOptions(options);
-        order.setCar(car);
-        order.setClient(client);
-        order.setStatus(Status.INPROGRESS);
+            car.setModel(model);
+            car.setOptions(options);
+            order.setCar(car);
+            order.setClient(client);
+            order.setStatus(Status.INPROGRESS);
 
-        return orderRepository.save(order).getId();
+            return orderRepository.save(order).getId();
+        }
+        return null;
     }
 
     @Override
     public void change(OrderChange orderRequest) {
-
-        // TODO: Add validation for empty attributes
-
-        Order order = orderRepository.findOneById(orderRequest.getOrderId());
-        Car car = new Car();
-        Model model = modelRepository.findOneByName(orderRequest.getModel());
-        List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
-        car.setModel(model);
-        car.setOptions(options);
-        order.setCar(car);
-        orderRepository.save(order);
+        if (orderRequest.getUsername() != null) {
+            Order order = orderRepository.findOneById(orderRequest.getOrderId());
+            Car car = new Car();
+            if (orderRequest.getModel() != null && !orderRequest.getModel().equals("")) {
+                Model model = modelRepository.findOneByName(orderRequest.getModel());
+                car.setModel(model);
+            }
+            else {
+                car.setModel(order.getCar().getModel());
+            }
+            if (orderRequest.getOptions() == null || orderRequest.getOptions().size() == 0) {
+                car.setOptions(order.getCar().getOptions());
+            }
+            else {
+                List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
+                car.setOptions(options);
+            }
+            order.setCar(car);
+            orderRepository.save(order);
+        }
     }
 
     @Override
@@ -73,6 +85,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderByClientAndStatus(String username, Status status) {
         return orderRepository.findAllByClientIdAndStatus(username, status);
+    }
+
+    @Override
+    public List<Order> getOrdersByClient(String username) {
+        return orderRepository.findAllByClient(username);
     }
 
 }

@@ -28,9 +28,6 @@ public class MakeValueProvider implements ValueProvider {
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
         String text = completionContext.currentWordUpToCursor();
-        return providerService.getMakes(text)
-                .stream()
-                .map(CompletionProposal::new)
-                .collect(Collectors.toList());
+        return providerService.getMakes(text);
     }
 }
