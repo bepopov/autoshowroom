@@ -24,29 +24,39 @@ public class ValueProviderServiceImpl implements ValueProviderService {
 
     @Override
     public List<CompletionProposal> getMakes(String text) {
-        return  valueProviderWebService.getMakes(text)
+        return valueProviderWebService.getMakes(text)
                 .stream()
                 .map(CompletionProposal::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<CompletionProposal> getModels(String make, String text) {
+    public List<CompletionProposal> getModels(String make, String text, String parameterValue) {
         return valueProviderWebService.getModels(make, text).stream().map(model -> {
             String name = model.getName();
             String price = model.getPrice().toString();
-            CompletionProposal proposal = new CompletionProposal(name);
+            CompletionProposal proposal;
+            if (parameterValue != null) {
+                proposal = new CompletionProposal(parameterValue + name);
+            } else {
+                proposal = new CompletionProposal(name);
+            }
             proposal.displayText(String.format("%s [Price: %s]", name, price));
             return proposal;
         }).collect(Collectors.toList());
     }
 
     @Override
-    public List<CompletionProposal> getOptions(String text) {
+    public List<CompletionProposal> getOptions(String text, String parameterValue) {
         return valueProviderWebService.getOptions(text).stream().map(option -> {
             String name = option.getName();
             String price = option.getPrice().toString();
-            CompletionProposal proposal = new CompletionProposal(name);
+            CompletionProposal proposal;
+            if (parameterValue != null) {
+                proposal = new CompletionProposal(parameterValue + name);
+            } else {
+                proposal = new CompletionProposal(name);
+            }
             proposal.displayText(String.format("%s [Price: %s]", name, price));
             return proposal;
         }).collect(Collectors.toList());

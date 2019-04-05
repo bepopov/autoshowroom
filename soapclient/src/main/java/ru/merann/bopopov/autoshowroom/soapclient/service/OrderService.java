@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     void createOrder(OrderSave orderSave);
 
-    void editOrder(String order, String make, String model, List<String> options);
+    void editOrder(String order, String make, String model, String options);
 
     void deleteOrder(Long id);
 

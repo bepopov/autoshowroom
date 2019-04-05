@@ -1,13 +1,15 @@
 package ru.merann.bopopov.autoshowroom.soapclient.valueproviders;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 import org.springframework.shell.standard.ValueProvider;
 import org.springframework.stereotype.Component;
+import ru.merann.bopopov.autoshowroom.soapclient.config.CommandPatterns;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ValueProviderService;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -17,7 +19,7 @@ import java.util.regex.Pattern;
 public class OrderValueProvider implements ValueProvider {
 
     private ValueProviderService providerService;
-    private final Pattern pattern = Pattern.compile("(?<make>[A-Za-z]+) (?<model>[A-Za-z0-9]+)?( (?<options>[А-Яа-я0-9 ]+( & [А-Яа-я0-9 ]+)*))?");
+    private final Pattern pattern = CommandPatterns.getOrderSavePattern();
 
     public OrderValueProvider(ValueProviderService providerService) {
         this.providerService = providerService;
@@ -30,7 +32,7 @@ public class OrderValueProvider implements ValueProvider {
         if (size > 1) {
             String previousWord = words.get(size - 2);
             String currentWord = words.get(size - 1);
-            return Objects.equals(parameter.getParameterName(), "orderSave") && previousWord.equals("--order") || currentWord.contains(" & ");
+            return Objects.equals(parameter.getParameterName(), "orderSave") && previousWord.equals("--order");
         }
         return false;
     }
@@ -40,7 +42,9 @@ public class OrderValueProvider implements ValueProvider {
         List<String> words = completionContext.getWords();
         String text = completionContext.currentWordUpToCursor();
         if (words.size() == 2) {
-            if (words.get(1).equals("")) {
+            String parameterValue = words.get(1);
+            long countSpaces = parameterValue.chars().filter(ch -> ch == ' ').count();
+            if (parameterValue.equals("") || countSpaces == 0) {
                 return providerService.getMakes(text);
             }
             Matcher matcher = pattern.matcher(words.get(1));
@@ -48,17 +52,31 @@ public class OrderValueProvider implements ValueProvider {
                 String make = matcher.group("make");
                 String model = matcher.group("model");
                 String options = matcher.group("options");
-                if (make == null) {
-                    return providerService.getMakes(make);
-                }
-                else if (model == null) {
-                    return providerService.getModels(make, "");
-                }
-                else if (options == null) {
-                    return providerService.getOptions("");
+                if (countSpaces == 1) {
+                    if (model == null) {
+                        model = "";
+                    }
+                    return providerService.getModels(make, model, make + " ");
+                } else if (countSpaces > 1) {
+                    if (options == null) {
+                        return providerService.getOptions("", make + " " + model + " ");
+                    } else {
+                        if (!options.contains(" AND ")) {
+                            return providerService.getOptions(options, make + " " + model + " ");
+                        } else {
+                            int countAnds = StringUtils.countMatches(options, " AND");
+                            String[] strings = options.split(" AND( )?");
+                            if (strings.length <= countAnds) {
+                                return providerService.getOptions("", parameterValue);
+                            } else {
+                                String lastWord = strings[strings.length - 1];
+                                return providerService.getOptions(lastWord, StringUtils.remove(parameterValue, lastWord));
+                            }
+                        }
+                    }
                 }
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 }

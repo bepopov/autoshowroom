@@ -36,7 +36,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by &>\". Make and model are required params.")
     public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderSave orderSave) {
-        // TODO: Add value provider for order
         Long orderId = webService.save(orderSave);
         orders.add(orderId);
         consoleService.write("New order was created: %s.", orderSave.toString());
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     public void editOrder(@ShellOption(defaultValue = "", valueProvider = OrderIdValueProvider.class) String order,
                           @ShellOption(defaultValue = "", valueProvider = MakeValueProvider.class) String make,
                           @ShellOption(defaultValue = "", valueProvider = ModelValueProvider.class) String model,
-                          @ShellOption(defaultValue = "", valueProvider = OptionValueProvider.class) List<String> options) {
+                          @ShellOption(defaultValue = "", valueProvider = OptionValueProvider.class) String options) {
         OrderChange orderChange = new OrderChange();
         //edit-order --order=10 --options="Зимняя резина"
         //edit-order --order 10 --options "Зимняя резина"

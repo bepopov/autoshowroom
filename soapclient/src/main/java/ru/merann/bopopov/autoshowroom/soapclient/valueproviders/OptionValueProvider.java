@@ -21,12 +21,10 @@ public class OptionValueProvider implements ValueProvider {
     @Override
     public boolean supports(MethodParameter parameter, CompletionContext completionContext) {
         List<String> words = completionContext.getWords();
-        String parameterName = parameter.getParameterName();
         int size = words.size();
         if (size > 1) {
             String previousWord = words.get(size - 2);
-            String currentWord = words.get(size - 1);
-            return previousWord.equals("--options") || currentWord.contains(" & ");
+            return previousWord.equals("--options");
         }
         return false;
     }
@@ -34,13 +32,6 @@ public class OptionValueProvider implements ValueProvider {
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
         String text = completionContext.currentWordUpToCursor();
-        int index = text.indexOf("&");
-        if (index != -1 && index < text.length() - 2) {
-            text = text.substring(index + 2);
-        }
-        else if (index == text.length() - 2) {
-            text = null;
-        }
-        return providerService.getOptions(text);
+        return providerService.getOptions(text, null);
     }
 }

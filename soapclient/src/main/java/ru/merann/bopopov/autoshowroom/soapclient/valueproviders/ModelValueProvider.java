@@ -34,7 +34,7 @@ public class ModelValueProvider implements ValueProvider {
             make = words.get(index + 1);
         }
         if (make != null) {
-            return providerService.getModels(make, text);
+            return providerService.getModels(make, text, null);
         }
         return null;
     }
