@@ -1,0 +1,14 @@
+package ru.merann.bopopov.autoshowroom.soapclient;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SoapShellClient {
+
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(SoapShellClient.class);
+        app.run(args);
+    }
+
+}

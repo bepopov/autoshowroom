@@ -1,0 +1,96 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'ru.merann.bopopov.autoshowroom'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+// TODO: Make SOAP Client executable jar
+
+buildscript {
+    ext {
+        xjcVersion= '3.0.5'
+        jaxbOutputDir = "$buildDir/generated/cxf"
+        jaxb2BasicsVersion = '0.11.0'
+        cxfVersion = '3.3.1'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.4"
+    }
+}
+
+configurations {
+    cxf
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$jaxbOutputDir"
+        }
+    }
+}
+
+task wsdl2java(type: JavaExec) {
+    ext {
+        outputDir = file("$jaxbOutputDir")
+        wsdllist = "src/main/resources/services.txt"
+    }
+    systemProperties  = ['javax.xml.accessExternalSchema': 'file' , 'file.encoding':'UTF8']
+    outputs.upToDateWhen { false }
+    outputs.dir outputDir
+    main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+    classpath = project.configurations.cxf
+    args '-d', outputDir
+    args '-fe', 'jaxws21'
+    args '-client'
+    args '-verbose'
+    args '-validate'
+    args '-mark-generated'
+//  args '-xjc-X'
+    args '-xjc-Xfluent-api'
+    args '-xjc-Xts'
+    args '-xjc-XhashCode'
+    args '-xjc-Xequals'
+    args '-wsdlList', wsdllist
+    doLast {
+        println "----- cxf jaxb2 files generated -----"
+    }
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework.shell:spring-shell-starter:2.0.1.BUILD-SNAPSHOT'
+
+    cxf "org.apache.cxf:cxf-tools-wsdlto-core:$cxfVersion"
+    cxf "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$cxfVersion"
+    cxf "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:$cxfVersion"
+
+
+    cxf "org.jvnet.jaxb2_commons:jaxb2-fluent-api:3.0"
+    cxf "org.apache.cxf.xjcplugins:cxf-xjc-ts:$xjcVersion"
+
+    cxf "org.jvnet.jaxb2_commons:jaxb2-basics:$jaxb2BasicsVersion"
+
+    compile "org.apache.cxf.xjc-utils:cxf-xjc-runtime:$xjcVersion"
+    compile "org.jvnet.jaxb2_commons:jaxb2-basics-runtime:$jaxb2BasicsVersion"
+    compile 'commons-lang:commons-lang:2.6'
+
+    testCompile 'junit:junit:4.12'
+}
+
+compileJava.dependsOn wsdl2java
