@@ -22,4 +22,4 @@ delete-order <order_id>
 get-orders
 get-orders-by-status --status <status>
 ```
-All values are completable except --options param in --edit-order (use <TAB>).
+All values are completable except --options param in --edit-order (use TAB).
