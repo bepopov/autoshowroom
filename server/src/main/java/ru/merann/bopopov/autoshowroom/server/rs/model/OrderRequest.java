@@ -7,8 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import ru.merann.bopopov.autoshowroom.server.rs.model.Car;
-import ru.merann.bopopov.autoshowroom.server.rs.model.Option;
+import ru.merann.bopopov.autoshowroom.server.rs.model.OrderRequestCar;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -16,18 +15,18 @@ import javax.validation.constraints.*;
  * Model used for creating and updating order
  */
 @ApiModel(description = "Model used for creating and updating order")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T12:54:49.820+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
 
 public class OrderRequest   {
   @JsonProperty("client")
   private String client;
 
   @JsonProperty("car")
-  private Car car = null;
+  private OrderRequestCar car = null;
 
   @JsonProperty("options")
   @Valid
-  private List<Option> options = null;
+  private List<String> options = null;
 
   public OrderRequest client(String client) {
     this.client = client;
@@ -49,7 +48,7 @@ public class OrderRequest   {
     this.client = client;
   }
 
-  public OrderRequest car(Car car) {
+  public OrderRequest car(OrderRequestCar car) {
     this.car = car;
     return this;
   }
@@ -60,21 +59,22 @@ public class OrderRequest   {
   */
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public Car getCar() {
+  public OrderRequestCar getCar() {
     return car;
   }
 
-  public void setCar(Car car) {
+  public void setCar(OrderRequestCar car) {
     this.car = car;
   }
 
-  public OrderRequest options(List<Option> options) {
+  public OrderRequest options(List<String> options) {
     this.options = options;
     return this;
   }
 
-  public OrderRequest addOptionsItem(Option optionsItem) {
+  public OrderRequest addOptionsItem(String optionsItem) {
     if (this.options == null) {
       this.options = new ArrayList<>();
     }
@@ -88,13 +88,12 @@ public class OrderRequest   {
   */
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public List<Option> getOptions() {
+  public List<String> getOptions() {
     return options;
   }
 
-  public void setOptions(List<Option> options) {
+  public void setOptions(List<String> options) {
     this.options = options;
   }
 

@@ -1,4 +1,4 @@
-package ru.merann.bopopov.autoshowroom.server.ws.request;
+package ru.merann.bopopov.autoshowroom.server.request;
 
 import lombok.*;
 

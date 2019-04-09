@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 import ru.merann.bopopov.autoshowroom.server.model.Order;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderSave;
+import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
+import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 import ru.merann.bopopov.autoshowroom.server.ws.OrderWebService;
 
 import javax.jws.WebService;

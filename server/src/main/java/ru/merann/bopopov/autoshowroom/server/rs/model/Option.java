@@ -9,10 +9,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Contains option information
+ * Contains option information included price
  */
-@ApiModel(description = "Contains option information")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T12:54:49.820+03:00[Europe/Moscow]")
+@ApiModel(description = "Contains option information included price")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
 
 public class Option   {
   @JsonProperty("name")

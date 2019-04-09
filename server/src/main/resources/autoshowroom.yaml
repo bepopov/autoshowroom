@@ -105,11 +105,19 @@ components:
           description: Username
         car:
           type: object
-          $ref: '#/components/schemas/Car'
+          description: Contains car info
+          properties:
+            make:
+              type: string
+              example: Audi
+            model:
+              type: string
+              example: A8
         options:
           type: array
           items:
-            $ref: '#/components/schemas/Option'
+            type: string
+            example: Спортивный аэродинамический обвес
 
     Order:
       description: Model containing order information
@@ -133,7 +141,7 @@ components:
             $ref: '#/components/schemas/Option'
 
     Car:
-      description: Contains car information
+      description: Contains car information included price
       properties:
         make:
           type: string
@@ -146,7 +154,7 @@ components:
           example: 6000000
 
     Option:
-      description: Contains option information
+      description: Contains option information included price
       properties:
         name:
           type: string

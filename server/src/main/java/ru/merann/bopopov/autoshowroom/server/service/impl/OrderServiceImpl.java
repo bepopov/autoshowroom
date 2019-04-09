@@ -7,8 +7,8 @@ import ru.merann.bopopov.autoshowroom.server.repository.ModelRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OptionRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OrderRepository;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderSave;
+import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
+import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 
 import java.util.List;
 

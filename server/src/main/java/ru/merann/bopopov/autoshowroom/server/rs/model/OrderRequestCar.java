@@ -9,22 +9,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Contains car information included price
+ * Contains car info
  */
-@ApiModel(description = "Contains car information included price")
+@ApiModel(description = "Contains car info")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
 
-public class Car   {
+public class OrderRequestCar   {
   @JsonProperty("make")
   private String make;
 
   @JsonProperty("model")
   private String model;
 
-  @JsonProperty("price")
-  private Integer price;
-
-  public Car make(String make) {
+  public OrderRequestCar make(String make) {
     this.make = make;
     return this;
   }
@@ -44,7 +41,7 @@ public class Car   {
     this.make = make;
   }
 
-  public Car model(String model) {
+  public OrderRequestCar model(String model) {
     this.model = model;
     return this;
   }
@@ -64,26 +61,6 @@ public class Car   {
     this.model = model;
   }
 
-  public Car price(Integer price) {
-    this.price = price;
-    return this;
-  }
-
-  /**
-   * Get price
-   * @return price
-  */
-  @ApiModelProperty(example = "6000000", value = "")
-
-
-  public Integer getPrice() {
-    return price;
-  }
-
-  public void setPrice(Integer price) {
-    this.price = price;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -93,25 +70,23 @@ public class Car   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Car car = (Car) o;
-    return Objects.equals(this.make, car.make) &&
-        Objects.equals(this.model, car.model) &&
-        Objects.equals(this.price, car.price);
+    OrderRequestCar orderRequestCar = (OrderRequestCar) o;
+    return Objects.equals(this.make, orderRequestCar.make) &&
+        Objects.equals(this.model, orderRequestCar.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(make, model, price);
+    return Objects.hash(make, model);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Car {\n");
+    sb.append("class OrderRequestCar {\n");
     
     sb.append("    make: ").append(toIndentedString(make)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    price: ").append(toIndentedString(price)).append("\n");
     sb.append("}");
     return sb.toString();
   }
