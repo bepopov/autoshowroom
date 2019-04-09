@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Autoshowroom API'
+  description: 'An API that allows clients to obtain existing information of orders, create, edit and delete orders'
+  contact:
+    name: Bogdan Popov
+    email: ibogdanpopov@gmail.com
+
+servers:
+  - url: http://localhost:9000/
+    description: local server
+
+paths:
+  /orders:
+    get:
+      operationId: getOrdersByStatusAndUsername
+      parameters:
+        - name: status
+          in: query
+          description: Order status
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: Client name
+          schema:
+            type: string
+      description: Get all orders information
+      responses:
+        200:
+          description: Successfully get orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+    post:
+      operationId: createNewOrder
+      description: Create a new order in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        200:
+          description: Order was successfully created
+
+  /orders/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The ID of the order
+    get:
+      operationId: getOrderById
+      description: Get order by id
+      responses:
+        200:
+          description: Successfully get order by id
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+    put:
+      operationId: changeOrder
+      description: Change the order in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        200:
+          description: Order was successfully changed
+    delete:
+      operationId: deleteOrder
+      description: Delete order from the database
+      responses:
+        200:
+          description: Order was successfully removed
+
+
+components:
+  schemas:
+    Orders:
+      description: Array of orders
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/Order'
+
+    OrderRequest:
+      description: Model used for creating and updating order
+      properties:
+        client:
+          type: string
+          example: Bogdan
+          description: Username
+        car:
+          type: object
+          $ref: '#/components/schemas/Car'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+
+    Order:
+      description: Model containing order information
+      properties:
+        id:
+          type: integer
+          example: 4
+        client:
+          type: string
+          example: Bogdan
+          description: Username
+        car:
+          type: object
+          $ref: '#/components/schemas/Car'
+        status:
+          type: string
+          example: ACCEPTED
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+
+    Car:
+      description: Contains car information
+      properties:
+        make:
+          type: string
+          example: Audi
+        model:
+          type: string
+          example: A8
+        price:
+          type: integer
+          example: 6000000
+
+    Option:
+      description: Contains option information
+      properties:
+        name:
+          type: string
+          example: Спортивный аэродинамический обвес
+        price:
+          type: integer
+          example: 65000

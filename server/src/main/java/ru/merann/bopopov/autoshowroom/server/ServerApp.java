@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import ru.merann.bopopov.autoshowroom.server.ws.OrderWebService;
 import ru.merann.bopopov.autoshowroom.server.ws.ValueProviderWebService;
 
 import javax.xml.ws.Endpoint;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {
+        "ru.merann.bopopov.autoshowroom.server",
+        "org.openapitools.configuration"})
 public class ServerApp {
 
     @Autowired
