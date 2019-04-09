@@ -18,6 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findOneById(Long id);
 
-    @Query("from Order o where o.client.name = :username")
-    List<Order> findAllByClient(@Param("username") String username);
+    @Query("from Order o where o.client.id = :id")
+    List<Order> findAllByClient(@Param("id") Long userId);
 }

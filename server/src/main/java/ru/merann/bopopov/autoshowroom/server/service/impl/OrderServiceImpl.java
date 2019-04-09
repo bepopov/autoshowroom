@@ -29,13 +29,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long save(OrderSave orderRequest) {
-        if (orderRequest.getUsername() != null) {
+        if (orderRequest.getUserId() != null) {
             Order order = new Order();
             Car car = new Car();
 
-            Client client = clientRepository.findByName(orderRequest.getUsername());
-            Model model = modelRepository.findOneByName(orderRequest.getModel());
-            List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
+            Client client = clientRepository.findOneById(orderRequest.getUserId());
+            Model model = modelRepository.findOneById(orderRequest.getModelId());
+            List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
 
             car.setModel(model);
             car.setOptions(options);
@@ -50,11 +50,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void change(OrderChange orderRequest) {
-        if (orderRequest.getUsername() != null) {
+        if (orderRequest.getUserId() != null) {
             Order order = orderRepository.findOneById(orderRequest.getOrderId());
             Car car = new Car();
-            if (orderRequest.getModel() != null && !orderRequest.getModel().equals("")) {
-                Model model = modelRepository.findOneByName(orderRequest.getModel());
+            if (orderRequest.getModelId() != null) {
+                Model model = modelRepository.findOneById(orderRequest.getModelId());
                 car.setModel(model);
             }
             else {
@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
                 car.setOptions(order.getCar().getOptions());
             }
             else {
-                List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
+                List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
                 car.setOptions(options);
             }
             order.setCar(car);
@@ -88,8 +88,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByClient(String username) {
-        return orderRepository.findAllByClient(username);
+    public List<Order> getOrdersByClient(Long userId) {
+        return orderRepository.findAllByClient(userId);
     }
 
 }

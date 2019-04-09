@@ -13,9 +13,9 @@ public class OrderChange {
 
     Long orderId;
 
-    String model;
+    Long modelId;
 
-    List<String> options;
+    List<Long> options;
 
-    String username;
+    Long userId;
 }

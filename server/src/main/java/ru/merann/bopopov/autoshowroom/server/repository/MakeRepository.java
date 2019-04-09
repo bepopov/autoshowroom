@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MakeRepository extends JpaRepository<Make, Long> {
 
-    @Query("select m.name from Make m where lower(m.name) like lower(concat(?1,'%'))")
-    List<String> findAllNameByName(String name);
+    @Query("from Make m where lower(m.name) like lower(concat(?1,'%'))")
+    List<Make> findAllNameByName(String name);
 
 }

@@ -11,10 +11,10 @@ import java.util.List;
 @ToString
 public class OrderSave {
 
-    private String username;
+    private Long userId;
 
-    private String model;
+    private Long modelId;
 
-    private List<String> options;
+    private List<Long> options;
 
 }

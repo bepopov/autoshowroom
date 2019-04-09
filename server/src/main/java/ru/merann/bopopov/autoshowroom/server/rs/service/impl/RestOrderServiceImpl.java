@@ -1,5 +1,6 @@
 package ru.merann.bopopov.autoshowroom.server.rs.service.impl;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.stereotype.Component;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
 import ru.merann.bopopov.autoshowroom.server.rs.model.Car;
@@ -11,6 +12,7 @@ import ru.merann.bopopov.autoshowroom.server.service.OrderService;
 import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
 import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +62,8 @@ public class RestOrderServiceImpl implements RestOrderService {
 
     private OrderSave convertToOrderSave(OrderRequest orderRequest) {
         OrderSave orderSave = new OrderSave();
-        orderSave.setModel(orderRequest.getCar().getModel());
-        orderSave.setUsername(orderRequest.getClient());
+        orderSave.setModelId(orderRequest.getCar().getModel());
+        orderSave.setUserId(orderRequest.getClient());
         orderSave.setOptions(orderRequest.getOptions());
         return orderSave;
     }
@@ -69,8 +71,8 @@ public class RestOrderServiceImpl implements RestOrderService {
     private OrderChange convertToOrderChange(Integer id, OrderRequest orderRequest) {
         OrderChange orderChange = new OrderChange();
         orderChange.setOrderId(id.longValue());
-        orderChange.setModel(orderRequest.getCar().getModel());
-        orderChange.setUsername(orderRequest.getClient());
+        orderChange.setModelId(orderRequest.getCar().getModel());
+        orderChange.setUserId(orderRequest.getClient());
         orderChange.setOptions(orderRequest.getOptions());
         return orderChange;
     }

@@ -1,10 +1,7 @@
 package ru.merann.bopopov.autoshowroom.server.ws.impl;
 
 import org.springframework.stereotype.Component;
-import ru.merann.bopopov.autoshowroom.server.model.Model;
-import ru.merann.bopopov.autoshowroom.server.model.Option;
-import ru.merann.bopopov.autoshowroom.server.model.Order;
-import ru.merann.bopopov.autoshowroom.server.model.Status;
+import ru.merann.bopopov.autoshowroom.server.model.*;
 import ru.merann.bopopov.autoshowroom.server.service.MakeService;
 import ru.merann.bopopov.autoshowroom.server.service.ModelService;
 import ru.merann.bopopov.autoshowroom.server.service.OptionService;
@@ -32,13 +29,13 @@ public class ValueProviderWebServiceImpl implements ValueProviderWebService {
     }
 
     @Override
-    public List<String> getMakes(String text) {
+    public List<Make> getMakes(String text) {
         return makeService.searchByText(text);
     }
 
     @Override
-    public List<Model> getModels(String make, String text) {
-        return modelService.searchByText(make, text);
+    public List<Model> getModels(Long makeId, String text) {
+        return modelService.searchByText(makeId, text);
     }
 
     @Override
@@ -52,7 +49,7 @@ public class ValueProviderWebServiceImpl implements ValueProviderWebService {
     }
 
     @Override
-    public List<Order> getOrdersByClient(String username) {
-        return orderService.getOrdersByClient(username);
+    public List<Order> getOrdersByClient(Long userId) {
+        return orderService.getOrdersByClient(userId);
     }
 }

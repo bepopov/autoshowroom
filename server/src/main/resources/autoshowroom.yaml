@@ -14,19 +14,31 @@ servers:
 paths:
   /orders:
     get:
-      operationId: getOrdersByStatusAndUsername
+      operationId: getAllOrders
+      description: Get all orders information
+      responses:
+        200:
+          description: Successfully get orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+
+  /clients/{client_id}/orders:
+    get:
+      operationId: getOrdersByClient
+      description: Get all orders for client filtering by status
       parameters:
         - name: status
           in: query
           description: Order status
           schema:
             type: string
-        - name: username
-          in: query
-          description: Client name
+        - name: client_id
+          in: path
+          description: Client id
           schema:
-            type: string
-      description: Get all orders information
+            type: integer
       responses:
         200:
           description: Successfully get orders
@@ -47,29 +59,23 @@ paths:
       responses:
         200:
           description: Order was successfully created
-
-  /orders/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          description: The ID of the order
-    get:
-      operationId: getOrderById
-      description: Get order by id
-      responses:
-        200:
-          description: Successfully get order by id
           content:
             application/json:
               schema:
-                type: object
-                $ref: '#/components/schemas/Order'
+
+        404:
+          description: Not found
+
+  /clients/{id}/orders/{id}:
+    delete:
+      operationId: deleteOrder
+      description: Delete order from the database
+      responses:
+        200:
+          description: Order was successfully removed
     put:
-      operationId: changeOrder
-      description: Change the order in the database
+      operationId: updateOrder
+      description: Update the order in the database
       requestBody:
         content:
           application/json:
@@ -79,19 +85,13 @@ paths:
       responses:
         200:
           description: Order was successfully changed
-    delete:
-      operationId: deleteOrder
-      description: Delete order from the database
-      responses:
-        200:
-          description: Order was successfully removed
 
 
 components:
   schemas:
     Orders:
       description: Array of orders
-      type: array
+      type: object
       items:
         type: object
         $ref: '#/components/schemas/Order'
@@ -108,11 +108,11 @@ components:
           description: Contains car info
           properties:
             make:
-              type: string
-              example: Audi
+              type: integer
+              example: 3
             model:
-              type: string
-              example: A8
+              type: integer
+              example: 4
         options:
           type: array
           items:

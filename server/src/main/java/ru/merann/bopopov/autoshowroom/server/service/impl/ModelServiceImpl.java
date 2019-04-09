@@ -17,7 +17,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<Model> searchByText(String make, String text) {
-        return modelRepository.findAllByName(make, text);
+    public List<Model> searchByText(Long makeId, String text) {
+        return modelRepository.findAllByName(makeId, text);
     }
 }

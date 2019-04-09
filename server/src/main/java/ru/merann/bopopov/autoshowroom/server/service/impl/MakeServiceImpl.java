@@ -1,6 +1,7 @@
 package ru.merann.bopopov.autoshowroom.server.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.merann.bopopov.autoshowroom.server.model.Make;
 import ru.merann.bopopov.autoshowroom.server.repository.MakeRepository;
 import ru.merann.bopopov.autoshowroom.server.service.MakeService;
 
@@ -16,7 +17,7 @@ public class MakeServiceImpl implements MakeService {
     }
 
     @Override
-    public List<String> searchByText(String text) {
+    public List<Make> searchByText(String text) {
         return makeRepository.findAllNameByName(text);
     }
 }
