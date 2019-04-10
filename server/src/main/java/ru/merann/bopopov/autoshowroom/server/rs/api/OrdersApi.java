@@ -5,8 +5,7 @@
  */
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
-import ru.merann.bopopov.autoshowroom.server.rs.model.Order;
-import ru.merann.bopopov.autoshowroom.server.rs.model.OrderRequest;
+import ru.merann.bopopov.autoshowroom.server.model.ResultList;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
 
 @Validated
 @Api(value = "orders", description = "the orders API")
@@ -37,72 +36,17 @@ public interface OrdersApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "", nickname = "changeOrder", notes = "Change the order in the database", tags={  })
+    @ApiOperation(value = "", nickname = "getAllOrders", notes = "Get all orders information", response = ResultList.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Order was successfully changed") })
-    @RequestMapping(value = "/orders/{id}",
-        consumes = { "application/json" },
-        method = RequestMethod.PUT)
-    default ResponseEntity<Void> changeOrder(@ApiParam(value = "",required=true) @PathVariable("id") Integer id,@ApiParam(value = ""  )  @Valid @RequestBody OrderRequest orderRequest) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "createNewOrder", notes = "Create a new order in the database", tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Order was successfully created") })
-    @RequestMapping(value = "/orders",
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    default ResponseEntity<Void> createNewOrder(@ApiParam(value = "" ,required=true )  @Valid @RequestBody OrderRequest orderRequest) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "deleteOrder", notes = "Delete order from the database", tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Order was successfully removed") })
-    @RequestMapping(value = "/orders/{id}",
-        method = RequestMethod.DELETE)
-    default ResponseEntity<Void> deleteOrder(@ApiParam(value = "",required=true) @PathVariable("id") Integer id) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "getOrderById", notes = "Get order by id", response = Order.class, tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully get order by id", response = Order.class) })
-    @RequestMapping(value = "/orders/{id}",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    default ResponseEntity<Order> getOrderById(@ApiParam(value = "",required=true) @PathVariable("id") Integer id) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"car\" : {    \"price\" : 6000000,    \"model\" : \"A8\",    \"make\" : \"Audi\"  },  \"options\" : [ {    \"price\" : 65000,    \"name\" : \"Спортивный аэродинамический обвес\"  }, {    \"price\" : 65000,    \"name\" : \"Спортивный аэродинамический обвес\"  } ],  \"client\" : \"Bogdan\",  \"id\" : 4,  \"status\" : \"ACCEPTED\"}");
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "getOrdersByStatusAndUsername", notes = "Get all orders information", response = Order.class, responseContainer = "List", tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully get orders", response = Order.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "Successfully get orders", response = ResultList.class) })
     @RequestMapping(value = "/orders",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<Order>> getOrdersByStatusAndUsername(@ApiParam(value = "Order status") @Valid @RequestParam(value = "status", required = false) String status,@ApiParam(value = "Client name") @Valid @RequestParam(value = "username", required = false) String username) {
+    default ResponseEntity<ResultList> getAllOrders() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"car\" : {    \"price\" : 6000000,    \"model\" : \"A8\",    \"make\" : \"Audi\"  },  \"options\" : [ {    \"price\" : 65000,    \"name\" : \"Спортивный аэродинамический обвес\"  }, {    \"price\" : 65000,    \"name\" : \"Спортивный аэродинамический обвес\"  } ],  \"client\" : \"Bogdan\",  \"id\" : 4,  \"status\" : \"ACCEPTED\"}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ \"{}\", \"{}\" ]}");
                     break;
                 }
             }

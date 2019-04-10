@@ -56,7 +56,7 @@ openApiGenerate {
     outputDir = "$projectDir".toString()
     apiPackage = ("ru.merann.bopopov.autoshowroom.server.rs.api").toString()
     invokerPackage = ("ru.merann.bopopov.autoshowroom.server.rs").toString()
-    modelPackage = ("ru.merann.bopopov.autoshowroom.server.rs.model").toString()
+    modelPackage = ("ru.merann.bopopov.autoshowroom.server.model").toString()
     modelFilesConstrainedTo = [
             "Error"
     ]

@@ -8,12 +8,12 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("${openapi.autoshowroom.base-path:}")
-public class OrdersApiController implements OrdersApi {
+public class ClientsApiController implements ClientsApi {
 
     private final NativeWebRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public OrdersApiController(NativeWebRequest request) {
+    public ClientsApiController(NativeWebRequest request) {
         this.request = request;
     }
 

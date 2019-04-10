@@ -7,8 +7,6 @@ import ru.merann.bopopov.autoshowroom.server.repository.ModelRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OptionRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OrderRepository;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 
 import java.util.List;
 
@@ -28,20 +26,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Long save(OrderSave orderRequest) {
-        if (orderRequest.getUserId() != null) {
+    public Long save(OrderRequest orderRequest) {
+        if (orderRequest.getClient() != null) {
             Order order = new Order();
             Car car = new Car();
 
-            Client client = clientRepository.findOneById(orderRequest.getUserId());
-            Model model = modelRepository.findOneById(orderRequest.getModelId());
+            Client client = clientRepository.findOneById(orderRequest.getClient());
+            Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
             List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
-
-            car.setModel(model);
             car.setOptions(options);
             order.setCar(car);
             order.setClient(client);
-            order.setStatus(Status.INPROGRESS);
+            order.setStatus(Status.NameEnum.INPROGRESS);
 
             return orderRepository.save(order).getId();
         }
@@ -49,12 +45,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void change(OrderChange orderRequest) {
-        if (orderRequest.getUserId() != null) {
-            Order order = orderRepository.findOneById(orderRequest.getOrderId());
+    public void change(OrderRequest orderRequest) {
+        if (orderRequest.getClient() != null) {
+            Order order = orderRepository.findOneById(orderRequest.getOrder());
             Car car = new Car();
-            if (orderRequest.getModelId() != null) {
-                Model model = modelRepository.findOneById(orderRequest.getModelId());
+            if (orderRequest.getCar().getModel() != null) {
+                Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
                 car.setModel(model);
             }
             else {

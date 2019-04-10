@@ -1,17 +1,16 @@
 package ru.merann.bopopov.autoshowroom.server.service;
 
 import ru.merann.bopopov.autoshowroom.server.model.Order;
+import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
-import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 
 import java.util.List;
 
 public interface OrderService {
 
-    Long save(OrderSave order);
+    Long save(OrderRequest order);
 
-    void change(OrderChange order);
+    void change(OrderRequest order);
 
     void delete(Long id);
 

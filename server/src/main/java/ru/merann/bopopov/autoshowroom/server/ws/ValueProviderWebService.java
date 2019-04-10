@@ -14,7 +14,7 @@ public interface ValueProviderWebService {
 
     List<Option> getOptions(String text);
 
-    List<Status> getStatuses();
+    List<Status.NameEnum> getStatuses();
 
     List<Order> getOrdersByClient(Long id);
 }

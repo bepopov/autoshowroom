@@ -2,10 +2,9 @@ package ru.merann.bopopov.autoshowroom.server.ws.impl;
 
 import org.springframework.stereotype.Component;
 import ru.merann.bopopov.autoshowroom.server.model.Order;
+import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.request.OrderSave;
 import ru.merann.bopopov.autoshowroom.server.ws.OrderWebService;
 
 import javax.jws.WebService;
@@ -22,12 +21,12 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     @Override
-    public Long save(OrderSave orderRequest) {
+    public Long save(OrderRequest orderRequest) {
         return orderService.save(orderRequest);
     }
 
     @Override
-    public String change(OrderChange order) {
+    public String change(OrderRequest order) {
         orderService.change(order);
         return "Success";
     }

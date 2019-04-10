@@ -1,4 +1,4 @@
-package ru.merann.bopopov.autoshowroom.server.rs.model;
+package ru.merann.bopopov.autoshowroom.server.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import ru.merann.bopopov.autoshowroom.server.rs.model.OrderRequestCar;
+import ru.merann.bopopov.autoshowroom.server.model.OrderRequestCar;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -15,36 +15,59 @@ import javax.validation.constraints.*;
  * Model used for creating and updating order
  */
 @ApiModel(description = "Model used for creating and updating order")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
 
 public class OrderRequest   {
+  @JsonProperty("order")
+  private Long order;
+
   @JsonProperty("client")
-  private String client;
+  private Long client;
 
   @JsonProperty("car")
   private OrderRequestCar car = null;
 
   @JsonProperty("options")
   @Valid
-  private List<String> options = null;
+  private List<Long> options = null;
 
-  public OrderRequest client(String client) {
+  public OrderRequest order(Long order) {
+    this.order = order;
+    return this;
+  }
+
+  /**
+   * Order id
+   * @return order
+  */
+  @ApiModelProperty(example = "2", value = "Order id")
+
+
+  public Long getOrder() {
+    return order;
+  }
+
+  public void setOrder(Long order) {
+    this.order = order;
+  }
+
+  public OrderRequest client(Long client) {
     this.client = client;
     return this;
   }
 
   /**
-   * Username
+   * Client id
    * @return client
   */
-  @ApiModelProperty(example = "Bogdan", value = "Username")
+  @ApiModelProperty(example = "2", value = "Client id")
 
 
-  public String getClient() {
+  public Long getClient() {
     return client;
   }
 
-  public void setClient(String client) {
+  public void setClient(Long client) {
     this.client = client;
   }
 
@@ -69,12 +92,12 @@ public class OrderRequest   {
     this.car = car;
   }
 
-  public OrderRequest options(List<String> options) {
+  public OrderRequest options(List<Long> options) {
     this.options = options;
     return this;
   }
 
-  public OrderRequest addOptionsItem(String optionsItem) {
+  public OrderRequest addOptionsItem(Long optionsItem) {
     if (this.options == null) {
       this.options = new ArrayList<>();
     }
@@ -89,11 +112,11 @@ public class OrderRequest   {
   @ApiModelProperty(value = "")
 
 
-  public List<String> getOptions() {
+  public List<Long> getOptions() {
     return options;
   }
 
-  public void setOptions(List<String> options) {
+  public void setOptions(List<Long> options) {
     this.options = options;
   }
 
@@ -107,14 +130,15 @@ public class OrderRequest   {
       return false;
     }
     OrderRequest orderRequest = (OrderRequest) o;
-    return Objects.equals(this.client, orderRequest.client) &&
+    return Objects.equals(this.order, orderRequest.order) &&
+        Objects.equals(this.client, orderRequest.client) &&
         Objects.equals(this.car, orderRequest.car) &&
         Objects.equals(this.options, orderRequest.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, car, options);
+    return Objects.hash(order, client, car, options);
   }
 
   @Override
@@ -122,6 +146,7 @@ public class OrderRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderRequest {\n");
     
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("    client: ").append(toIndentedString(client)).append("\n");
     sb.append("    car: ").append(toIndentedString(car)).append("\n");
     sb.append("    options: ").append(toIndentedString(options)).append("\n");

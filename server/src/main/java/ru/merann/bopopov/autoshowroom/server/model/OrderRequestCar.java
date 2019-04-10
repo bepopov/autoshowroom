@@ -1,4 +1,4 @@
-package ru.merann.bopopov.autoshowroom.server.rs.model;
+package ru.merann.bopopov.autoshowroom.server.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,22 +9,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Contains car information included price
+ * Contains car info
  */
-@ApiModel(description = "Contains car information included price")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-09T15:03:19.360+03:00[Europe/Moscow]")
+@ApiModel(description = "Contains car info")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
 
-public class Car   {
+public class OrderRequestCar   {
   @JsonProperty("make")
-  private String make;
+  private Long make;
 
   @JsonProperty("model")
-  private String model;
+  private Long model;
 
-  @JsonProperty("price")
-  private Integer price;
-
-  public Car make(String make) {
+  public OrderRequestCar make(Long make) {
     this.make = make;
     return this;
   }
@@ -33,18 +30,18 @@ public class Car   {
    * Get make
    * @return make
   */
-  @ApiModelProperty(example = "Audi", value = "")
+  @ApiModelProperty(example = "3", value = "")
 
 
-  public String getMake() {
+  public Long getMake() {
     return make;
   }
 
-  public void setMake(String make) {
+  public void setMake(Long make) {
     this.make = make;
   }
 
-  public Car model(String model) {
+  public OrderRequestCar model(Long model) {
     this.model = model;
     return this;
   }
@@ -53,35 +50,15 @@ public class Car   {
    * Get model
    * @return model
   */
-  @ApiModelProperty(example = "A8", value = "")
+  @ApiModelProperty(example = "4", value = "")
 
 
-  public String getModel() {
+  public Long getModel() {
     return model;
   }
 
-  public void setModel(String model) {
+  public void setModel(Long model) {
     this.model = model;
-  }
-
-  public Car price(Integer price) {
-    this.price = price;
-    return this;
-  }
-
-  /**
-   * Get price
-   * @return price
-  */
-  @ApiModelProperty(example = "6000000", value = "")
-
-
-  public Integer getPrice() {
-    return price;
-  }
-
-  public void setPrice(Integer price) {
-    this.price = price;
   }
 
 
@@ -93,25 +70,23 @@ public class Car   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Car car = (Car) o;
-    return Objects.equals(this.make, car.make) &&
-        Objects.equals(this.model, car.model) &&
-        Objects.equals(this.price, car.price);
+    OrderRequestCar orderRequestCar = (OrderRequestCar) o;
+    return Objects.equals(this.make, orderRequestCar.make) &&
+        Objects.equals(this.model, orderRequestCar.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(make, model, price);
+    return Objects.hash(make, model);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Car {\n");
+    sb.append("class OrderRequestCar {\n");
     
     sb.append("    make: ").append(toIndentedString(make)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    price: ").append(toIndentedString(price)).append("\n");
     sb.append("}");
     return sb.toString();
   }
