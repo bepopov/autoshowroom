@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * Contains car info
  */
 @ApiModel(description = "Contains car info")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
 
 public class OrderRequestCar   {
   @JsonProperty("make")

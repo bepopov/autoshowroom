@@ -7,7 +7,7 @@ package ru.merann.bopopov.autoshowroom.server.rs.api;
 
 import ru.merann.bopopov.autoshowroom.server.model.Order;
 import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
-import ru.merann.bopopov.autoshowroom.server.model.ResultList;
+import ru.merann.bopopov.autoshowroom.server.model.ResultListOrder;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import ru.merann.bopopov.autoshowroom.server.model.Status;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
 
 @Validated
 @Api(value = "clients", description = "the clients API")
@@ -46,7 +47,7 @@ public interface ClientsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<Order> createNewOrder(@ApiParam(value = "" ,required=true )  @Valid @RequestBody OrderRequest orderRequest) {
+    default ResponseEntity<Order> createNewOrder(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody OrderRequest orderRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -63,25 +64,25 @@ public interface ClientsApi {
     @ApiOperation(value = "", nickname = "deleteOrder", notes = "Delete order from the database", tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Order was successfully removed") })
-    @RequestMapping(value = "/clients/{id}/orders/{id}",
+    @RequestMapping(value = "/clients/{client_id}/orders/{order_id}",
         method = RequestMethod.DELETE)
-    default ResponseEntity<Void> deleteOrder() {
+    default ResponseEntity<Long> deleteOrder(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "Client id",required=true) @PathVariable("order_id") Long orderId) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
 
 
-    @ApiOperation(value = "", nickname = "getOrdersByClient", notes = "Get all orders for client filtering by status", response = ResultList.class, tags={  })
+    @ApiOperation(value = "", nickname = "getOrdersByClient", notes = "Get all orders for client filtering by status", response = ResultListOrder.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully get orders", response = ResultList.class) })
+        @ApiResponse(code = 200, message = "Successfully get orders", response = ResultListOrder.class) })
     @RequestMapping(value = "/clients/{client_id}/orders",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<ResultList> getOrdersByClient(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Integer clientId,@ApiParam(value = "Order status") @Valid @RequestParam(value = "status", required = false) String status) {
+    default ResponseEntity<ResultListOrder> getOrdersByClient(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "Order status", defaultValue = "null") @Valid @RequestParam(value = "status", required = false, defaultValue="null") Status status) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ \"{}\", \"{}\" ]}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  }, {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  } ]}");
                     break;
                 }
             }
@@ -94,10 +95,10 @@ public interface ClientsApi {
     @ApiOperation(value = "", nickname = "updateOrder", notes = "Update the order in the database", tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Order was successfully changed") })
-    @RequestMapping(value = "/clients/{id}/orders/{id}",
+    @RequestMapping(value = "/clients/{client_id}/orders/{order_id}",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    default ResponseEntity<Void> updateOrder(@ApiParam(value = ""  )  @Valid @RequestBody OrderRequest orderRequest) {
+    default ResponseEntity<Order> updateOrder(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "Client id",required=true) @PathVariable("order_id") Long orderId,@ApiParam(value = ""  )  @Valid @RequestBody OrderRequest orderRequest) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

@@ -13,8 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByClientAndStatus(Client client, Status status);
 
-    @Query("from Order o where o.client.name = :username and o.status = :status")
-    List<Order> findAllByClientIdAndStatus(@Param("username") String username, @Param("status") Status status);
+    @Query("from Order o where o.client.id = :client_id and o.status = :status")
+    List<Order> findAllByClientIdAndStatus(@Param("client_id") Long clientId, @Param("status") Status.NameEnum status);
 
     Order findOneById(Long id);
 

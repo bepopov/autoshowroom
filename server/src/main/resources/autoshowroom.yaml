@@ -22,7 +22,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultList'
+                $ref: '#/components/schemas/ResultList[Order]'
 
   /clients/{client_id}/orders:
     get:
@@ -33,20 +33,28 @@ paths:
           in: query
           description: Order status
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: client_id
           in: path
           description: Client id
           schema:
             type: integer
+            format: int64
       responses:
         200:
           description: Successfully get orders
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultList'
+                $ref: '#/components/schemas/ResultList[Order]'
     post:
+      parameters:
+        - name: client_id
+          in: path
+          description: Client id
+          schema:
+            type: integer
+            format: int64
       operationId: createNewOrder
       description: Create a new order in the database
       requestBody:
@@ -67,12 +75,30 @@ paths:
         404:
           description: Not found
 
-  /clients/{id}/orders/{id}:
+  /clients/{client_id}/orders/{order_id}:
+    parameters:
+      - name: client_id
+        in: path
+        description: Client id
+        schema:
+          type: integer
+          format: int64
+      - name: order_id
+        in: path
+        description: Client id
+        schema:
+          type: integer
+          format: int64
     delete:
       operationId: deleteOrder
       description: Delete order from the database
       responses:
         200:
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
           description: Order was successfully removed
     put:
       operationId: updateOrder
@@ -86,30 +112,27 @@ paths:
       responses:
         200:
           description: Order was successfully changed
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+        404:
+          description: Not found
 
 
 components:
   schemas:
-    ResultList:
+    ResultList[Order]:
       properties:
         items:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/Order'
 
     OrderRequest:
       description: Model used for creating and updating order
       properties:
-        order:
-          type: integer
-          format: int64
-          example: 2
-          description: Order id
-        client:
-          type: integer
-          format: int64
-          example: 2
-          description: Client id
         car:
           type: object
           description: Contains car info

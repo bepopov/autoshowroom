@@ -53,7 +53,7 @@ dependencies {
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "$projectDir/src/main/resources/autoshowroom.yaml".toString()
-    outputDir = "$projectDir".toString()
+    outputDir = "$projectDir/build/generated".toString()
     apiPackage = ("ru.merann.bopopov.autoshowroom.server.rs.api").toString()
     invokerPackage = ("ru.merann.bopopov.autoshowroom.server.rs").toString()
     modelPackage = ("ru.merann.bopopov.autoshowroom.server.model").toString()

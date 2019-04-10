@@ -5,7 +5,7 @@
  */
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
-import ru.merann.bopopov.autoshowroom.server.model.ResultList;
+import ru.merann.bopopov.autoshowroom.server.model.ResultListOrder;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +26,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
 
 @Validated
 @Api(value = "orders", description = "the orders API")
@@ -36,17 +36,17 @@ public interface OrdersApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "", nickname = "getAllOrders", notes = "Get all orders information", response = ResultList.class, tags={  })
+    @ApiOperation(value = "", nickname = "getAllOrders", notes = "Get all orders information", response = ResultListOrder.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully get orders", response = ResultList.class) })
+        @ApiResponse(code = 200, message = "Successfully get orders", response = ResultListOrder.class) })
     @RequestMapping(value = "/orders",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<ResultList> getAllOrders() {
+    default ResponseEntity<ResultListOrder> getAllOrders() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ \"{}\", \"{}\" ]}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  }, {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  } ]}");
                     break;
                 }
             }

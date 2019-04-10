@@ -26,28 +26,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Long save(OrderRequest orderRequest) {
-        if (orderRequest.getClient() != null) {
+    public Order save(Long clientId, OrderRequest orderRequest) {
+        if (clientId != null) {
             Order order = new Order();
             Car car = new Car();
-
-            Client client = clientRepository.findOneById(orderRequest.getClient());
+            Client client = clientRepository.findOneById(clientId);
             Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
             List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
             car.setOptions(options);
+            car.setModel(model);
             order.setCar(car);
             order.setClient(client);
             order.setStatus(Status.NameEnum.INPROGRESS);
-
-            return orderRepository.save(order).getId();
+            return orderRepository.save(order);
         }
         return null;
     }
 
     @Override
-    public void change(OrderRequest orderRequest) {
-        if (orderRequest.getClient() != null) {
-            Order order = orderRepository.findOneById(orderRequest.getOrder());
+    public Order change(Long clientId, Long orderId, OrderRequest orderRequest) {
+        if (clientId != null) {
+            Order order = orderRepository.findOneById(orderId);
+            if (order == null) {
+                return null;
+            }
             Car car = new Car();
             if (orderRequest.getCar().getModel() != null) {
                 Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
@@ -64,13 +66,15 @@ public class OrderServiceImpl implements OrderService {
                 car.setOptions(options);
             }
             order.setCar(car);
-            orderRepository.save(order);
+            return orderRepository.save(order);
         }
+        return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public Long delete(Long id) {
         orderRepository.deleteById(id);
+        return id;
     }
 
     @Override
@@ -79,8 +83,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderByClientAndStatus(String username, Status status) {
-        return orderRepository.findAllByClientIdAndStatus(username, status);
+    public List<Order> getOrderByClientAndStatus(Long clientId, Status status) {
+        if (status == null) {
+            return orderRepository.findAllByClient(clientId);
+        }
+        return orderRepository.findAllByClientIdAndStatus(clientId, status.getName());
     }
 
     @Override

@@ -7,25 +7,26 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import ru.merann.bopopov.autoshowroom.server.model.Order;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ResultList
+ * ResultListOrder
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
 
-public class ResultList   {
+public class ResultListOrder   {
   @JsonProperty("items")
   @Valid
-  private List<Object> items = null;
+  private List<Order> items = null;
 
-  public ResultList items(List<Object> items) {
+  public ResultListOrder items(List<Order> items) {
     this.items = items;
     return this;
   }
 
-  public ResultList addItemsItem(Object itemsItem) {
+  public ResultListOrder addItemsItem(Order itemsItem) {
     if (this.items == null) {
       this.items = new ArrayList<>();
     }
@@ -39,12 +40,13 @@ public class ResultList   {
   */
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public List<Object> getItems() {
+  public List<Order> getItems() {
     return items;
   }
 
-  public void setItems(List<Object> items) {
+  public void setItems(List<Order> items) {
     this.items = items;
   }
 
@@ -57,8 +59,8 @@ public class ResultList   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ResultList resultList = (ResultList) o;
-    return Objects.equals(this.items, resultList.items);
+    ResultListOrder resultListOrder = (ResultListOrder) o;
+    return Objects.equals(this.items, resultListOrder.items);
   }
 
   @Override
@@ -69,7 +71,7 @@ public class ResultList   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ResultList {\n");
+    sb.append("class ResultListOrder {\n");
     
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("}");

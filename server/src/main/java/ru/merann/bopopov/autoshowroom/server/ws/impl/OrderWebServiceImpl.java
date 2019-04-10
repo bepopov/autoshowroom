@@ -21,20 +21,19 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     @Override
-    public Long save(OrderRequest orderRequest) {
-        return orderService.save(orderRequest);
+    public Order save(Long clientId, OrderRequest orderRequest) {
+        return orderService.save(clientId, orderRequest);
     }
 
     @Override
-    public String change(OrderRequest order) {
-        orderService.change(order);
-        return "Success";
+    public Order change(Long clientId, Long orderId, OrderRequest orderRequest) {
+        return orderService.change(clientId, orderId, orderRequest);
     }
 
     @Override
-    public String delete(Long orderId) {
+    public Long delete(Long orderId) {
         orderService.delete(orderId);
-        return "Success";
+        return orderId;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     @Override
-    public List<Order> getAllByClientIdAndStatus(String username, Status status) {
-        return orderService.getOrderByClientAndStatus(username, status);
+    public List<Order> getAllByClientIdAndStatus(Long clientId, Status status) {
+        return orderService.getOrderByClientAndStatus(clientId, status);
     }
 }

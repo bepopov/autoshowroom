@@ -15,61 +15,15 @@ import javax.validation.constraints.*;
  * Model used for creating and updating order
  */
 @ApiModel(description = "Model used for creating and updating order")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T05:38:07.705+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
 
 public class OrderRequest   {
-  @JsonProperty("order")
-  private Long order;
-
-  @JsonProperty("client")
-  private Long client;
-
   @JsonProperty("car")
   private OrderRequestCar car = null;
 
   @JsonProperty("options")
   @Valid
   private List<Long> options = null;
-
-  public OrderRequest order(Long order) {
-    this.order = order;
-    return this;
-  }
-
-  /**
-   * Order id
-   * @return order
-  */
-  @ApiModelProperty(example = "2", value = "Order id")
-
-
-  public Long getOrder() {
-    return order;
-  }
-
-  public void setOrder(Long order) {
-    this.order = order;
-  }
-
-  public OrderRequest client(Long client) {
-    this.client = client;
-    return this;
-  }
-
-  /**
-   * Client id
-   * @return client
-  */
-  @ApiModelProperty(example = "2", value = "Client id")
-
-
-  public Long getClient() {
-    return client;
-  }
-
-  public void setClient(Long client) {
-    this.client = client;
-  }
 
   public OrderRequest car(OrderRequestCar car) {
     this.car = car;
@@ -130,15 +84,13 @@ public class OrderRequest   {
       return false;
     }
     OrderRequest orderRequest = (OrderRequest) o;
-    return Objects.equals(this.order, orderRequest.order) &&
-        Objects.equals(this.client, orderRequest.client) &&
-        Objects.equals(this.car, orderRequest.car) &&
+    return Objects.equals(this.car, orderRequest.car) &&
         Objects.equals(this.options, orderRequest.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(order, client, car, options);
+    return Objects.hash(car, options);
   }
 
   @Override
@@ -146,8 +98,6 @@ public class OrderRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderRequest {\n");
     
-    sb.append("    order: ").append(toIndentedString(order)).append("\n");
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
     sb.append("    car: ").append(toIndentedString(car)).append("\n");
     sb.append("    options: ").append(toIndentedString(options)).append("\n");
     sb.append("}");

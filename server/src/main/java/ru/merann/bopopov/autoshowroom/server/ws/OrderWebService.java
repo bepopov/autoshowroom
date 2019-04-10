@@ -12,14 +12,14 @@ public interface OrderWebService {
 
     // https://www.javaworld.com/article/3215966/web-services-in-java-se-part-2-creating-soap-web-services.html
 
-    Long save(OrderRequest order);
+    Order save(Long clientId, OrderRequest order);
 
-    String change(OrderRequest order);
+    Order change(Long clientId, Long orderId, OrderRequest order);
 
-    String delete(Long id);
+    Long delete(Long id);
 
     List<Order> getAll();
 
-    List<Order> getAllByClientIdAndStatus(String username, Status status);
+    List<Order> getAllByClientIdAndStatus(Long clientId, Status status);
 
 }
