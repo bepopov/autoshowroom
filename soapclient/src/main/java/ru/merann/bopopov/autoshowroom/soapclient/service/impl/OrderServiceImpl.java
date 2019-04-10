@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
 import ru.merann.bopopov.autoshowroom.server.ws.*;
+import ru.merann.bopopov.autoshowroom.soapclient.config.CommandPatterns;
 import ru.merann.bopopov.autoshowroom.soapclient.valueproviders.*;
 import ru.merann.bopopov.autoshowroom.soapclient.config.TableConfig;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ConnectionService;
@@ -14,6 +15,8 @@ import ru.merann.bopopov.autoshowroom.soapclient.service.OrderService;
 
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @ShellComponent
@@ -23,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private ConnectionService connectionService;
     private ConsoleService consoleService;
     private final OrderWebService webService;
+    private final Pattern idPattern = CommandPatterns.getIdPattern();
 
     public OrderServiceImpl(ConnectionService connectionService, ConsoleService consoleService) {
         this.connectionService = connectionService;
@@ -35,10 +39,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by &>\". Make and model are required params.")
-    public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderSave orderSave) {
-        Long orderId = webService.save(orderSave);
-        orders.add(orderId);
-        consoleService.write("New order was created: %s.", orderSave.toString());
+    public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderRequest orderRequest) {
+        Order order = webService.save(connectionService.getClientId(), orderRequest);
+        consoleService.write("New order was created: %s.", order.toString());
     }
 
     @Override
@@ -46,27 +49,29 @@ public class OrderServiceImpl implements OrderService {
     public void editOrder(@ShellOption(defaultValue = "", valueProvider = OrderIdValueProvider.class) String order,
                           @ShellOption(defaultValue = "", valueProvider = MakeValueProvider.class) String make,
                           @ShellOption(defaultValue = "", valueProvider = ModelValueProvider.class) String model,
-                          @ShellOption(defaultValue = "", valueProvider = OptionValueProvider.class) String options) {
-        OrderChange orderChange = new OrderChange();
+                          @ShellOption(defaultValue = "", valueProvider = OptionValueProvider.class) List<Long> options) {
+        OrderRequest orderRequest = new OrderRequest();
         //edit-order --order=10 --options="Зимняя резина"
         //edit-order --order 10 --options "Зимняя резина"
-        orderChange.setModel("");
-        orderChange.setUsername(connectionService.getUsername());
-        orderChange.setOrderId(Long.valueOf(order));
-        orderChange.withOptions(new ArrayList<>());
+        OrderRequestCar car = new OrderRequestCar();
         if (!make.equals("")) {
             if (!model.equals("")) {
-                orderChange.setModel(model);
+                car.setMake(getId(make));
+                car.setModel(getId(model));
             }
             else {
                 throw new IllegalArgumentException("Expected param --model is not found");
             }
         }
+        orderRequest.withOptions(new ArrayList<>());
         if (options != null) {
-            orderChange.withOptions(options);
+            orderRequest.withOptions(options);
         }
-        webService.change(orderChange);
-        consoleService.write("Order changed: %s", orderChange.toString());
+        if (!order.equals("")) {
+            Long orderId = Long.valueOf(order);
+            Order updatedOrder = webService.change(connectionService.getClientId(), orderId, orderRequest);
+            consoleService.write("Order changed: %s", updatedOrder.toString());
+        }
     }
 
     @Override
@@ -86,7 +91,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @ShellMethod("Get order list by status. Syntax: get-orders --status <status>.")
     public Table getOrdersByStatus(@ShellOption(valueProvider = StatusValueProvider.class) Status status) {
-        List<Order> orders = webService.getAllByClientIdAndStatus(connectionService.getUsername(), status);
+        List<Order> orders = webService.getAllByClientIdAndStatus(connectionService.getClientId(), status);
         return TableConfig.getTable(orders);
+    }
+
+    private Long getId(String keyValue) {
+        Matcher optionMatcher = idPattern.matcher(keyValue);
+        if (optionMatcher.matches()) {
+            return Long.valueOf(optionMatcher.group("id"));
+        }
+        else {
+            throw new IllegalArgumentException("Value should contain id. Example: Audi(#1)");
+        }
     }
 }

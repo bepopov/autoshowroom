@@ -10,4 +10,5 @@ public interface ConnectionService {
 
     void disconnect();
 
+    Long getClientId();
 }

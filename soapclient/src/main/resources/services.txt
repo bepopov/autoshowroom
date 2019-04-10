@@ -1,2 +1,3 @@
-http://localhost:8080/services/orderService?wsdl
-http://localhost:8080/services/valueProviderService?wsdl
+http://localhost:9000/services/orderService?wsdl
+http://localhost:9000/services/valueProviderService?wsdl
+http://localhost:9000/services/connectionService?wsdl
