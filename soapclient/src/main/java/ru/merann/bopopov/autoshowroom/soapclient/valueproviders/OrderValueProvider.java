@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class OrderValueProvider implements ValueProvider {
 
     private ValueProviderService providerService;
-    private final Pattern pattern = CommandPatterns.getOrderRequestPattern();
+    private final Pattern pattern = CommandPatterns.getOrderRequestTextPattern();
 
     public OrderValueProvider(ValueProviderService providerService) {
         this.providerService = providerService;

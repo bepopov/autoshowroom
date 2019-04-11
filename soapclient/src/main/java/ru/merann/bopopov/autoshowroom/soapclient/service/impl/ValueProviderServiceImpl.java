@@ -31,23 +31,23 @@ public class ValueProviderServiceImpl implements ValueProviderService {
     public List<CompletionProposal> getMakes(String text) {
         return valueProviderWebService.getMakes(text)
                 .stream()
-                .map(make -> new CompletionProposal(String.format("%s(#%s)", make.getName(), make.getId())))
+                .map(make -> new CompletionProposal(String.format("%s(%s)", make.getName(), make.getId())))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<CompletionProposal> getModels(String make, String text, String parameterValue) {
         Matcher matcher = idPattern.matcher(make);
-        if (matcher.matches()) {
+        if (matcher.find()) {
             Long makeId = Long.valueOf(matcher.group("id"));
             return valueProviderWebService.getModels(makeId, text).stream().map(model -> {
                 String name = model.getName();
                 String price = model.getPrice().toString();
                 CompletionProposal proposal;
                 if (parameterValue != null) {
-                    proposal = new CompletionProposal(parameterValue + name + "(#" + model.getId() + ")");
+                    proposal = new CompletionProposal(parameterValue + name + "(" + model.getId() + ")");
                 } else {
-                    proposal = new CompletionProposal(String.format("%s(#%s)", name, model.getId()));
+                    proposal = new CompletionProposal(String.format("%s(%s)", name, model.getId()));
                 }
                 proposal.displayText(String.format("%s [Price: %s]", name, price));
                 return proposal;
@@ -63,9 +63,9 @@ public class ValueProviderServiceImpl implements ValueProviderService {
             String price = option.getPrice().toString();
             CompletionProposal proposal;
             if (parameterValue != null) {
-                proposal = new CompletionProposal(parameterValue + name);
+                proposal = new CompletionProposal(parameterValue + name + "(" + option.getId() + ")");
             } else {
-                proposal = new CompletionProposal(name);
+                proposal = new CompletionProposal(String.format("%s(%s)", name, option.getId()));
             }
             proposal.displayText(String.format("%s [Price: %s]", name, price));
             return proposal;

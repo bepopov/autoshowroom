@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class OrderSaveConverter implements Converter<String, OrderRequest> {
+public class OrderRequestConverter implements Converter<String, OrderRequest> {
 
     private final Pattern pattern = CommandPatterns.getOrderRequestPattern();
     private final Pattern idPattern = CommandPatterns.getIdPattern();
@@ -26,12 +26,24 @@ public class OrderSaveConverter implements Converter<String, OrderRequest> {
         OrderRequest orderRequest = new OrderRequest();
         if (matcher.matches()) {
             Long makelId = Long.valueOf(matcher.group("make"));
-            Long modelId = Long.valueOf(matcher.group("model"));
+            String model = matcher.group("model");
+            Long modelId;
+            if (model == null) {
+                modelId = null;
+            } else {
+                modelId = Long.valueOf(model);
+            }
             List<Long> options = new ArrayList<>();
-            Matcher optionMatcher = idPattern.matcher(matcher.group("options"));
-            while (optionMatcher.find()) {
-                Long option = Long.valueOf(optionMatcher.group("id"));
-                options.add(option);
+            String optionsString = matcher.group("options");
+            if (optionsString != null) {
+                Matcher optionMatcher = idPattern.matcher(optionsString);
+                while (optionMatcher.find()) {
+                    Long option = Long.valueOf(optionMatcher.group("id"));
+                    options.add(option);
+                }
+            }
+            else {
+                options = null;
             }
             OrderRequestCar car = new OrderRequestCar();
             car.setMake(makelId);

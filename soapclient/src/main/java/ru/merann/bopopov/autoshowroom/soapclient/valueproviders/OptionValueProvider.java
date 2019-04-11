@@ -1,5 +1,6 @@
 package ru.merann.bopopov.autoshowroom.soapclient.valueproviders;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
@@ -32,6 +33,16 @@ public class OptionValueProvider implements ValueProvider {
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
         String text = completionContext.currentWordUpToCursor();
-        return providerService.getOptions(text, null);
+        if (!text.contains(" AND ")) {
+            return providerService.getOptions(text, text);
+        }
+        int countAnds = StringUtils.countMatches(text, " AND");
+        String[] strings = text.split(" AND( )?");
+        if (strings.length <= countAnds) {
+            return providerService.getOptions("", text);
+        } else {
+            String lastWord = strings[strings.length - 1];
+            return providerService.getOptions(lastWord, StringUtils.remove(text, lastWord));
+        }
     }
 }

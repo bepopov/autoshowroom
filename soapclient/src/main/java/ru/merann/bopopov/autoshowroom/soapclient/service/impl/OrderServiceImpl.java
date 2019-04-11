@@ -38,14 +38,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by &>\". Make and model are required params.")
+    @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by AND>\". Make and model are required params.")
     public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderRequest orderRequest) {
         Order order = webService.save(connectionService.getClientId(), orderRequest);
         consoleService.write("New order was created: %s.", order.toString());
     }
 
     @Override
-    @ShellMethod("Edit order. Syntax: edit-order --make <make> --model <model> --options <options separated by &>")
+    @ShellMethod("Edit order. Syntax: edit-order --make <make> --model <model> --options <options separated by AND>")
     public void editOrder(@ShellOption(defaultValue = "", valueProvider = OrderIdValueProvider.class) String order,
                           @ShellOption(defaultValue = "", valueProvider = MakeValueProvider.class) String make,
                           @ShellOption(defaultValue = "", valueProvider = ModelValueProvider.class) String model,
@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new IllegalArgumentException("Expected param --model is not found");
             }
         }
+        orderRequest.setCar(car);
         orderRequest.withOptions(new ArrayList<>());
         if (options != null) {
             orderRequest.withOptions(options);
@@ -97,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Long getId(String keyValue) {
         Matcher optionMatcher = idPattern.matcher(keyValue);
-        if (optionMatcher.matches()) {
+        if (optionMatcher.find()) {
             return Long.valueOf(optionMatcher.group("id"));
         }
         else {
