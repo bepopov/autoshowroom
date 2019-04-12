@@ -15,6 +15,6 @@ public interface WebClientService {
 
     ResultListOrder getOrders();
 
-    ResultListOrder getOrdersByStatus(Status.NameEnum status, Long userId);
+    ResultListOrder getOrdersByStatus(Status status, Long userId);
 
 }

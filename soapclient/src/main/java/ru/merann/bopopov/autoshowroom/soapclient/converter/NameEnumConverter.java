@@ -2,12 +2,12 @@ package ru.merann.bopopov.autoshowroom.soapclient.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.merann.bopopov.autoshowroom.server.ws.NameEnum;
+import ru.merann.bopopov.autoshowroom.server.ws.Status;
 
 @Component
-public class NameEnumConverter implements Converter<String, NameEnum> {
+public class NameEnumConverter implements Converter<String, Status> {
     @Override
-    public NameEnum convert(String source) {
-        return NameEnum.fromValue(source.toUpperCase());
+    public Status convert(String source) {
+        return Status.fromValue(source.toUpperCase());
     }
 }

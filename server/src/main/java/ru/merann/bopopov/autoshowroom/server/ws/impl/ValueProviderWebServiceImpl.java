@@ -44,8 +44,8 @@ public class ValueProviderWebServiceImpl implements ValueProviderWebService {
     }
 
     @Override
-    public List<Status.NameEnum> getStatuses() {
-        return Arrays.asList(Status.NameEnum.values());
+    public List<Status> getStatuses() {
+        return Arrays.asList(Status.values());
     }
 
     @Override

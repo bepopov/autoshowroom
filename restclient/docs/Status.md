@@ -1,19 +1,14 @@
 
 # Status
 
-## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**name** | [**NameEnum**](#NameEnum) |  |  [optional]
+## Enum
 
 
-<a name="NameEnum"></a>
-## Enum: NameEnum
-Name | Value
----- | -----
-ACCEPTED | &quot;ACCEPTED&quot;
-INPROGRESS | &quot;INPROGRESS&quot;
-COMPLETE | &quot;COMPLETE&quot;
+* `ACCEPTED` (value: `"ACCEPTED"`)
+
+* `INPROGRESS` (value: `"INPROGRESS"`)
+
+* `COMPLETE` (value: `"COMPLETE"`)
 
 
 

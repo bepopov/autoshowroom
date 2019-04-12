@@ -38,7 +38,7 @@ openApiGenerate {
     generatorName = "java"
     inputSpec = "http://localhost:9000/api-contract".toString()
     outputDir = "$projectDir".toString()
-    apiPackage = ("ru.merann.bopopov.autoshowroom.restclient.rs.api").toString()
+    apiPackage = ("ru.merann.bopopov.autoshowroom.restclient.rs.controller").toString()
     invokerPackage = ("ru.merann.bopopov.autoshowroom.restclient.rs").toString()
     modelPackage = ("ru.merann.bopopov.autoshowroom.restclient.model").toString()
     validateSpec = false
@@ -54,5 +54,5 @@ openApiGenerate {
 }
 
 openApiValidate {
-    inputSpec = "http://localhost:9000/api-docs".toString()
+    inputSpec = "http://localhost:9000/controller-docs".toString()
 }

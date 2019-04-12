@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"ru.merann.bopopov.autoshowroom.server.rs", "ru.merann.bopopov.autoshowroom.server.rs.api" , "org.openapitools.configuration"})
+@ComponentScan(basePackages = {"ru.merann.bopopov.autoshowroom.server.rs", "ru.merann.bopopov.autoshowroom.server.rs.controller" , "org.openapitools.configuration"})
 public class OpenAPI2SpringBoot implements CommandLineRunner {
 
     @Override

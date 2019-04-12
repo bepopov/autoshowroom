@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
             car.setModel(model);
             order.setCar(car);
             order.setClient(client);
-            order.setStatus(Status.NameEnum.INPROGRESS);
+            order.setStatus(Status.INPROGRESS);
             return orderRepository.save(order);
         }
         return null;
@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
         if (status == null) {
             return orderRepository.findAllByClient(clientId);
         }
-        return orderRepository.findAllByClientIdAndStatus(clientId, status.getName());
+        return orderRepository.findAllByClientIdAndStatus(clientId, status);
     }
 
     @Override

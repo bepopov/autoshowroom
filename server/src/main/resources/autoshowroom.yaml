@@ -235,11 +235,9 @@ components:
 
     Status:
       description: Contains model information
-      properties:
-        name:
-          type: string
-          enum:
-            - ACCEPTED
-            - INPROGRESS
-            - COMPLETE
-          example: ACCEPTED
+      type: string
+      enum:
+        - ACCEPTED
+        - INPROGRESS
+        - COMPLETE
+      example: ACCEPTED

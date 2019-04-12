@@ -66,11 +66,11 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public ResultListOrder getOrdersByStatus(Status.NameEnum status, Long userId) {
+    public ResultListOrder getOrdersByStatus(Status status, Long userId) {
         if (status != null) {
             return webClient.get()
                     .uri("/clients/" + userId + "/orders")
-                    .header("status", status.name())
+                    .header("status", status.getValue())
                     .retrieve()
                     .bodyToMono(ResultListOrder.class)
                     .block();

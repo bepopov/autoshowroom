@@ -1,4 +1,4 @@
-package ru.merann.bopopov.autoshowroom.restclient.api;
+package ru.merann.bopopov.autoshowroom.restclient.controller;
 
 public class ApiController {
 

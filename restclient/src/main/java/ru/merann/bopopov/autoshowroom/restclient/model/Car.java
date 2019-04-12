@@ -32,7 +32,7 @@ import ru.merann.bopopov.autoshowroom.restclient.model.Option;
  * Contains car information included price
  */
 @ApiModel(description = "Contains car information included price")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T12:33:26.154+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
 public class Car {
   public static final String SERIALIZED_NAME_MODEL = "model";
   @SerializedName(SERIALIZED_NAME_MODEL)

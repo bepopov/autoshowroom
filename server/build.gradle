@@ -53,8 +53,9 @@ dependencies {
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "$projectDir/src/main/resources/autoshowroom.yaml".toString()
-    outputDir = "$projectDir/build/generated".toString()
+    outputDir = "$projectDir".toString()
     apiPackage = ("ru.merann.bopopov.autoshowroom.server.rs.api").toString()
+    skipOverwrite = true;
     invokerPackage = ("ru.merann.bopopov.autoshowroom.server.rs").toString()
     modelPackage = ("ru.merann.bopopov.autoshowroom.server.model").toString()
     modelFilesConstrainedTo = [
@@ -71,7 +72,7 @@ openApiGenerate {
 }
 
 openApiValidate {
-    inputSpec = "$projectDir/src/main/resources/swagger.yaml".toString()
+    inputSpec = "$projectDir/src/main/resources/autoshowroom.yaml".toString()
 }
 
 springBoot {

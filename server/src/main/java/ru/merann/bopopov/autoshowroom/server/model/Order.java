@@ -37,7 +37,7 @@ public class Order   {
 
   @JsonProperty("status")
   @Enumerated(EnumType.STRING)
-  private Status.NameEnum status = null;
+  private Status status = null;
 
   public Order id(Long id) {
     this.id = id;
@@ -99,7 +99,7 @@ public class Order   {
     this.car = car;
   }
 
-  public Order status(Status.NameEnum status) {
+  public Order status(Status status) {
     this.status = status;
     return this;
   }
@@ -111,11 +111,11 @@ public class Order   {
   @ApiModelProperty(value = "")
 
 
-  public Status.NameEnum getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(Status.NameEnum status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 

@@ -76,7 +76,7 @@ public class ValueProviderServiceImpl implements ValueProviderService {
     public List<CompletionProposal> getStatuses() {
         return valueProviderWebService.getStatuses()
                 .stream()
-                .map(NameEnum::value)
+                .map(Status::value)
                 .collect(Collectors.toList())
                 .stream()
                 .map(CompletionProposal::new)

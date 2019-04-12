@@ -13,8 +13,6 @@ public class StringToStatusConverter implements Converter<String, Status> {
         if (source == null || source.equals("null")) {
             return null;
         }
-        Status status = new Status();
-        status.setName(Status.NameEnum.valueOf(source));
-        return status;
+        return Status.valueOf(source);
     }
 }

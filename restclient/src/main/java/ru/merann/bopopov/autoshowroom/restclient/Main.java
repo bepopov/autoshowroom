@@ -20,7 +20,7 @@ public class Main {
         List<Long> longs = new ArrayList<>();
         longs.add(1L);
         orderRequest.setOptions(longs);
-        ResultListOrder listOrder = clientService.getOrdersByStatus(null, 1L);
+        ResultListOrder listOrder = clientService.getOrdersByStatus(Status.ACCEPTED, 1L);
         System.out.println(listOrder.toString());
     }
 
