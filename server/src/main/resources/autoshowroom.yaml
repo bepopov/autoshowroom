@@ -1,16 +1,15 @@
-openapi: 3.0.0
+swagger: "2.0"
 info:
-  version: '1.0.0'
-  title: 'Autoshowroom API'
-  description: 'An API that allows clients to obtain existing information of orders, create, edit and delete orders'
-  contact:
-    name: Bogdan Popov
-    email: ibogdanpopov@gmail.com
-
-servers:
-  - url: http://localhost:9000/
-    description: local server
-
+  version: 1.0.0
+  title: Autoshowroom
+host: localhost:9000
+basePath: /v2
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
 paths:
   /orders:
     get:
@@ -19,59 +18,80 @@ paths:
       responses:
         200:
           description: Successfully get orders
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResultList[Order]'
-
+          schema:
+            $ref: '#/definitions/ResultList[Order]'
+  /users/{userId}:
+    get:
+      summary: Returns a user by ID.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: integer
+          minimum: 1
+          description: The ID of the user to return.
+      responses:
+        200:
+          description: A User object.
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4
+              name:
+                type: string
+                example: Arthur Dent
+        400:
+          description: The specified user ID is invalid (e.g. not a number).
+        404:
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
   /clients/{client_id}/orders:
     get:
       operationId: getOrdersByClient
       description: Get all orders for client filtering by status
       parameters:
-        - name: status
-          in: query
+        - in: header
+          name: status
           description: Order status
-          schema:
-            $ref: '#/components/schemas/Status'
-        - name: client_id
-          in: path
+          required: false
+          type: string
+        - in: path
+          name: client_id
+          required: true
+          type: integer
+          format: int64
           description: Client id
-          schema:
-            type: integer
-            format: int64
+
       responses:
         200:
           description: Successfully get orders
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResultList[Order]'
+          schema:
+            $ref: '#/definitions/ResultList[Order]'
     post:
+      operationId: createNewOrder
+      description: Create a new order in the database
       parameters:
         - name: client_id
           in: path
+          required: true
           description: Client id
+          type: integer
+          format: int64
+        - name: order
+          in: body
+          required: true
           schema:
-            type: integer
-            format: int64
-      operationId: createNewOrder
-      description: Create a new order in the database
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/OrderRequest'
+            type: object
+            $ref: '#/definitions/OrderRequest'
       responses:
         200:
           description: Order was successfully created
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: '#/components/schemas/Order'
+          schema:
+            type: object
+            $ref: '#/definitions/Order'
         404:
           description: Not found
 
@@ -79,167 +99,160 @@ paths:
     parameters:
       - name: client_id
         in: path
+        required: true
         description: Client id
-        schema:
-          type: integer
-          format: int64
+        type: integer
+        format: int64
       - name: order_id
         in: path
+        required: true
         description: Client id
-        schema:
-          type: integer
-          format: int64
+        type: integer
+        format: int64
     delete:
       operationId: deleteOrder
       description: Delete order from the database
       responses:
         200:
-          content:
-            application/json:
-              schema:
-                type: integer
-                format: int64
+          schema:
+            type: integer
+            format: int64
           description: Order was successfully removed
     put:
       operationId: updateOrder
       description: Update the order in the database
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/OrderRequest'
+      parameters:
+        - in: body
+          name: order
+          schema:
+            type: object
+            $ref: '#/definitions/OrderRequest'
       responses:
         200:
           description: Order was successfully changed
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: '#/components/schemas/Order'
+          schema:
+            type: object
+            $ref: '#/definitions/Order'
         404:
           description: Not found
 
-
-components:
-  schemas:
-    ResultList[Order]:
-      properties:
+definitions:
+  ResultList[Order]:
+    properties:
+      items:
+        type: array
         items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-
-    OrderRequest:
-      description: Model used for creating and updating order
-      properties:
-        car:
-          type: object
-          description: Contains car info
-          properties:
-            make:
-              type: integer
-              format: int64
-              example: 3
-            model:
-              type: integer
-              format: int64
-              example: 4
-        options:
-          type: array
-          items:
+          $ref: '#/definitions/Order'
+  OrderRequest:
+    description: Model used for creating and updating order
+    properties:
+      car:
+        type: object
+        description: Contains car info
+        properties:
+          make:
+            type: integer
+            format: int64
+            example: 3
+          model:
             type: integer
             format: int64
             example: 4
-
-    Order:
-      description: Model containing order information
-      properties:
-        id:
+      options:
+        type: array
+        items:
           type: integer
           format: int64
           example: 4
-        client:
-          type: object
-          $ref: '#/components/schemas/Client'
-        car:
-          type: object
-          $ref: '#/components/schemas/Car'
-        status:
-          type: object
-          $ref: '#/components/schemas/Status'
 
-    Car:
-      description: Contains car information included price
-      properties:
-        model:
-          type: object
-          $ref: '#/components/schemas/Model'
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/Option'
+  Order:
+    description: Model containing order information
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 4
+      client:
+        type: object
+        $ref: '#/definitions/Client'
+      car:
+        type: object
+        $ref: '#/definitions/Car'
+      status:
+        type: object
+        $ref: '#/definitions/Status'
 
-    Option:
-      description: Contains option information included price
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 3
-        name:
-          type: string
-          example: Спортивный аэродинамический обвес
-        price:
-          type: integer
-          example: 65000
+  Car:
+    description: Contains car information included price
+    properties:
+      model:
+        type: object
+        $ref: '#/definitions/Model'
+      options:
+        type: array
+        items:
+          $ref: '#/definitions/Option'
 
-    Client:
-      description: Contains client information
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 3
-        name:
-          type: string
-          example: Bogdan
+  Option:
+    description: Contains option information included price
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 3
+      name:
+        type: string
+        example: Спортивный аэродинамический обвес
+      price:
+        type: integer
+        example: 65000
 
-    Make:
-      description: Contains make information
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 3
-        name:
-          type: string
-          example: Audi
+  Client:
+    description: Contains client information
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 3
+      name:
+        type: string
+        example: Bogdan
 
-    Model:
-      description: Contains model information
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 3
-        name:
-          type: string
-          example: A8
-        make:
-          type: object
-          $ref: '#/components/schemas/Make'
-        price:
-          type: integer
-          example: 6000000
+  Make:
+    description: Contains make information
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 3
+      name:
+        type: string
+        example: Audi
 
-    Status:
-      description: Contains model information
-      properties:
-        name:
-          type: string
-          enum:
-            - ACCEPTED
-            - INPROGRESS
-            - COMPLETE
-          example: ACCEPTED
+  Model:
+    description: Contains model information
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 3
+      name:
+        type: string
+        example: A8
+      make:
+        type: object
+        $ref: '#/definitions/Make'
+      price:
+        type: integer
+        example: 6000000
+
+  Status:
+    description: Contains model information
+    properties:
+      name:
+        type: string
+        enum:
+          - ACCEPTED
+          - INPROGRESS
+          - COMPLETE
+        example: ACCEPTED

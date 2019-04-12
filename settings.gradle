@@ -1,4 +1,5 @@
 rootProject.name = 'autoshowroom'
 include 'soapclient'
 include 'server'
+include 'restclient'
 
