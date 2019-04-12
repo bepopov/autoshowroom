@@ -69,8 +69,7 @@ public class WebClientServiceImpl implements WebClientService {
     public ResultListOrder getOrdersByStatus(Status status, Long userId) {
         if (status != null) {
             return webClient.get()
-                    .uri("/clients/" + userId + "/orders")
-                    .header("status", status.getValue())
+                    .uri("/clients/" + userId + "/orders?status=" + status)
                     .retrieve()
                     .bodyToMono(ResultListOrder.class)
                     .block();
