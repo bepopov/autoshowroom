@@ -3,6 +3,8 @@ package ru.merann.bopopov.autoshowroom.server;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +22,8 @@ import javax.xml.ws.Endpoint;
         "org.openapitools.configuration"})
 public class ServerApp {
 
+    private static final Logger logger = LogManager.getLogger(ServerApp.class);
+
     @Autowired
     private Bus bus;
 
@@ -34,6 +38,7 @@ public class ServerApp {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(ServerApp.class);
+        logger.info("Application started");
         app.run(args);
     }
 

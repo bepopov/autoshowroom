@@ -1,5 +1,8 @@
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("${openapi.autoshowroom.base-path:}")
 public class OrdersApiController implements OrdersApi {
+
+    private static final Logger logger = LogManager.getLogger(OrdersApiController.class);
 
     private final NativeWebRequest request;
     private final OrderService orderService;
@@ -32,6 +37,8 @@ public class OrdersApiController implements OrdersApi {
     public ResponseEntity<ResultListOrder> getAllOrders() {
         ResultListOrder listOrder = new ResultListOrder();
         listOrder.setItems(orderService.getOrders());
+        logger.log(Level.INFO, String.format(
+                "Order list successfully added to response body. Returning 200 OK to client"));
         return ResponseEntity.ok().body(listOrder);
     }
 }

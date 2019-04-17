@@ -1,5 +1,8 @@
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("${openapi.autoshowroom.base-path:}")
 public class ClientsApiController implements ClientsApi {
 
+    private static final Logger logger = LogManager.getLogger(ClientsApiController.class);
     private final NativeWebRequest request;
     private final OrderService orderService;
 
@@ -36,17 +40,20 @@ public class ClientsApiController implements ClientsApi {
     public ResponseEntity<Order> createNewOrder(Long clientId, @Valid OrderRequest orderRequest) {
         Order order = orderService.save(clientId, orderRequest);
         if (order == null) {
+            logger.log(Level.ERROR, "Client with client_id not found");
             return ResponseEntity
                     .notFound()
                     .header("Error", "Client with client_id not found")
                     .build();
         }
+        logger.log(Level.INFO, String.format("Order %s saved successfully. Returning 200 OK to client", order.toString()));
         return ResponseEntity.ok().body(order);
     }
 
     @Override
     public ResponseEntity<Long> deleteOrder(Long clientId, Long orderId) {
         orderService.delete(orderId);
+        logger.log(Level.INFO, String.format("Order %s deleted successfully. Returning 200 OK to client", orderId));
         return ResponseEntity.ok().body(orderId);
     }
 
@@ -54,6 +61,9 @@ public class ClientsApiController implements ClientsApi {
     public ResponseEntity<ResultListOrder> getOrdersByClient(Long clientId, @Valid Status status) {
         ResultListOrder listOrder = new ResultListOrder();
         listOrder.setItems((orderService.getOrderByClientAndStatus(clientId, status)));
+        logger.log(Level.INFO, String.format(
+                "Order list for client %s and status %s successfully added to response body. Returning 200 OK to client",
+                clientId, status == null ? null : status.toString()));
         return ResponseEntity.ok().body(listOrder);
     }
 
@@ -61,11 +71,13 @@ public class ClientsApiController implements ClientsApi {
     public ResponseEntity<Order> updateOrder(Long clientId, Long orderId, @Valid OrderRequest orderRequest) {
         Order order = orderService.change(clientId, orderId, orderRequest);
         if (order == null) {
+            logger.log(Level.ERROR, "Client or order not found");
             return ResponseEntity
                     .notFound()
                     .header("Error", "Client or order not found")
                     .build();
         }
+        logger.log(Level.INFO, String.format("Order %s updated successfully. Returning 200 OK to client", order.toString()));
         return ResponseEntity.ok().body(order);
     }
 }

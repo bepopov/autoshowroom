@@ -19,16 +19,39 @@ buildscript {
     }
 }
 
+sourceSets {
+    main {
+        java.outputDir = file('src/main/webapp/WEB-INF/classes')
+    }
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.1.4.RELEASE', ext: 'pom'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.1.4.RELEASE'
-    compile "com.squareup.okhttp:okttp:2.7.5"
-    compile "com.squareup.okhttp:logging-interceptor:2.7.5"
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.4.RELEASE'
+
+    // JSF API
+    compile group: 'org.apache.myfaces.core', name: 'myfaces-api', version: '2.2.12'
+    // JSF implementation
+    compile group: 'org.apache.myfaces.core', name: 'myfaces-impl', version: '2.2.12'
+    // To make working JSF
+    compile group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.19'
+    // For rewriting URL
+    /*
+    Using JSF without a tool like Rewrite would lead us to ugly and non RESTful-friendly URLs that heavily use query parameters to navigate.
+     */
+    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: '3.4.2.Final'
+    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-integration-faces', version: '3.4.2.Final'
+    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-config-prettyfaces', version: '3.4.2.Final'
+    // Additional components for JSF
+    // https://mvnrepository.com/artifact/org.primefaces/primefaces
+    compile group: 'org.primefaces', name: 'primefaces', version: '7.0'
+
     compile "io.gsonfire:gson-fire:1.8.3"
     compile "com.google.code.gson:gson:2.8.1"
-    compile "org.threeten:threetenbp:1.3.5"
     // https://mvnrepository.com/artifact/io.swagger/swagger-annotations
     compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.22'
     testCompile group: 'junit', name: 'junit', version: '4.12'
