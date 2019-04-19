@@ -8,7 +8,7 @@
     <Appenders>
         <File name="FILE" fileName="logs/app.log">
             <PatternLayout>
-                <Pattern>{LOG_PATTERN}</Pattern>
+                <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
