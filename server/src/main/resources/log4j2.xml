@@ -6,27 +6,18 @@
         </Property>
     </Properties>
     <Appenders>
-        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
-        </Console>
-        <appender name="FILE" class="org.apache.log4j.FileAppender">
-
-            <param name="file" value="log.out"/>
-            <param name="immediateFlush" value="true"/>
-            <param name="threshold" value="info"/>
-            <param name="append" value="false"/>
-
-            <layout class="org.apache.log4j.PatternLayout">
-                <param name="conversionPattern" value="%m%n"/>
-            </layout>
-        </appender>
+        <File name="FILE" fileName="logs/app.log">
+            <PatternLayout>
+                <Pattern>{LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </File>
     </Appenders>
     <Loggers>
         <Logger name="com.example.log4j2demo" level="info" additivity="false">
             <AppenderRef ref="FILE" />
         </Logger>
 
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="FILE" />
         </Root>
     </Loggers>
