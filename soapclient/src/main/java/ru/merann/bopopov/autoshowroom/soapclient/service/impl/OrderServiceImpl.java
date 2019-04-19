@@ -1,5 +1,8 @@
 package ru.merann.bopopov.autoshowroom.soapclient.service.impl;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -27,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private ConsoleService consoleService;
     private final OrderWebService webService;
     private final Pattern idPattern = CommandPatterns.getIdPattern();
+    private static final Logger LOGGER = LogManager.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(ConnectionService connectionService, ConsoleService consoleService) {
         this.connectionService = connectionService;
@@ -71,7 +75,13 @@ public class OrderServiceImpl implements OrderService {
         if (!order.equals("")) {
             Long orderId = Long.valueOf(order);
             Order updatedOrder = webService.change(connectionService.getClientId(), orderId, orderRequest);
-            consoleService.write("Order changed: %s", updatedOrder.toString());
+            if (updatedOrder == null) {
+                LOGGER.log(Level.INFO, "Order not changed. Order value received: null");
+            }
+            else {
+                LOGGER.log(Level.INFO, String.format("Order changed: %s", updatedOrder.toString()));
+                consoleService.write("Order changed");
+            }
         }
     }
 
@@ -79,20 +89,25 @@ public class OrderServiceImpl implements OrderService {
     @ShellMethod("Delete order. Syntax: delete-order --order <id>")
     public void deleteOrder(@ShellOption(value = "--order", valueProvider = OrderIdValueProvider.class) Long id) {
         webService.delete(id);
+        LOGGER.log(Level.INFO, String.format("Order #%s was deleted.", id.toString()));
         consoleService.write("Order #%s was deleted.", id.toString());
     }
 
     @Override
     @ShellMethod("Get order list. Syntax: get-orders.")
     public Table getOrders() {
+        LOGGER.log(Level.INFO, "Order list requested");
         List<Order> orders = webService.getAll();
+        LOGGER.log(Level.INFO, String.format("Received orders: %s", orders.toString()));
         return TableConfig.getTable(orders);
     }
 
     @Override
     @ShellMethod("Get order list by status. Syntax: get-orders --status <status>.")
     public Table getOrdersByStatus(@ShellOption(valueProvider = StatusValueProvider.class) Status status) {
+        LOGGER.log(Level.INFO, String.format("Order list with %s status is requested", status));
         List<Order> orders = webService.getAllByClientIdAndStatus(connectionService.getClientId(), status);
+        LOGGER.log(Level.INFO, String.format("Received orders: %s", orders.toString()));
         return TableConfig.getTable(orders);
     }
 

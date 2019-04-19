@@ -1,5 +1,7 @@
 package ru.merann.bopopov.autoshowroom.soapclient.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ru.merann.bopopov.autoshowroom.soapclient.service.ConsoleService;
 
@@ -10,6 +12,7 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     private final static String ANSI_YELLOW = "\u001B[33m";
     private final static String ANSI_RESET = "\u001B[0m";
+    private static final Logger LOGGER = LogManager.getLogger(ConsoleService.class);
 
     private final PrintStream out = System.out;
 

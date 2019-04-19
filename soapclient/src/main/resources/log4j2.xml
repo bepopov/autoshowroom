@@ -6,7 +6,7 @@
         </Property>
     </Properties>
     <Appenders>
-        <File name="FILE" fileName="logs/server.log">
+        <File name="FILE" fileName="logs/soapclient.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>

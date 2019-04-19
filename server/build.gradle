@@ -50,6 +50,7 @@ dependencies {
     compile("org.apache.cxf:cxf-spring-boot-starter-jaxrs:3.3.1")
     compile("org.apache.cxf:cxf-rt-rs-service-description-openapi-v3:3.3.1")
     compile("org.springframework.boot:spring-boot-starter-log4j2")
+    compile("com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre8")
 }
 
 openApiGenerate {
