@@ -33,37 +33,12 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.1.4.RELEASE', ext: 'pom'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.1.4.RELEASE'
-    //compile 'org.springframework.shell:spring-shell-starter:2.0.1.BUILD-SNAPSHOT'
+    compile 'org.springframework.shell:spring-shell-starter:2.0.1.BUILD-SNAPSHOT'
     compile "io.gsonfire:gson-fire:1.8.3"
     compile "com.google.code.gson:gson:2.8.1"
     // https://mvnrepository.com/artifact/io.swagger/swagger-annotations
     compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.22'
     compile 'commons-lang:commons-lang:2.6'
-
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.4.RELEASE'
-
-    // JSF API
-    // https://mvnrepository.com/artifact/com.sun.faces/jsf-api
-    compile group: 'com.sun.faces', name: 'jsf-api', version: '2.2.18'
-    // JSF implementation
-    // https://mvnrepository.com/artifact/com.sun.faces/jsf-impl
-    compile group: 'com.sun.faces', name: 'jsf-impl', version: '2.2.18'
-    // To make working JSF
-    compile group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.19'
-    // For rewriting URL
-    /*
-    Using JSF without a tool like Rewrite would lead us to ugly and non RESTful-friendly URLs that heavily use query parameters to navigate.
-     */
-    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: '3.4.2.Final'
-    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-integration-faces', version: '3.4.2.Final'
-    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-config-prettyfaces', version: '3.4.2.Final'
-    // Additional components for JSF
-    // https://mvnrepository.com/artifact/org.primefaces/primefaces
-    compile group: 'org.primefaces', name: 'primefaces', version: '7.0'
-
-    // https://mvnrepository.com/artifact/jstl/jstl
-    compile group: 'jstl', name: 'jstl', version: '1.2'
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
