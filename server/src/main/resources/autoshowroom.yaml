@@ -120,6 +120,78 @@ paths:
         404:
           description: Not found
 
+  /clients/{client_name}:
+    get:
+      operationId: getClientByName
+      description: Get client with name
+      parameters:
+        - name: client_name
+          in: path
+          description: Client name
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+  /models:
+    get:
+      operationId: getModelsByName
+      description: Get all models with name simular to searching text
+      parameters:
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Model]'
+
+  /makes:
+    get:
+      operationId: getMakesByName
+      description:  Get all makes with name simular to searching text
+      parameters:
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get makes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Make]'
+
+  /options:
+    get:
+      operationId: getOptionsByName
+      description:  Get all options with name simular to searching text
+      parameters:
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Option]'
+
 
 components:
   schemas:
@@ -129,6 +201,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Order'
+
+    ResultList[Model]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+
+    ResultList[Make]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Make'
+
+    ResultList[Option]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
 
     OrderRequest:
       description: Model used for creating and updating order
