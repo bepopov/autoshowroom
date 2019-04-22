@@ -3,14 +3,17 @@ services:
 
   db:
     image: mcr.microsoft.com/mssql/server:2017-latest
+    hostname: mssql
     ports:
       - 1433:1433
     volumes:
       - dbdefault:/var/opt/mssql
+      - ./configure_db.sql:/var/opt/configure_db.sql
     environment:
       - SA_PASSWORD=Pas5W0rD!
       - ACCEPT_EULA=Y
     container_name: db
+    #command: /opt/mssql-tools/bin/sqlcmd -U sa -P Pas5W0rD! -i /var/opt/configure_db.sql -e
 
 
   server:
@@ -23,9 +26,9 @@ services:
     ports:
       - 9000:9000
     environment:
-      - spring.datasource.url=jdbc:sqlserver://db;databaseName=tempdb
-      - spring.datasource.username=sa
-      - spring.datasource.password=Pas5W0rD!
+      - spring.datasource.url=jdbc:sqlserver://db;databaseName=autoshowroom
+      - spring.datasource.username=autoshowlogin
+      - spring.datasource.password=autopassword
     container_name: autoshowroom
 
 volumes:
