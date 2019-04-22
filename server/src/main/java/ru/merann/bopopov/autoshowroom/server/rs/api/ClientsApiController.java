@@ -7,10 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
-import ru.merann.bopopov.autoshowroom.server.model.Order;
-import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
-import ru.merann.bopopov.autoshowroom.server.model.ResultListOrder;
-import ru.merann.bopopov.autoshowroom.server.model.Status;
+import ru.merann.bopopov.autoshowroom.server.model.*;
+import ru.merann.bopopov.autoshowroom.server.service.ConnectionService;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
 
 import javax.validation.Valid;
@@ -24,11 +22,13 @@ public class ClientsApiController implements ClientsApi {
     private static final Logger logger = LogManager.getLogger(ClientsApiController.class);
     private final NativeWebRequest request;
     private final OrderService orderService;
+    private final ConnectionService connectionService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public ClientsApiController(NativeWebRequest request, OrderService orderService) {
+    public ClientsApiController(NativeWebRequest request, OrderService orderService, ConnectionService connectionService) {
         this.request = request;
         this.orderService = orderService;
+        this.connectionService = connectionService;
     }
 
     @Override
@@ -79,5 +79,10 @@ public class ClientsApiController implements ClientsApi {
         }
         logger.log(Level.INFO, String.format("Order %s updated successfully. Returning 200 OK to client", order.toString()));
         return ResponseEntity.ok().body(order);
+    }
+
+    @Override
+    public ResponseEntity<Client> getClientByName(String clientName) {
+        return ResponseEntity.ok().body(connectionService.getClient(clientName));
     }
 }

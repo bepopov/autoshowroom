@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import ru.merann.bopopov.autoshowroom.server.model.Client;
 import ru.merann.bopopov.autoshowroom.server.repository.ClientRepository;
 import ru.merann.bopopov.autoshowroom.server.service.ConnectionService;
 
@@ -19,10 +20,15 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Long getClient(String username) {
+    public Long getClientId(String username) {
         logger.log(Level.INFO, String.format("Client with username %s try to connect", username));
         Long id = clientRepository.findByName(username);
         logger.log(Level.TRACE, String.format("User id found: %s", id));
         return id;
+    }
+
+    @Override
+    public Client getClient(String username) {
+        return clientRepository.findOneByName(username);
     }
 }

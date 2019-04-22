@@ -6,6 +6,7 @@
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
 import ru.merann.bopopov.autoshowroom.server.model.ResultListMake;
+import ru.merann.bopopov.autoshowroom.server.model.ResultListModel;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-22T11:54:55.246+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-22T12:45:19.028+03:00[Europe/Moscow]")
 
 @Validated
 @Api(value = "makes", description = "the makes API")
@@ -47,6 +48,26 @@ public interface MakesApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"name\" : \"Audi\",    \"id\" : 3  }, {    \"name\" : \"Audi\",    \"id\" : 3  } ]}");
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    @ApiOperation(value = "", nickname = "getModelsByName", notes = "Get all models with name simular to searching text", response = ResultListModel.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Successfully get models", response = ResultListModel.class) })
+    @RequestMapping(value = "/makes/{make_id}/models",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    default ResponseEntity<ResultListModel> getModelsByName(@ApiParam(value = "Make id",required=true) @PathVariable("make_id") Long makeId,@ApiParam(value = "Search text") @Valid @RequestParam(value = "searchText", required = false) String searchText) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"price\" : 6000000,    \"name\" : \"A8\",    \"id\" : 3,    \"make\" : {      \"name\" : \"Audi\",      \"id\" : 3    }  }, {    \"price\" : 6000000,    \"name\" : \"A8\",    \"id\" : 3,    \"make\" : {      \"name\" : \"Audi\",      \"id\" : 3    }  } ]}");
                     break;
                 }
             }

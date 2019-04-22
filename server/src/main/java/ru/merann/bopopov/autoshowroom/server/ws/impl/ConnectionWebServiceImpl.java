@@ -18,6 +18,6 @@ public class ConnectionWebServiceImpl implements ConnectionWebService {
 
     @Override
     public Long connect(String username) {
-        return connectionService.getClient(username);
+        return connectionService.getClientId(username);
     }
 }

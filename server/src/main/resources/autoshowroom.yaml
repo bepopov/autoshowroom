@@ -138,11 +138,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Client'
 
-  /models:
+  /makes/{make_id}/models:
     get:
       operationId: getModelsByName
       description: Get all models with name simular to searching text
       parameters:
+        - name: make_id
+          in: path
+          description: Make id
+          schema:
+            type: integer
+            format: int64
         - name: searchText
           in: query
           description: Search text

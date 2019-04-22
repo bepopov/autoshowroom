@@ -9,6 +9,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("select c.id from Client c where c.name=?1")
     Long findByName(String name);
 
+    Client findOneByName(String name);
+
     Client findOneById(Long id);
 
 }

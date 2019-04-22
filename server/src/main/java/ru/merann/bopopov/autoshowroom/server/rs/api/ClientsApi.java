@@ -5,9 +5,11 @@
  */
 package ru.merann.bopopov.autoshowroom.server.rs.api;
 
+import ru.merann.bopopov.autoshowroom.server.model.Client;
 import ru.merann.bopopov.autoshowroom.server.model.Order;
 import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
 import ru.merann.bopopov.autoshowroom.server.model.ResultListOrder;
+import ru.merann.bopopov.autoshowroom.server.model.Status;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,14 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
-import ru.merann.bopopov.autoshowroom.server.model.Status;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-22T12:57:34.238+03:00[Europe/Moscow]")
 
 @Validated
 @Api(value = "clients", description = "the clients API")
@@ -51,7 +52,7 @@ public interface ClientsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"car\" : {    \"options\" : [ {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    }, {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    } ],    \"model\" : {      \"price\" : 6000000,      \"name\" : \"A8\",      \"id\" : 3,      \"make\" : {        \"name\" : \"Audi\",        \"id\" : 3      }    }  },  \"client\" : {    \"name\" : \"Bogdan\",    \"id\" : 3  },  \"id\" : 4,  \"status\" : {    \"name\" : \"ACCEPTED\"  }}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"car\" : {    \"options\" : [ {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    }, {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    } ],    \"model\" : {      \"price\" : 6000000,      \"name\" : \"A8\",      \"id\" : 3,      \"make\" : {        \"name\" : \"Audi\",        \"id\" : 3      }    }  },  \"client\" : {    \"name\" : \"Bogdan\",    \"id\" : 3  },  \"id\" : 4,  \"status\" : \"ACCEPTED\"}");
                     break;
                 }
             }
@@ -61,12 +62,33 @@ public interface ClientsApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "deleteOrder", notes = "Delete order from the database", tags={  })
+    @ApiOperation(value = "", nickname = "deleteOrder", notes = "Delete order from the database", response = Long.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Order was successfully removed") })
+        @ApiResponse(code = 200, message = "Order was successfully removed", response = Long.class) })
     @RequestMapping(value = "/clients/{client_id}/orders/{order_id}",
+        produces = { "application/json" }, 
         method = RequestMethod.DELETE)
     default ResponseEntity<Long> deleteOrder(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "Client id",required=true) @PathVariable("order_id") Long orderId) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    @ApiOperation(value = "", nickname = "getClientByName", notes = "Get client with name", response = Client.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Successfully get client", response = Client.class) })
+    @RequestMapping(value = "/clients/{client_name}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    default ResponseEntity<Client> getClientByName(@ApiParam(value = "Client name",required=true) @PathVariable("client_name") String clientName) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"name\" : \"Bogdan\",  \"id\" : 3}");
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -82,7 +104,7 @@ public interface ClientsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  }, {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : {      \"name\" : \"ACCEPTED\"    }  } ]}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"items\" : [ {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : \"ACCEPTED\"  }, {    \"car\" : {      \"options\" : [ {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      }, {        \"price\" : 65000,        \"name\" : \"Спортивный аэродинамический обвес\",        \"id\" : 3      } ],      \"model\" : {        \"price\" : 6000000,        \"name\" : \"A8\",        \"id\" : 3,        \"make\" : {          \"name\" : \"Audi\",          \"id\" : 3        }      }    },    \"client\" : {      \"name\" : \"Bogdan\",      \"id\" : 3    },    \"id\" : 4,    \"status\" : \"ACCEPTED\"  } ]}");
                     break;
                 }
             }
@@ -92,13 +114,23 @@ public interface ClientsApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "updateOrder", notes = "Update the order in the database", tags={  })
+    @ApiOperation(value = "", nickname = "updateOrder", notes = "Update the order in the database", response = Order.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Order was successfully changed") })
+        @ApiResponse(code = 200, message = "Order was successfully changed", response = Order.class),
+        @ApiResponse(code = 404, message = "Not found") })
     @RequestMapping(value = "/clients/{client_id}/orders/{order_id}",
+        produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     default ResponseEntity<Order> updateOrder(@ApiParam(value = "Client id",required=true) @PathVariable("client_id") Long clientId,@ApiParam(value = "Client id",required=true) @PathVariable("order_id") Long orderId,@ApiParam(value = ""  )  @Valid @RequestBody OrderRequest orderRequest) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"car\" : {    \"options\" : [ {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    }, {      \"price\" : 65000,      \"name\" : \"Спортивный аэродинамический обвес\",      \"id\" : 3    } ],    \"model\" : {      \"price\" : 6000000,      \"name\" : \"A8\",      \"id\" : 3,      \"make\" : {        \"name\" : \"Audi\",        \"id\" : 3      }    }  },  \"client\" : {    \"name\" : \"Bogdan\",    \"id\" : 3  },  \"id\" : 4,  \"status\" : \"ACCEPTED\"}");
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
