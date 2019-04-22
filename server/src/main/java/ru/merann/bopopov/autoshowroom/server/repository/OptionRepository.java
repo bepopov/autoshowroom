@@ -11,8 +11,8 @@ public interface OptionRepository extends JpaRepository<Option, Long> {
 
     List<Option> findOneByName(String name);
 
-    @Query("from Option o where o.name in :names" )
-    List<Option> findAllByNames(@Param("names") List<String> names);
+    @Query("from Option o where o.id in :ids" )
+    List<Option> findAllByIds(@Param("ids") List<Long> ids);
 
     @Query("from Option o where lower(o.name) like lower(concat(?1,'%'))")
     List<Option> findAllByName(String name);

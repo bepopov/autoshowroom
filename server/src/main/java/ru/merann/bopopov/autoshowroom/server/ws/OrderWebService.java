@@ -1,9 +1,8 @@
 package ru.merann.bopopov.autoshowroom.server.ws;
 
 import ru.merann.bopopov.autoshowroom.server.model.Order;
+import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderSave;
 
 import javax.jws.WebService;
 import java.util.List;
@@ -13,14 +12,14 @@ public interface OrderWebService {
 
     // https://www.javaworld.com/article/3215966/web-services-in-java-se-part-2-creating-soap-web-services.html
 
-    Long save(OrderSave order);
+    Order save(Long clientId, OrderRequest order);
 
-    String change(OrderChange order);
+    Order change(Long clientId, Long orderId, OrderRequest order);
 
-    String delete(Long id);
+    Long delete(Long id);
 
     List<Order> getAll();
 
-    List<Order> getAllByClientIdAndStatus(String username, Status status);
+    List<Order> getAllByClientIdAndStatus(Long clientId, Status status);
 
 }

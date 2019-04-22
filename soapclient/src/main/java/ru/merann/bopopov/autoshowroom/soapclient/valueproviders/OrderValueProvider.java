@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class OrderValueProvider implements ValueProvider {
 
     private ValueProviderService providerService;
-    private final Pattern pattern = CommandPatterns.getOrderSavePattern();
+    private final Pattern pattern = CommandPatterns.getOrderRequestTextPattern();
 
     public OrderValueProvider(ValueProviderService providerService) {
         this.providerService = providerService;
@@ -32,7 +32,7 @@ public class OrderValueProvider implements ValueProvider {
         if (size > 1) {
             String previousWord = words.get(size - 2);
             String currentWord = words.get(size - 1);
-            return Objects.equals(parameter.getParameterName(), "orderSave") && previousWord.equals("--order");
+            return Objects.equals(parameter.getParameterName(), "orderRequest") && previousWord.equals("--order");
         }
         return false;
     }
@@ -40,7 +40,7 @@ public class OrderValueProvider implements ValueProvider {
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
         List<String> words = completionContext.getWords();
-        String text = completionContext.currentWordUpToCursor();
+            String text = completionContext.currentWordUpToCursor();
         if (words.size() == 2) {
             String parameterValue = words.get(1);
             long countSpaces = parameterValue.chars().filter(ch -> ch == ' ').count();

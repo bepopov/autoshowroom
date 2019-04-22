@@ -9,7 +9,7 @@ Build server by using build task. Run it. Use:
 ```
 java -jar
 ```
-Build soapclient. Run it.
+Build soapclient or restclient. Run it.
 Connect to the server by using (available names are in the client.csv file):
 ```
 connect <name>
@@ -22,4 +22,4 @@ delete-order <order_id>
 get-orders
 get-orders-by-status --status <status>
 ```
-All values are completable except --options param in --edit-order (use TAB).
+All values are completable (press TAB)

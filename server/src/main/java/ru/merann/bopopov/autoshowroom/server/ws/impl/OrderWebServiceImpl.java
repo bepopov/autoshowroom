@@ -2,10 +2,9 @@ package ru.merann.bopopov.autoshowroom.server.ws.impl;
 
 import org.springframework.stereotype.Component;
 import ru.merann.bopopov.autoshowroom.server.model.Order;
+import ru.merann.bopopov.autoshowroom.server.model.OrderRequest;
 import ru.merann.bopopov.autoshowroom.server.model.Status;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderSave;
 import ru.merann.bopopov.autoshowroom.server.ws.OrderWebService;
 
 import javax.jws.WebService;
@@ -22,20 +21,19 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     @Override
-    public Long save(OrderSave orderRequest) {
-        return orderService.save(orderRequest);
+    public Order save(Long clientId, OrderRequest orderRequest) {
+        return orderService.save(clientId, orderRequest);
     }
 
     @Override
-    public String change(OrderChange order) {
-        orderService.change(order);
-        return "Success";
+    public Order change(Long clientId, Long orderId, OrderRequest orderRequest) {
+        return orderService.change(clientId, orderId, orderRequest);
     }
 
     @Override
-    public String delete(Long orderId) {
+    public Long delete(Long orderId) {
         orderService.delete(orderId);
-        return "Success";
+        return orderId;
     }
 
     @Override
@@ -44,7 +42,7 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     @Override
-    public List<Order> getAllByClientIdAndStatus(String username, Status status) {
-        return orderService.getOrderByClientAndStatus(username, status);
+    public List<Order> getAllByClientIdAndStatus(Long clientId, Status status) {
+        return orderService.getOrderByClientAndStatus(clientId, status);
     }
 }

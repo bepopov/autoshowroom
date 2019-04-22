@@ -1,5 +1,7 @@
 package ru.merann.bopopov.autoshowroom.server.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ru.merann.bopopov.autoshowroom.server.model.*;
 import ru.merann.bopopov.autoshowroom.server.repository.ClientRepository;
@@ -7,13 +9,13 @@ import ru.merann.bopopov.autoshowroom.server.repository.ModelRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OptionRepository;
 import ru.merann.bopopov.autoshowroom.server.repository.OrderRepository;
 import ru.merann.bopopov.autoshowroom.server.service.OrderService;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderChange;
-import ru.merann.bopopov.autoshowroom.server.ws.request.OrderSave;
 
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     private OrderRepository orderRepository;
     private ModelRepository modelRepository;
@@ -28,53 +30,63 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Long save(OrderSave orderRequest) {
-        if (orderRequest.getUsername() != null) {
+    public Order save(Long clientId, OrderRequest orderRequest) {
+        logger.info(String.format("Saving order: %s", orderRequest.toString()));
+        if (clientId != null) {
             Order order = new Order();
             Car car = new Car();
-
-            Client client = clientRepository.findByName(orderRequest.getUsername());
-            Model model = modelRepository.findOneByName(orderRequest.getModel());
-            List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
-
-            car.setModel(model);
+            Client client = clientRepository.findOneById(clientId);
+            Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
+            List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
             car.setOptions(options);
+            car.setModel(model);
             order.setCar(car);
             order.setClient(client);
             order.setStatus(Status.INPROGRESS);
-
-            return orderRepository.save(order).getId();
+            return orderRepository.save(order);
         }
+        logger.error("Client id is null");
         return null;
     }
 
     @Override
-    public void change(OrderChange orderRequest) {
-        if (orderRequest.getUsername() != null) {
-            Order order = orderRepository.findOneById(orderRequest.getOrderId());
+    public Order change(Long clientId, Long orderId, OrderRequest orderRequest) {
+        logger.info(String.format("Changing order: %s", orderRequest.toString()));
+        if (clientId != null) {
+            Order order = orderRepository.findOneById(orderId);
+            if (order == null) {
+                logger.error("Order is null");
+                return null;
+            }
             Car car = new Car();
-            if (orderRequest.getModel() != null && !orderRequest.getModel().equals("")) {
-                Model model = modelRepository.findOneByName(orderRequest.getModel());
+            if (orderRequest.getCar().getModel() != null) {
+                Model model = modelRepository.findOneById(orderRequest.getCar().getModel());
                 car.setModel(model);
             }
             else {
                 car.setModel(order.getCar().getModel());
             }
+            logger.info(String.format("Order's car is: %s", car.toString()));
             if (orderRequest.getOptions() == null || orderRequest.getOptions().size() == 0) {
                 car.setOptions(order.getCar().getOptions());
             }
             else {
-                List<Option> options = optionRepository.findAllByNames(orderRequest.getOptions());
+                List<Option> options = optionRepository.findAllByIds(orderRequest.getOptions());
                 car.setOptions(options);
             }
+            logger.info(String.format("Order's options are: %s", car.getOptions()));
             order.setCar(car);
-            orderRepository.save(order);
+            return orderRepository.save(order);
         }
+        logger.error("Client id is null");
+        return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public Long delete(Long id) {
+        logger.info(String.format("Deleting order with ID: %s", id));
         orderRepository.deleteById(id);
+        return id;
     }
 
     @Override
@@ -83,13 +95,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderByClientAndStatus(String username, Status status) {
-        return orderRepository.findAllByClientIdAndStatus(username, status);
+    public List<Order> getOrderByClientAndStatus(Long clientId, Status status) {
+        if (status == null) {
+            logger.info(String.format("Get all orders for client: %s", clientId));
+            return orderRepository.findAllByClient(clientId);
+        }
+        logger.info(String.format("Get all orders for client: %s", clientId));
+        return orderRepository.findAllByClientIdAndStatus(clientId, status);
     }
 
     @Override
-    public List<Order> getOrdersByClient(String username) {
-        return orderRepository.findAllByClient(username);
+    public List<Order> getOrdersByClient(Long userId) {
+        return orderRepository.findAllByClient(userId);
     }
 
 }

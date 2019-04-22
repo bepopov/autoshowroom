@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ModelService {
 
-    List<Model> searchByText(String make, String text);
+    List<Model> searchByText(Long makeId, String text);
 
 }

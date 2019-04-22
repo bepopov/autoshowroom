@@ -6,9 +6,23 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.openapi.generator'
 
 group 'ru.merann.bopopov.autoshowroom'
-version '1.0-SNAPSHOT'
+version '2.0-RELEASE'
 // TODO: Make server executable jar
 sourceCompatibility = 1.8
+
+configurations {
+    rest
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
 
 buildscript {
     repositories {
@@ -20,13 +34,6 @@ buildscript {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url 'https://repo.spring.io/libs-snapshot'
-    }
-}
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -35,9 +42,44 @@ dependencies {
     compile("wsdl4j:wsdl4j")
     compile("org.projectlombok:lombok")
     compile("org.liquibase:liquibase-core")
-    compile ("com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre8")
     compile("com.h2database:h2")
-
-
-    testCompile "junit:junit"
+    compile("io.springfox:springfox-swagger-ui:2.9.2")
+    compile("io.springfox:springfox-swagger2:2.9.2")
+    //compile("io.swagger:swagger-annotations:1.5.22")
+    compile("org.webjars:swagger-ui:3.20.9")
+    compile("org.apache.cxf:cxf-spring-boot-starter-jaxrs:3.3.1")
+    compile("org.apache.cxf:cxf-rt-rs-service-description-openapi-v3:3.3.1")
+    compile("org.springframework.boot:spring-boot-starter-log4j2")
+    compile("com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre8")
 }
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/autoshowroom.yaml".toString()
+    outputDir = "$projectDir".toString()
+    apiPackage = ("ru.merann.bopopov.autoshowroom.server.rs.api").toString()
+    skipOverwrite = true;
+    invokerPackage = ("ru.merann.bopopov.autoshowroom.server.rs").toString()
+    modelPackage = ("ru.merann.bopopov.autoshowroom.server.model").toString()
+    modelFilesConstrainedTo = [
+            "Error"
+    ]
+    configOptions = [
+            dateLibrary: "java8"
+    ]
+    systemProperties = [
+            apis           : "",
+            models         : "",
+            supportingFiles: ""
+    ]
+}
+
+openApiValidate {
+    inputSpec = "$projectDir/src/main/resources/autoshowroom.yaml".toString()
+}
+
+springBoot {
+    mainClassName = 'ru.merann.bopopov.autoshowroom.server.ServerApp'
+}
+
+//compileJava.dependsOn tasks.openApiGenerate

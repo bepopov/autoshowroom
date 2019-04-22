@@ -1,0 +1,363 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Autoshowroom API'
+  description: 'An API that allows clients to obtain existing information of orders, create, edit and delete orders'
+  contact:
+    name: Bogdan Popov
+    email: ibogdanpopov@gmail.com
+
+servers:
+  - url: http://localhost:9000/
+    description: local server
+
+paths:
+  /orders:
+    get:
+      operationId: getAllOrders
+      description: Get all orders information
+      responses:
+        200:
+          description: Successfully get orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Order]'
+
+  /clients/{client_id}/orders:
+    get:
+      operationId: getOrdersByClient
+      description: Get all orders for client filtering by status
+      parameters:
+        - name: status
+          in: query
+          description: Order status
+          schema:
+            $ref: '#/components/schemas/Status'
+        - name: client_id
+          in: path
+          description: Client id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Successfully get orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Order]'
+    post:
+      parameters:
+        - name: client_id
+          in: path
+          description: Client id
+          schema:
+            type: integer
+            format: int64
+      operationId: createNewOrder
+      description: Create a new order in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        200:
+          description: Order was successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+        404:
+          description: Not found
+
+  /clients/{client_id}/orders/{order_id}:
+    parameters:
+      - name: client_id
+        in: path
+        description: Client id
+        schema:
+          type: integer
+          format: int64
+      - name: order_id
+        in: path
+        description: Client id
+        schema:
+          type: integer
+          format: int64
+    delete:
+      operationId: deleteOrder
+      description: Delete order from the database
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+          description: Order was successfully removed
+    put:
+      operationId: updateOrder
+      description: Update the order in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        200:
+          description: Order was successfully changed
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+        404:
+          description: Not found
+
+  /clients/{client_name}:
+    get:
+      operationId: getClientByName
+      description: Get client with name
+      parameters:
+        - name: client_name
+          in: path
+          description: Client name
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+  /makes/{make_id}/models:
+    get:
+      operationId: getModelsByName
+      description: Get all models with name simular to searching text
+      parameters:
+        - name: make_id
+          in: path
+          description: Make id
+          schema:
+            type: integer
+            format: int64
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Model]'
+
+  /makes:
+    get:
+      operationId: getMakesByName
+      description:  Get all makes with name simular to searching text
+      parameters:
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get makes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Make]'
+
+  /options:
+    get:
+      operationId: getOptionsByName
+      description:  Get all options with name simular to searching text
+      parameters:
+        - name: searchText
+          in: query
+          description: Search text
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully get options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Option]'
+
+  /statuses:
+    get:
+      operationId: getStatuses
+      description:  Get all statuses
+      responses:
+        200:
+          description: Successfully get statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Status]'
+
+
+components:
+  schemas:
+    ResultList[Order]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+
+    ResultList[Model]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+
+    ResultList[Make]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Make'
+
+    ResultList[Option]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+
+    ResultList[Status]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Status'
+
+    OrderRequest:
+      description: Model used for creating and updating order
+      properties:
+        car:
+          type: object
+          description: Contains car info
+          properties:
+            make:
+              type: integer
+              format: int64
+              example: 3
+            model:
+              type: integer
+              format: int64
+              example: 4
+        options:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 4
+
+    Order:
+      description: Model containing order information
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4
+        client:
+          type: object
+          $ref: '#/components/schemas/Client'
+        car:
+          type: object
+          $ref: '#/components/schemas/Car'
+        status:
+          type: object
+          $ref: '#/components/schemas/Status'
+
+    Car:
+      description: Contains car information included price
+      properties:
+        model:
+          type: object
+          $ref: '#/components/schemas/Model'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+
+    Option:
+      description: Contains option information included price
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        name:
+          type: string
+          example: Спортивный аэродинамический обвес
+        price:
+          type: integer
+          format: int64
+          example: 65000
+
+    Client:
+      description: Contains client information
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        name:
+          type: string
+          example: Bogdan
+
+    Make:
+      description: Contains make information
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        name:
+          type: string
+          example: Audi
+
+    Model:
+      description: Contains model information
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        name:
+          type: string
+          example: A8
+        make:
+          type: object
+          $ref: '#/components/schemas/Make'
+        price:
+          type: integer
+          format: int64
+          example: 6000000
+
+    Status:
+      description: Contains model information
+      type: string
+      enum:
+        - ACCEPTED
+        - INPROGRESS
+        - COMPLETE
+      example: ACCEPTED

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
-    @Query("from Model m where m.make.name=?1 and lower(m.name) like lower(concat(?2,'%'))")
-    List<Model> findAllByName(String make, String name);
+    @Query("from Model m where m.make.id=?1 and lower(m.name) like lower(concat(?2,'%'))")
+    List<Model> findAllByName(Long makeId, String name);
 
-    Model findOneByName(String name);
+    Model findOneById(Long id);
 
 }
