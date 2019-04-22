@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+      - 1433:1433
+    volumes:
+      - dbdefault:/var/opt/mssql
+    environment:
+      - SA_PASSWORD=Pas5W0rD!
+      - ACCEPT_EULA=Y
+    container_name: db
+
+
+  server:
+    image: autoshowroom:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 9000:9000
+    environment:
+      - spring.datasource.url=jdbc:sqlserver://db;databaseName=tempdb
+      - spring.datasource.username=sa
+      - spring.datasource.password=Pas5W0rD!
+    container_name: autoshowroom
+
+volumes:
+  dbdefault:
+    external: true
