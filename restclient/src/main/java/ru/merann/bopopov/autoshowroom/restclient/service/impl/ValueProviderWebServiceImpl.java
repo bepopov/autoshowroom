@@ -47,7 +47,7 @@ public class ValueProviderWebServiceImpl implements ValueProviderWebService {
     @Override
     public List<Model> getModels(Long makeId, String text) {
         return Objects.requireNonNull(webClient.get()
-                .uri("/models?searchText=" + text)
+                .uri("/makes/" + makeId + "/models?searchText=" + text)
                 .retrieve()
                 .bodyToMono(ResultListModel.class)
                 .block()).getItems();

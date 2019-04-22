@@ -27,7 +27,7 @@ public class ConnectionWebServiceImpl implements ConnectionWebService {
 
     @Override
     public Long connect(String username) {
-        return Objects.requireNonNull(webClient.delete()
+        return Objects.requireNonNull(webClient.get()
                 .uri("/clients/" + username)
                 .retrieve()
                 .bodyToMono(Client.class)

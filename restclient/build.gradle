@@ -14,6 +14,12 @@ repositories {
     }
 }
 
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -27,6 +33,7 @@ buildscript {
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
     compile "org.springframework.boot:spring-boot-starter-webflux"
+    compile("org.springframework.boot:spring-boot-starter-log4j2")
     compile 'org.springframework.shell:spring-shell-starter:2.0.1.BUILD-SNAPSHOT'
     compile "io.gsonfire:gson-fire:1.8.3"
     compile "com.google.code.gson:gson:2.8.1"

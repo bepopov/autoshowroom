@@ -15,7 +15,7 @@ public class WebClientServiceImpl implements WebClientService {
 
     private static final String MIME_TYPE = "application/json";
     private static final String API_BASE_URL = "http://localhost:9000";
-    private static final String USER_AGENT = "Spring 5 WebClient";
+    private static final String USER_AGENT = "Order Service";
 
     private final WebClient webClient;
 
