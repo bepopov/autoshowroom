@@ -28,7 +28,7 @@ import java.io.IOException;
  * Contains make information
  */
 @ApiModel(description = "Contains make information")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
 public class Make {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)

@@ -7,7 +7,7 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
-import ru.merann.bopopov.autoshowroom.restclient.ConnectionWebService;
+import ru.merann.bopopov.autoshowroom.restclient.service.ConnectionWebService;
 import ru.merann.bopopov.autoshowroom.restclient.service.ConnectionService;
 
 @Service
@@ -17,13 +17,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     private boolean connected;
     private String username;
     private Long clientId;
-    private ConnectionWebService connectionWebService;
     private static final Logger LOGGER = LogManager.getLogger(ConnectionServiceImpl.class);
+    private ConnectionWebService connectionWebService;
 
-    public ConnectionServiceImpl() {
-        ru.merann.bopopov.autoshowroom.server.ws.impl.ConnectionService connectionService =
-                new ru.merann.bopopov.autoshowroom.server.ws.impl.ConnectionService();
-        this.connectionWebService = connectionService.getConnectionServicePort();
+    public ConnectionServiceImpl(ConnectionWebService connectionWebService) {
+        this.connectionWebService = connectionWebService;
     }
 
     @Override

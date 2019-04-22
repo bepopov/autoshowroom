@@ -29,7 +29,7 @@ import ru.merann.bopopov.autoshowroom.restclient.model.Make;
  * Contains model information
  */
 @ApiModel(description = "Contains model information")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
 public class Model {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -45,7 +45,7 @@ public class Model {
 
   public static final String SERIALIZED_NAME_PRICE = "price";
   @SerializedName(SERIALIZED_NAME_PRICE)
-  private Integer price;
+  private Long price;
 
   public Model id(Long id) {
     this.id = id;
@@ -101,7 +101,7 @@ public class Model {
     this.make = make;
   }
 
-  public Model price(Integer price) {
+  public Model price(Long price) {
     this.price = price;
     return this;
   }
@@ -111,11 +111,11 @@ public class Model {
    * @return price
   **/
   @ApiModelProperty(example = "6000000", value = "")
-  public Integer getPrice() {
+  public Long getPrice() {
     return price;
   }
 
-  public void setPrice(Integer price) {
+  public void setPrice(Long price) {
     this.price = price;
   }
 

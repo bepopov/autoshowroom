@@ -31,7 +31,7 @@ import ru.merann.bopopov.autoshowroom.restclient.model.OrderRequestCar;
  * Model used for creating and updating order
  */
 @ApiModel(description = "Model used for creating and updating order")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
 public class OrderRequest {
   public static final String SERIALIZED_NAME_CAR = "car";
   @SerializedName(SERIALIZED_NAME_CAR)

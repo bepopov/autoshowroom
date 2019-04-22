@@ -192,6 +192,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResultList[Option]'
 
+  /statuses:
+    get:
+      operationId: getStatuses
+      description:  Get all statuses
+      responses:
+        200:
+          description: Successfully get statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultList[Status]'
+
 
 components:
   schemas:
@@ -222,6 +234,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Option'
+
+    ResultList[Status]:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Status'
 
     OrderRequest:
       description: Model used for creating and updating order
@@ -285,6 +304,7 @@ components:
           example: Спортивный аэродинамический обвес
         price:
           type: integer
+          format: int64
           example: 65000
 
     Client:
@@ -324,6 +344,7 @@ components:
           $ref: '#/components/schemas/Make'
         price:
           type: integer
+          format: int64
           example: 6000000
 
     Status:

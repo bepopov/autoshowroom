@@ -28,7 +28,7 @@ import java.io.IOException;
  * Contains option information included price
  */
 @ApiModel(description = "Contains option information included price")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
 public class Option {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -40,7 +40,7 @@ public class Option {
 
   public static final String SERIALIZED_NAME_PRICE = "price";
   @SerializedName(SERIALIZED_NAME_PRICE)
-  private Integer price;
+  private Long price;
 
   public Option id(Long id) {
     this.id = id;
@@ -78,7 +78,7 @@ public class Option {
     this.name = name;
   }
 
-  public Option price(Integer price) {
+  public Option price(Long price) {
     this.price = price;
     return this;
   }
@@ -88,11 +88,11 @@ public class Option {
    * @return price
   **/
   @ApiModelProperty(example = "65000", value = "")
-  public Integer getPrice() {
+  public Long getPrice() {
     return price;
   }
 
-  public void setPrice(Integer price) {
+  public void setPrice(Long price) {
     this.price = price;
   }
 

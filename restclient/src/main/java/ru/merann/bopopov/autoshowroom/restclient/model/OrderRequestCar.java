@@ -28,7 +28,7 @@ import java.io.IOException;
  * Contains car info
  */
 @ApiModel(description = "Contains car info")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-12T17:46:38.506+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
 public class OrderRequestCar {
   public static final String SERIALIZED_NAME_MAKE = "make";
   @SerializedName(SERIALIZED_NAME_MAKE)

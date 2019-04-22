@@ -25,65 +25,41 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import ru.merann.bopopov.autoshowroom.restclient.model.Model;
-import ru.merann.bopopov.autoshowroom.restclient.model.Option;
+import ru.merann.bopopov.autoshowroom.restclient.model.Status;
 
 /**
- * Contains car information included price
+ * ResultListStatus
  */
-@ApiModel(description = "Contains car information included price")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-04-22T12:16:45.785+03:00[Europe/Moscow]")
-public class Car {
-  public static final String SERIALIZED_NAME_MODEL = "model";
-  @SerializedName(SERIALIZED_NAME_MODEL)
-  private Model model = null;
+public class ResultListStatus {
+  public static final String SERIALIZED_NAME_ITEMS = "items";
+  @SerializedName(SERIALIZED_NAME_ITEMS)
+  private List<Status> items = null;
 
-  public static final String SERIALIZED_NAME_OPTIONS = "options";
-  @SerializedName(SERIALIZED_NAME_OPTIONS)
-  private List<Option> options = null;
-
-  public Car model(Model model) {
-    this.model = model;
+  public ResultListStatus items(List<Status> items) {
+    this.items = items;
     return this;
   }
 
-   /**
-   * Get model
-   * @return model
-  **/
-  @ApiModelProperty(value = "")
-  public Model getModel() {
-    return model;
-  }
-
-  public void setModel(Model model) {
-    this.model = model;
-  }
-
-  public Car options(List<Option> options) {
-    this.options = options;
-    return this;
-  }
-
-  public Car addOptionsItem(Option optionsItem) {
-    if (this.options == null) {
-      this.options = new ArrayList<>();
+  public ResultListStatus addItemsItem(Status itemsItem) {
+    if (this.items == null) {
+      this.items = new ArrayList<>();
     }
-    this.options.add(optionsItem);
+    this.items.add(itemsItem);
     return this;
   }
 
    /**
-   * Get options
-   * @return options
+   * Get items
+   * @return items
   **/
   @ApiModelProperty(value = "")
-  public List<Option> getOptions() {
-    return options;
+  public List<Status> getItems() {
+    return items;
   }
 
-  public void setOptions(List<Option> options) {
-    this.options = options;
+  public void setItems(List<Status> items) {
+    this.items = items;
   }
 
 
@@ -95,24 +71,22 @@ public class Car {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Car car = (Car) o;
-    return Objects.equals(this.model, car.model) &&
-        Objects.equals(this.options, car.options);
+    ResultListStatus resultListStatus = (ResultListStatus) o;
+    return Objects.equals(this.items, resultListStatus.items);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(model, options);
+    return Objects.hash(items);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Car {\n");
+    sb.append("class ResultListStatus {\n");
     
-    sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    options: ").append(toIndentedString(options)).append("\n");
+    sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("}");
     return sb.toString();
   }

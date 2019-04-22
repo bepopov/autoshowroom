@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.merann.bopopov.autoshowroom.restclient.config.CommandPatterns;
 import ru.merann.bopopov.autoshowroom.restclient.service.ConnectionService;
 import ru.merann.bopopov.autoshowroom.restclient.service.ValueProviderService;
+import ru.merann.bopopov.autoshowroom.restclient.service.ValueProviderWebService;
+import ru.merann.bopopov.autoshowroom.restclient.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,9 @@ public class ValueProviderServiceImpl implements ValueProviderService {
     private final Pattern idPattern = CommandPatterns.getIdPattern();
     private static final Logger LOGGER = LogManager.getLogger(ValueProviderServiceImpl.class);
 
-    public ValueProviderServiceImpl(ConnectionService connectionService) {
+    public ValueProviderServiceImpl(ConnectionService connectionService, ValueProviderWebService valueProviderService) {
         this.connectionService = connectionService;
-        ru.merann.bopopov.autoshowroom.server.ws.impl.ValueProviderService providerService =
-                new ru.merann.bopopov.autoshowroom.server.ws.impl.ValueProviderService();
-        this.valueProviderWebService = providerService.getValueProviderServicePort();
+        this.valueProviderWebService = valueProviderService;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ValueProviderServiceImpl implements ValueProviderService {
         LOGGER.log(Level.TRACE, String.format("--- STATUSES: %s", statuses.toString()));
         return valueProviderWebService.getStatuses()
                 .stream()
-                .map(Status::value)
+                .map(Status::getValue)
                 .collect(Collectors.toList())
                 .stream()
                 .map(CompletionProposal::new)
