@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T11:51:56.409+03:00[Europe/Moscow]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-24T12:03:23.160+03:00[Europe/Moscow]")
 
 @Configuration
 @EnableSwagger2
@@ -39,7 +39,7 @@ public class OpenAPIDocumentationConfig {
     public Docket customImplementation(ServletContext servletContext, @Value("${openapi.autoshowroom.base-path:}") String basePath) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("ru.merann.bopopov.autoshowroom.server.rs.controller"))
+                    .apis(RequestHandlerSelectors.basePackage("ru.merann.bopopov.autoshowroom.server.rs.api"))
                     .build()
                 .pathProvider(new BasePathAwareRelativePathProvider(servletContext, basePath))
                 .directModelSubstitute(java.time.LocalDate.class, java.sql.Date.class)

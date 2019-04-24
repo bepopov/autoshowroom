@@ -23,3 +23,17 @@ get-orders
 get-orders-by-status --status <status>
 ```
 All values are completable (press TAB)
+
+## Running server using Docker
+
+Go to the server module path.
+
+Run:
+```
+gradle build
+```
+Then run:
+```
+docker-compose up
+```
+Check server is running by going to the page: localhost:9000
