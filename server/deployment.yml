@@ -2,7 +2,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: autoshowroom-server-deployment
+  name: autoshowroom-server
   labels:
     app: autoshowroom-server
 spec:
@@ -37,7 +37,7 @@ metadata:
   name: autoshowroom-lb
 spec:
   selector:
-    app: server
+    app: autoshowroom-server
   ports:
     - name: http
       protocol: TCP
@@ -56,7 +56,7 @@ spec:
       port: 80
       targetPort: 9000
   selector:
-    app: server
+    app: autoshowroom-server
   type: ClusterIP
 
 # Secret for database connection
@@ -74,7 +74,7 @@ data:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: mssql-deployment
+  name: mssql
 spec:
   replicas: 1
   template:
@@ -172,7 +172,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mssql-clusterip
+  name: mssql-lb
 spec:
   selector:
     app: mssql
