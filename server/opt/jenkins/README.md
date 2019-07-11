@@ -19,7 +19,9 @@ To use Jenkins with Google Cloud you need to add credentials for Service Account
 as <i>autoshowroom</i>. Likewise you need to add Kubeconfig as Jenkins credential (type: _Secret File_). Name
 of credential should be _cluster_. Also there should be set _GOOGLE_APPLICATION_CREDENTIALS_ environment
 variable as Google API token changes periodically. Setting this variable sets default token. Ensure that token's
-service account has all necessary permissions for managing Kubernetes.
+service account has all necessary permissions for managing Kubernetes.\
+[_Disable Agent → Master Security Access Control_](https://wiki.jenkins.io/display/JENKINS/Slave+To+Master+Access+Control#SlaveToMasterAccessControl-kill-switch)
+to allow agents access to the master.
 
 ## Used resources:
 [Stackoverflow - How to configure docker for jenkins in Helm](https://github.com/springfox/springfox)\

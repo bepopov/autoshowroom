@@ -26,36 +26,60 @@ master:
   jobs:
     autoshowroom: |
       <?xml version='1.1' encoding='UTF-8'?>
-      <flow-definition plugin="workflow-job@2.33">
-        <actions>
-          <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.3.9"/>
-        </actions>
-        <description>First trying to use Jenkinsfile</description>
-        <keepDependencies>false</keepDependencies>
-        <properties/>
-        <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.70">
-          <scm class="hudson.plugins.git.GitSCM" plugin="git@3.10.0">
-            <configVersion>2</configVersion>
-            <userRemoteConfigs>
-              <hudson.plugins.git.UserRemoteConfig>
-                <url>https://github.com/bepopov/autoshowroom.git</url>
-              </hudson.plugins.git.UserRemoteConfig>
-            </userRemoteConfigs>
-            <branches>
-              <hudson.plugins.git.BranchSpec>
-                <name>*/jenkins</name>
-              </hudson.plugins.git.BranchSpec>
-            </branches>
-            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-            <submoduleCfg class="list"/>
-            <extensions/>
-          </scm>
-          <scriptPath>server/Jenkinsfile</scriptPath>
-          <lightweight>true</lightweight>
-        </definition>
-        <triggers/>
+      <org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject plugin="workflow-multibranch@2.21">
+        <actions/>
+        <description></description>
+        <properties>
+          <org.csanchez.jenkins.plugins.kubernetes.KubernetesFolderProperty plugin="kubernetes@1.16.2">
+            <permittedClouds/>
+          </org.csanchez.jenkins.plugins.kubernetes.KubernetesFolderProperty>
+          <org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig plugin="pipeline-model-definition@1.3.9">
+            <dockerLabel></dockerLabel>
+            <registry plugin="docker-commons@1.15"/>
+          </org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig>
+        </properties>
+        <folderViews class="jenkins.branch.MultiBranchProjectViewHolder" plugin="branch-api@2.5.3">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </folderViews>
+        <healthMetrics/>
+        <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api@2.5.3">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </icon>
+        <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder@6.9">
+          <pruneDeadBranches>true</pruneDeadBranches>
+          <daysToKeep>-1</daysToKeep>
+          <numToKeep>-1</numToKeep>
+        </orphanedItemStrategy>
+        <triggers>
+          <com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger plugin="cloudbees-folder@6.9">
+            <spec>H/5 * * * *</spec>
+            <interval>900000</interval>
+          </com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger>
+        </triggers>
         <disabled>false</disabled>
-      </flow-definition>
+        <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api@2.5.3">
+          <data>
+            <jenkins.branch.BranchSource>
+              <source class="jenkins.plugins.git.GitSCMSource" plugin="git@3.10.0">
+                <id>6f974fc2-4756-4e82-b054-9c82c534fd63</id>
+                <remote>https://github.com/bepopov/autoshowroom.git</remote>
+                <credentialsId></credentialsId>
+                <traits>
+                  <jenkins.plugins.git.traits.BranchDiscoveryTrait/>
+                </traits>
+              </source>
+              <strategy class="jenkins.branch.DefaultBranchPropertyStrategy">
+                <properties class="empty-list"/>
+              </strategy>
+            </jenkins.branch.BranchSource>
+          </data>
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </sources>
+        <factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+          <scriptPath>server/Jenkinsfile</scriptPath>
+        </factory>
+      </org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>
   JCasC:
     enabled: true
     configScripts:
