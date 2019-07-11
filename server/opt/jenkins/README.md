@@ -23,7 +23,7 @@ service account has all necessary permissions for managing Kubernetes.\
 [_Disable Agent → Master Security Access Control_](https://wiki.jenkins.io/display/JENKINS/Slave+To+Master+Access+Control#SlaveToMasterAccessControl-kill-switch)
 to allow agents access to the master.
 
-## Used resources:
+## Useful information
 [Stackoverflow - How to configure docker for jenkins in Helm](https://github.com/springfox/springfox)\
 Docker needed for building the image of the application. Jenkins there are configured to using Kubernetes'es Docker. 
 But in fact there are many ways to configure Docker for Jenkins: \
@@ -32,3 +32,6 @@ Also there might be a problem with build performance in Kubernetes because Jenki
 agent pods that always download all used tools (such as Gradle) and all required dependencies. 
 To fix this there might use [stateful agents](https://medium.com/@jutley/running-persistent-jenkins-agents-on-kubernetes-c2c6e3c51988) or
 mount [docker volumes](https://jenkins.io/doc/book/pipeline/docker/#caching-data-for-containers) (this way described in Jenkins docs).
+In this case is used [jobcacher plugin](https://wiki.jenkins.io/display/JENKINS/Job+Cacher+Plugin).\
+Maybe the job performance problem is because of [kubernetes](https://wiki.jenkins.io/display/JENKINS/Kubernetes+Plugin) 
+plugin usage or *agent any* directive in pipeline.
