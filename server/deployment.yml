@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: autoshowroom
-          image: us.gcr.io/green-antonym-244311/autoshowroom:2.0.0
+          image: us.gcr.io/green-antonym-244311/autoshowroom:2.0.${BUILD_NUMBER}
           ports:
             - containerPort: 9000
           env:

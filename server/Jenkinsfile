@@ -1,0 +1,82 @@
+// Continuous delivery for Google Cloud
+// https://jenkins.io/doc/book/pipeline/syntax/#tools
+// https://groups.google.com/forum/#!topic/google-cloud-dev/bdFIFa8RPvY
+pipeline {
+
+    agent any
+
+    options {
+        skipDefaultCheckout(true)
+    }
+
+    tools {
+        gradle 'Default'
+    }
+
+    stages {
+
+        stage('Build') {
+            steps {
+                checkout scm
+
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'BUILDING...'
+                    echo '------------------------------------------------'
+                    cache(maxCacheSize: 2500, caches: [
+                        [$class: 'ArbitraryFileCache', excludes: 'modules-2/modules-2.lock,*/plugin-resolution/**', includes: '**/*', path: '/root/.gradle/caches'],
+                        [$class: 'ArbitraryFileCache', excludes: '', includes: '**/*', path: '/root/.gradle/wrapper']
+                    ]) {
+                        sh 'gradle build -x test'
+                    }
+                }
+            }
+        }
+
+        stage('Testing') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'TESTING...'
+                    echo '------------------------------------------------'
+                    sh 'gradle test'
+                }
+            }
+        }
+
+        stage('Containerize') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'CONTAINERIZING...'
+                    echo '------------------------------------------------'
+                    script {
+                        app = docker.build("us.gcr.io/green-antonym-244311/autoshowroom")
+                    }
+                }
+            }
+        }
+
+        stage('Deploying') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'DEPLOYING...'
+                    echo '------------------------------------------------'
+                    script {
+                         docker.withRegistry('https://us.gcr.io', 'gcr:autoshowroom') {
+                           app.push("${env.BUILD_NUMBER}")
+                           app.push("latest")
+                         }
+                         withKubeConfig([credentialsId: 'cluster']) {
+                            sh 'sh ./deploy.sh'
+                         }
+                    }
+                    echo '------------------------------------------------'
+                    echo 'APPLICATION IS DEPLOYED'
+                    echo '------------------------------------------------'
+                }
+            }
+        }
+    }
+}
