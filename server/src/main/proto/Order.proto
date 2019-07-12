@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-option java_miltiple_files = true;
+
 package ru.merann.bopopov.autoshowroom.grpc;
 
-import "Status";
-import "Car";
-import "Client";
+import "Status.proto";
+import "Car.proto";
+import "Client.proto";
 
 message Order {
     int64 id = 1;
@@ -24,5 +24,5 @@ message OrderResponse {
 }
 
 service OrderService {
-    rpc save(Order) returns (OrderResponse)
+    rpc save(Order) returns (OrderResponse);
 }

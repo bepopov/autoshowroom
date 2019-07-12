@@ -3,10 +3,10 @@ syntax = "proto3";
 option java_multiple_files = true;
 package ru.merann.bopopov.autoshowroom.grpc;
 
-import "Model";
-import "Option";
+import "Make.proto";
 
-message Car {
-    Model model = 1;
-    repeated Option option = 2;
+message Model {
+    int64 id = 1;
+    string name = 2;
+    Make make = 3;
 }
