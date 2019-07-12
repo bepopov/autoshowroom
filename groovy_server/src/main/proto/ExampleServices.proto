@@ -1,9 +1,0 @@
-syntax = "proto3"
-
-option java_multiple_files = true;
-
-message HelloRequest {
-/* Number means in which position in payload this particular attribute
-will be */
-    string name = 1;
-}

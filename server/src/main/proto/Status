@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package ru.merann.bopopov.autoshowroom.grpc;
+
+enum Status {
+    ACCEPTED = 0;
+    INPROGRESS = 1;
+    COMPLETE = 2;
+}
