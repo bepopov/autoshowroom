@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_miltiple_files = true;
+package ru.merann.bopopov.autoshowroom.grpc;
+
+import "Status";
+import "Car";
+import "Client";
+
+message Order {
+    int64 id = 1;
+    Status status = 2;
+    Car car = 3;
+    Client client = 4;
+}
+
+message OrderResponse {
+    int64 id = 1;
+    SaveStatus status = 2;
+    enum SaveStatus {
+        SUCCESS = 0;
+        FAIL = 1;
+    }
+}
+
+service OrderService {
+    rpc save(Order) returns (OrderResponse)
+}

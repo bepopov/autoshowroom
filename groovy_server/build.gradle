@@ -6,8 +6,6 @@ apply plugin: 'com.google.protobuf'
 group 'ru.merann.bopopov.autoshowroom'
 version '1.0.0-SNAPSHOT'
 sourceCompatibility = '1.8'
-def grpcVersion = '3.7.1' // CURRENT_GRPC_VERSION
-def protobufVersion = '3.7.1'
 
 repositories {
     mavenCentral()
@@ -24,7 +22,7 @@ buildscript {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all'
+    implementation 'org.codehaus.groovy:groovy'
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'io.github.lognet:grpc-spring-boot-starter:3.3.0'
