@@ -1,17 +1,17 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.model
 
+import org.springframework.data.cassandra.core.mapping.PrimaryKey
 import org.springframework.data.cassandra.core.mapping.Table
 
 @Table("models")
 class Model {
 
+    @PrimaryKey
     Long id
 
     String name
 
     Long price
-
-    Make make
 
     @Override
     boolean equals(Object o) {
@@ -24,13 +24,12 @@ class Model {
         Model model = (Model) o;
         return Objects.equals(this.id, model.id) &&
                 Objects.equals(this.name, model.name) &&
-                Objects.equals(this.make, model.make) &&
                 Objects.equals(this.price, model.price);
     }
 
     @Override
     int hashCode() {
-        return Objects.hash(id, name, make, price);
+        return Objects.hash(id, name, price);
     }
 
     @Override
@@ -40,7 +39,6 @@ class Model {
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    make: ").append(toIndentedString(make)).append("\n");
         sb.append("    price: ").append(toIndentedString(price)).append("\n");
         sb.append("}");
         return sb.toString();

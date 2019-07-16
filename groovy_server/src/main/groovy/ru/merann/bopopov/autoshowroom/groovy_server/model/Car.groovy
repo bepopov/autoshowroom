@@ -1,9 +1,14 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.model
 
+import org.springframework.data.cassandra.core.mapping.UserDefinedType
+
+@UserDefinedType("car")
 class Car {
 
-    Model model
+    String model
 
-    List<Option> options
+    String make
+
+    List<String> options
 
 }

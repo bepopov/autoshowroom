@@ -1,10 +1,12 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.model
 
+import org.springframework.data.cassandra.core.mapping.PrimaryKey
 import org.springframework.data.cassandra.core.mapping.Table
 
 @Table("options")
 class Option {
 
+    @PrimaryKey
     Long id
 
     String name
