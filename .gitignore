@@ -6,6 +6,7 @@ loadFiles
 spring-shell.log
 build
 */logs
+logs
 ### Java ###
 *.class
 
