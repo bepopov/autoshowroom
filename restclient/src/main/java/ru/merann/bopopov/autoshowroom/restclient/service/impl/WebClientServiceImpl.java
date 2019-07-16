@@ -15,13 +15,14 @@ import ru.merann.bopopov.autoshowroom.restclient.service.WebClientService;
 public class WebClientServiceImpl implements WebClientService {
 
     private static final String MIME_TYPE = "application/json";
-    @Value("java_server.url")
-    private static final String JAVA_SERVER = "";
-    @Value("groovy_server.url")
-    private static final String GROOVY_SERVER = "";
-    @Value("groovy_server.enabled")
-    private static final boolean groovyServerEnabled = false;
     private static final String USER_AGENT = "Order Service";
+    
+    @Value("java_server.url")
+    private static String JAVA_SERVER = "";
+    @Value("groovy_server.url")
+    private static String GROOVY_SERVER = "";
+    @Value("groovy_server.enabled")
+    private static boolean groovyServerEnabled = false;
 
     private final WebClient javaServer;
     private final WebClient groovyServer;
