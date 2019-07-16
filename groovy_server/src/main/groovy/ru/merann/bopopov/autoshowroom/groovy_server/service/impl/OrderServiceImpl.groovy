@@ -1,5 +1,6 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.service.impl
 
+import com.datastax.driver.core.utils.UUIDs
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Car
@@ -44,11 +45,12 @@ class OrderServiceImpl implements OrderService {
         Order order = new Order()
         Car car = new Car()
         car.setModel(model.getName())
-        car.setMake(make.get)
+        car.setMake(make.getName())
         car.setOptions(options.stream().map({e -> e.name}).collect().asList())
         order.setCar(car)
         order.setClient(client.getName())
         order.setStatus(Status.ACCEPTED)
+        order.setId(UUID.randomUUID().toString())
         orderRepository.save(order)
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.data.cassandra.core.mapping.Table
 class Order {
 
     @PrimaryKey
-    Long id
+    String id
 
     @CassandraType(type = DataType.Name.UDT, userTypeName = "car")
     Car car

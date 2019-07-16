@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Order
 
 @Repository
-interface OrderRepository extends CrudRepository<Order, Long> {
+interface OrderRepository extends CrudRepository<Order, UUID> {
 }
