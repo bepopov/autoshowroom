@@ -1,5 +1,6 @@
 package ru.merann.bopopov.autoshowroom.restclient.service.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,23 +15,44 @@ import ru.merann.bopopov.autoshowroom.restclient.service.WebClientService;
 public class WebClientServiceImpl implements WebClientService {
 
     private static final String MIME_TYPE = "application/json";
-    private static final String API_BASE_URL = "http://localhost:9000";
+    @Value("java_server.url")
+    private static final String JAVA_SERVER = "";
+    @Value("groovy_server.url")
+    private static final String GROOVY_SERVER = "";
+    @Value("groovy_server.enabled")
+    private static final boolean groovyServerEnabled = false;
     private static final String USER_AGENT = "Order Service";
 
-    private final WebClient webClient;
+    private final WebClient javaServer;
+    private final WebClient groovyServer;
 
     public WebClientServiceImpl() {
-        this.webClient = WebClient.builder()
-                .baseUrl(API_BASE_URL)
+        this.javaServer = WebClient.builder()
+                .baseUrl(JAVA_SERVER)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
                 .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
                 .build();
+        if (groovyServerEnabled) {
+            groovyServer = WebClient.builder()
+                    .baseUrl(GROOVY_SERVER)
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
+                    .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
+                    .build();
+        }
+        else {
+            groovyServer = null;
+        }
     }
 
 
     @Override
     public Order createOrder(OrderRequest orderRequest, Long userId) {
-        return webClient.post().uri("/clients/" + userId+ "/orders")
+        groovyServer.post().uri("/clients/" + userId + "/orders")
+                .body(Mono.just(orderRequest), OrderRequest.class)
+                .retrieve()
+                .bodyToMono(Order.class)
+                .block();
+        return javaServer.post().uri("/clients/" + userId+ "/orders")
                 .body(Mono.just(orderRequest), OrderRequest.class)
                 .retrieve()
                 .bodyToMono(Order.class)
@@ -39,7 +61,7 @@ public class WebClientServiceImpl implements WebClientService {
 
     @Override
     public Order editOrder(OrderRequest orderRequest, Long userId, Long orderId) {
-        return webClient.put()
+        return javaServer.put()
                 .uri("/clients/" + userId+ "/orders/" + orderId)
                 .body(Mono.just(orderRequest), OrderRequest.class)
                 .retrieve()
@@ -49,7 +71,7 @@ public class WebClientServiceImpl implements WebClientService {
 
     @Override
     public Long deleteOrder(Long orderId, Long userId) {
-        return webClient.delete()
+        return javaServer.delete()
                 .uri("/clients/" + userId + "/orders/" + orderId)
                 .retrieve()
                 .bodyToMono(Long.class)
@@ -58,7 +80,7 @@ public class WebClientServiceImpl implements WebClientService {
 
     @Override
     public ResultListOrder getOrders() {
-        return webClient.get()
+        return javaServer.get()
                 .uri("/orders")
                 .retrieve()
                 .bodyToMono(ResultListOrder.class)
@@ -68,14 +90,14 @@ public class WebClientServiceImpl implements WebClientService {
     @Override
     public ResultListOrder getOrdersByStatus(Status status, Long userId) {
         if (status != null) {
-            return webClient.get()
+            return javaServer.get()
                     .uri("/clients/" + userId + "/orders?status=" + status)
                     .retrieve()
                     .bodyToMono(ResultListOrder.class)
                     .block();
         }
         else {
-            return webClient.get()
+            return javaServer.get()
                     .uri("/clients/" + userId + "/orders")
                     .retrieve()
                     .bodyToMono(ResultListOrder.class)
