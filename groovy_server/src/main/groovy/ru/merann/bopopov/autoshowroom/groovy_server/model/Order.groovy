@@ -19,7 +19,7 @@ class Order {
     Status status
 
     @Override
-    public boolean equals(Object o) {
+    boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -34,12 +34,12 @@ class Order {
     }
 
     @Override
-    public int hashCode() {
+    int hashCode() {
         return Objects.hash(id, client, car, status);
     }
 
     @Override
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Order {\n");
 

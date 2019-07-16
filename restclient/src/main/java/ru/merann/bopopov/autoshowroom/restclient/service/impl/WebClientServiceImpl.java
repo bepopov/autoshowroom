@@ -1,6 +1,7 @@
 package ru.merann.bopopov.autoshowroom.restclient.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,22 +13,25 @@ import ru.merann.bopopov.autoshowroom.restclient.model.Status;
 import ru.merann.bopopov.autoshowroom.restclient.service.WebClientService;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class WebClientServiceImpl implements WebClientService {
 
     private static final String MIME_TYPE = "application/json";
     private static final String USER_AGENT = "Order Service";
-    
-    @Value("java_server.url")
-    private static String JAVA_SERVER = "";
-    @Value("groovy_server.url")
-    private static String GROOVY_SERVER = "";
-    @Value("groovy_server.enabled")
-    private static boolean groovyServerEnabled = false;
+
+    private final String JAVA_SERVER;
+    private final String GROOVY_SERVER;
+    private final Boolean groovyServerEnabled;
 
     private final WebClient javaServer;
     private final WebClient groovyServer;
 
-    public WebClientServiceImpl() {
+    public WebClientServiceImpl(@Value("${java_server.url}") String JAVA_SERVER,
+                                @Value("${groovy_server.url}") String GROOVY_SERVER,
+                                @Value("#{new Boolean('${groovy_server.enabled}')}") boolean groovyServerEnabled) {
+        this.JAVA_SERVER = JAVA_SERVER;
+        this.GROOVY_SERVER = GROOVY_SERVER;
+        this.groovyServerEnabled = groovyServerEnabled;
         this.javaServer = WebClient.builder()
                 .baseUrl(JAVA_SERVER)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
@@ -44,7 +48,6 @@ public class WebClientServiceImpl implements WebClientService {
             groovyServer = null;
         }
     }
-
 
     @Override
     public Order createOrder(OrderRequest orderRequest, Long userId) {

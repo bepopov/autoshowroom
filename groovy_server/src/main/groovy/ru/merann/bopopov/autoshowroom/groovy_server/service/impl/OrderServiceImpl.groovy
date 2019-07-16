@@ -1,5 +1,6 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.service.impl
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Car
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Client
@@ -24,6 +25,15 @@ class OrderServiceImpl implements OrderService {
     MakeRepository makeRepository
     ModelRepository modelRepository
     ClientRepository clientRepository
+
+    @Autowired
+    OrderServiceImpl(OrderRepository orderRepository, OptionRepository optionRepository, MakeRepository makeRepository, ModelRepository modelRepository, ClientRepository clientRepository) {
+        this.orderRepository = orderRepository
+        this.optionRepository = optionRepository
+        this.makeRepository = makeRepository
+        this.modelRepository = modelRepository
+        this.clientRepository = clientRepository
+    }
 
     @Override
     void save(OrderRequest orderRequest, Long userId) {
