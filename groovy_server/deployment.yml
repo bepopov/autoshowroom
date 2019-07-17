@@ -32,15 +32,6 @@ spec:
             secretKeyRef:
               name: cassandra
               key: cassandra-password
-# Secret for database connection
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cassandra
-type: Opaque
-data:
-  cassandra-password: UEBTc1cwUmQh
 ---
 apiVersion: v1
 kind: Service
