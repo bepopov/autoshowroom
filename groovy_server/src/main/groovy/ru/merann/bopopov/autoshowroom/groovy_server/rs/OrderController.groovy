@@ -1,6 +1,7 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.rs
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,7 +26,7 @@ class OrderController {
     produces = "application/json",
     consumes = "application/json",
     method = RequestMethod.POST)
-    void saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
+    ResponseEntity<OrderRequestOuterClass.OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
         orderService.save(orderRequest, userId)
         CarRequest request = CarRequest.newBuilder()
                 .setMake(orderRequest.getCar().getMake())
@@ -45,6 +46,7 @@ class OrderController {
         if (response.getStatus().equals(OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL)) {
             throw new Exception("Some error on java client")
         }
+        ResponseEntity.ok().body(response)
     }
 
 }
