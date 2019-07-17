@@ -1,0 +1,69 @@
+# App deployment
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: autoshowroom-groovy-server-d
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: autoshowroom
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: auroshowroom-groovy-server
+        image: us.gcr.io/green-antonym-244311/autoshowroom-groovy-server
+        ports:
+        - containerPort: 8081
+        env:
+        - name: spring.data.cassandra.contact-points
+          value: cassandra
+        - name: spring.data.cassandra.keyspace-name
+          value: autoshowroom
+        - name: java-server.host
+          value: autoshowroom-clusterip
+        - name: java-server.port
+          value: '6565'
+        - name: server.port
+          value: '8085'
+        - name: spring.data.cassandra.password
+          valueFrom:
+            secretKeyRef:
+              name: cassandra
+              key: cassandra-password
+# Secret for database connection
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cassandra
+type: Opaque
+data:
+  cassandra-password: UEBTc1cwUmQh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoshowroom-groovy-server-lb
+spec:
+  selector:
+    app: autoshowroom-groovy-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8085
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoshowroom-groovy-server-clusterip
+spec:
+  selector:
+    app: autoshowroom-groovy-server-cip
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8085
+  type: ClusterIP
