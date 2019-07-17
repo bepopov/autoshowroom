@@ -54,7 +54,8 @@ protobuf {
 sourceSets {
     main {
         groovy {
-            srcDirs += "build/generated/source/proto"
+            srcDirs += "$buildDir/generated/source/proto/main/grpc"
+            srcDirs += "$buildDir/generated/source/proto/main/java"
         }
     }
 }

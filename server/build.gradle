@@ -89,7 +89,8 @@ springBoot {
 sourceSets {
     main {
         java {
-            srcDirs += "build/generated/source/proto"
+            srcDirs += "$buildDir/generated/source/proto/main/grpc"
+            srcDirs += "$buildDir/generated/source/proto/main/java"
         }
     }
 }

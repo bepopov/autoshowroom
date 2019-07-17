@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
             order.setCar(car);
             order.setClient(client);
             order.setStatus(Status.INPROGRESS);
-            return orderRepository.save(order);
+            return orderRepository.saveAndFlush(order);
         }
         logger.error("Client id is null");
         return null;
