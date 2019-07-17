@@ -10,6 +10,7 @@ import ru.merann.bopopov.autoshowroom.groovy_server.model.Model
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Option
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Order
 import ru.merann.bopopov.autoshowroom.groovy_server.model.OrderRequest
+import ru.merann.bopopov.autoshowroom.groovy_server.model.OrderRequestCar
 import ru.merann.bopopov.autoshowroom.groovy_server.model.Status
 import ru.merann.bopopov.autoshowroom.groovy_server.repository.ClientRepository
 import ru.merann.bopopov.autoshowroom.groovy_server.repository.MakeRepository
@@ -38,19 +39,28 @@ class OrderServiceImpl implements OrderService {
 
     @Override
     void save(OrderRequest orderRequest, Long userId) {
-        List<Option> options = optionRepository.findAllById(orderRequest.getOptions()).asList()
-        Model model = modelRepository.findById(orderRequest.getCar().getModel()).get()
-        Make make = makeRepository.findById(orderRequest.getCar().getMake()).get()
-        Client client = clientRepository.findById(userId).get()
-        Order order = new Order()
-        Car car = new Car()
-        car.setModel(model.getName())
-        car.setMake(make.getName())
-        car.setOptions(options.stream().map({e -> e.name}).collect().asList())
-        order.setCar(car)
-        order.setClient(client.getName())
-        order.setStatus(Status.ACCEPTED)
-        order.setId(UUID.randomUUID().toString())
-        orderRepository.save(order)
+        List<Option> options
+        if (orderRequest.getOptions() != null) {
+            options = optionRepository.findAllById(orderRequest.getOptions()).asList()
+        }
+        else {
+            options = new ArrayList<>()
+        }
+        OrderRequestCar requestCar = orderRequest.getCar();
+        if (requestCar.getMake() != null && requestCar.getModel() != null && userId != null) {
+            Model model = modelRepository.findById(requestCar.getModel()).get()
+            Make make = makeRepository.findById(requestCar.getMake()).get()
+            Client client = clientRepository.findById(userId).get()
+            Order order = new Order()
+            Car car = new Car()
+            car.setModel(model.getName())
+            car.setMake(make.getName())
+            car.setOptions(options.stream().map({ e -> e.name }).collect().asList())
+            order.setCar(car)
+            order.setClient(client.getName())
+            order.setStatus(Status.ACCEPTED)
+            order.setId(UUIDs.timeBased())
+            orderRepository.save(order)
+        }
     }
 }
