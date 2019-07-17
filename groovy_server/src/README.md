@@ -2,7 +2,7 @@
 It is a groovy application running with Cassandra database. There runs the REST-service which provides saving the
 order received from _restclient_. After saving in Cassandra _groovy_server_ sends the order to the _autoshowroom_ server
 using **gRPC**.
-##Running using Docker
+## Running using Docker
 Firstly, build the application:
 ```
 gradle build
