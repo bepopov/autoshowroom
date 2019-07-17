@@ -20,7 +20,7 @@ spec:
         - name: spring.data.cassandra.contact-points
           value: cassandra
         - name: spring.data.cassandra.keyspace-name
-          value: autoshowroom
+          value: cassandra
         - name: java-server.host
           value: autoshowroom-clusterip
         - name: java-server.port
