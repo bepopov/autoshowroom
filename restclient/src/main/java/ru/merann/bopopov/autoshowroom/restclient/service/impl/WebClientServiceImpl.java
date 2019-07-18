@@ -52,10 +52,7 @@ public class WebClientServiceImpl implements WebClientService {
     @Override
     public Order createOrder(OrderRequest orderRequest, Long userId) {
         groovyServer.post().uri("/clients/" + userId + "/orders")
-                .body(Mono.just(orderRequest), OrderRequest.class)
-                .retrieve()
-                .bodyToMono(Order.class)
-                .block();
+                .body(Mono.just(orderRequest), OrderRequest.class);
         return javaServer.post().uri("/clients/" + userId+ "/orders")
                 .body(Mono.just(orderRequest), OrderRequest.class)
                 .retrieve()

@@ -26,7 +26,7 @@ class OrderController {
     produces = "application/json",
     consumes = "application/json",
     method = RequestMethod.POST)
-    ResponseEntity<OrderRequestOuterClass.OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
+    ResponseEntity<String> saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
         orderService.save(orderRequest, userId)
         CarRequest request = CarRequest.newBuilder()
                 .setMake(orderRequest.getCar().getMake())
@@ -46,7 +46,7 @@ class OrderController {
         if (response.getStatus().equals(OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL)) {
             throw new Exception("Some error on java client")
         }
-        ResponseEntity.ok().body(response)
+        ResponseEntity.ok().body(response.toString())
     }
 
 }
