@@ -1,5 +1,8 @@
 package ru.merann.bopopov.autoshowroom.groovy_server.rs
 
+import org.apache.logging.log4j.Level
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,6 +24,7 @@ class OrderController {
     OrderService orderService
     @Autowired
     OrderServiceGrpc.OrderServiceBlockingStub serviceGrpc
+    private static final Logger logger = LogManager.getLogger(OrderController.class);
 
     @RequestMapping(value = "/{userId}/orders",
     produces = "application/json",
@@ -44,8 +48,10 @@ class OrderController {
         }
         OrderRequestOuterClass.OrderResponse response = serviceGrpc.save(builder.build())
         if (response.getStatus().equals(OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL)) {
+            logger.log(Level.INFO, String.format("Revieved gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL.toString()));
             throw new Exception("Some error on java client")
         }
+        logger.log(Level.INFO, String.format("Revieved gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.SUCCESS.toString()));
         ResponseEntity.ok().body(response.toString())
     }
 

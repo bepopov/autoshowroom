@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
+        </Property>
+    </Properties>
+    <Appenders>
+        <File name="FILE" fileName="logs/server.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.example.log4j2demo" level="info" additivity="false">
+            <AppenderRef ref="FILE" />
+        </Logger>
+
+        <Root level="debug">
+            <AppenderRef ref="FILE" />
+        </Root>
+    </Loggers>
+</Configuration>
