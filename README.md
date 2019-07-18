@@ -61,6 +61,8 @@ helm init --service-account tiller --history-max 200
 - deploy
 [cassandra](https://github.com/bepopov/autoshowroom/tree/master/groovy_server/ops/cassandra)
 by running ```install.sh```
+- deploy jenkins using the 
+[instructions](https://github.com/bepopov/autoshowroom/tree/master/server/opt/jenkins)
 - apply
 [autoshowroom-server.yml](https://github.com/bepopov/autoshowroom/blob/master/server/autoshowroom-server.yml)
 and
