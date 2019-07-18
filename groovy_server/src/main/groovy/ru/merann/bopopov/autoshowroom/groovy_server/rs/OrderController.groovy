@@ -48,10 +48,10 @@ class OrderController {
         }
         OrderRequestOuterClass.OrderResponse response = serviceGrpc.save(builder.build())
         if (response.getStatus().equals(OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL)) {
-            logger.log(Level.INFO, String.format("Revieved gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL.toString()));
+            logger.log(Level.INFO, String.format("Received gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.FAIL.toString()));
             throw new Exception("Some error on java client")
         }
-        logger.log(Level.INFO, String.format("Revieved gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.SUCCESS.toString()));
+        logger.log(Level.INFO, String.format("Received gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.SUCCESS.toString()));
         ResponseEntity.ok().body(response.toString())
     }
 

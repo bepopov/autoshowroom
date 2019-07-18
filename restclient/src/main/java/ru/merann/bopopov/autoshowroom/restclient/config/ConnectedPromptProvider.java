@@ -16,7 +16,7 @@ public class ConnectedPromptProvider implements PromptProvider {
 
     @Override
     public AttributedString getPrompt() {
-        String msg = String.format("SOAP Client (%s)>", this.connectionService.isConnected() ? connectionService.getUsername() : "Disconnected");
+        String msg = String.format("REST Client (%s)>", this.connectionService.isConnected() ? connectionService.getUsername() : "Disconnected");
         return new AttributedString(msg);
     }
 }
