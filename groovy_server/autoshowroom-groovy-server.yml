@@ -15,7 +15,7 @@ spec:
       - name: auroshowroom-groovy-server
         image: us.gcr.io/green-antonym-244311/autoshowroom-groovy-server
         ports:
-        - containerPort: 8081
+        - containerPort: 8085
         env:
         - name: spring.data.cassandra.contact-points
           value: cassandra
