@@ -30,7 +30,7 @@ class OrderController {
     produces = "application/json",
     consumes = "application/json",
     method = RequestMethod.POST)
-    ResponseEntity<String> saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
+    ResponseEntity<Long> saveOrder(@RequestBody OrderRequest orderRequest, @PathVariable("userId") Long userId) {
         orderService.save(orderRequest, userId)
         CarRequest request = CarRequest.newBuilder()
                 .setMake(orderRequest.getCar().getMake())
@@ -52,7 +52,7 @@ class OrderController {
             throw new Exception("Some error on java client")
         }
         logger.log(Level.INFO, String.format("Received gRPC response: %s", OrderRequestOuterClass.OrderResponse.SaveStatus.SUCCESS.toString()));
-        ResponseEntity.ok().body(response.toString())
+        ResponseEntity.ok().body(response.getId())
     }
 
 }

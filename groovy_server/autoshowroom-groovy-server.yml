@@ -12,7 +12,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-      - name: auroshowroom-groovy-server
+      - name: autoshowroom-groovy-server
         image: us.gcr.io/green-antonym-244311/autoshowroom-groovy-server
         ports:
         - containerPort: 8085
@@ -52,7 +52,7 @@ metadata:
   name: autoshowroom-groovy-server-clusterip
 spec:
   selector:
-    app: autoshowroom-groovy-server-cip
+    app: autoshowroom-groovy-server
   ports:
     - protocol: TCP
       port: 80

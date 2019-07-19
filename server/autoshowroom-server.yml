@@ -2,9 +2,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: autoshowroom
-  labels:
-    app: autoshowroom
+  name: autoshowroom-d
 spec:
   replicas: 1
   template:
@@ -17,6 +15,7 @@ spec:
           image: us.gcr.io/green-antonym-244311/autoshowroom:2.0.${BUILD_NUMBER}
           ports:
             - containerPort: 9000
+            - containerPort: 6565
           env:
             - name: spring.datasource.url
               value: jdbc:sqlserver://mssql-clusterip
@@ -32,26 +31,40 @@ apiVersion: v1
 kind: Service
 metadata:
   name: autoshowroom-lb
+  labels:
+    app: autoshowroom
 spec:
   selector:
     app: autoshowroom
   ports:
-    - protocol: TCP
+    - name: api
+      protocol: TCP
       port: 80
       targetPort: 9000
+    - name: grpc
+      protocol: TCP
+      port: 6565
+      targetPort: 6565
   type: LoadBalancer
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: autoshowroom-clusterip
+  labels:
+    app: autoshowroom
 spec:
   selector:
     app: autoshowroom
   ports:
-    - protocol: TCP
+    - name: api
+      protocol: TCP
       port: 80
       targetPort: 9000
+    - name: grpc
+      protocol: TCP
+      port: 6565
+      targetPort: 6565
   type: ClusterIP
 # Secret for database connection
 ---

@@ -6,10 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.merann.bopopov.autoshowroom.restclient.model.Order;
-import ru.merann.bopopov.autoshowroom.restclient.model.OrderRequest;
-import ru.merann.bopopov.autoshowroom.restclient.model.ResultListOrder;
-import ru.merann.bopopov.autoshowroom.restclient.model.Status;
+import ru.merann.bopopov.autoshowroom.restclient.model.*;
 import ru.merann.bopopov.autoshowroom.restclient.service.WebClientService;
 
 @Service
@@ -50,14 +47,20 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Order createOrder(OrderRequest orderRequest, Long userId) {
-        groovyServer.post().uri("/clients/" + userId + "/orders")
-                .body(Mono.just(orderRequest), OrderRequest.class);
-        return javaServer.post().uri("/clients/" + userId+ "/orders")
+    public Long createOrder(OrderRequest orderRequest, Long userId) {
+        if (groovyServerEnabled) {
+            return groovyServer.post().uri("/clients/" + userId + "/orders")
+                    .body(Mono.just(orderRequest), OrderRequest.class).retrieve().bodyToMono(Long.class).block();
+        }
+        Order order = javaServer.post().uri("/clients/" + userId+ "/orders")
                 .body(Mono.just(orderRequest), OrderRequest.class)
                 .retrieve()
                 .bodyToMono(Order.class)
                 .block();
+        if (order == null) {
+            return -1L;
+        }
+        return order.getId();
     }
 
     @Override

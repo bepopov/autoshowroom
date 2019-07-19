@@ -42,8 +42,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @ShellMethod("Create order. Syntax: --order \"<make> <model> <options separated by AND>\". Make and model are required params.")
     public void createOrder(@ShellOption(value = "--order", valueProvider = OrderValueProvider.class) OrderRequest orderRequest) {
-        Order order = webService.createOrder(orderRequest, connectionService.getClientId());
-        consoleService.write("New order was created: %s.", order.toString());
+        Long id = webService.createOrder(orderRequest, connectionService.getClientId());
+        consoleService.write("New order was created. ID: %s.", id.toString());
     }
 
     @Override
