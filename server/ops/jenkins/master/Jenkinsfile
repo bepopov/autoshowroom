@@ -1,6 +1,3 @@
-def new-autoshowroom-deployment = 'autoshowroom-server-updated.yml'
-def autoshowroom-deployment = 'autoshowroom-server.yml'
-
 pipeline {
 
     agent none
@@ -10,6 +7,8 @@ pipeline {
         CLUSTER_NAME = 'autoshowroom-cluster'
         LOCATION = 'us-west1-c'
         CREDENTIALS_ID = 'autoshowroom'
+        NEW_AUTOSHOWROOM_DEPLOYMENT = 'autoshowroom-server-updated.yml'
+        AUTOSHOWROOM_DEPLOYMENT = 'autoshowroom-server.yml'
     }
 
     options {
@@ -65,9 +64,9 @@ pipeline {
                        app.push("latest")
                     }
                     script {
-                        sh 'envsubst < $autoshowroom-deployment > $new-autoshowroom-deployment'
+                        sh 'envsubst < ${AUTOSHOWROOM_DEPLOYMENT} > ${NEW_AUTOSHOWROOM_DEPLOYMENT}'
                     }
-                    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: $new-autoshowroom-deployment, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: ${NEW_AUTOSHOWROOM_DEPLOYMENT}, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                     script {
                         sh 'rm $new-autoshowroom-deployment'
                     }
