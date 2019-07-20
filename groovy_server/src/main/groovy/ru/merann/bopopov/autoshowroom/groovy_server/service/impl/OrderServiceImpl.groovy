@@ -58,7 +58,7 @@ class OrderServiceImpl implements OrderService {
             car.setOptions(options.stream().map({ e -> e.name }).collect().asList())
             order.setCar(car)
             order.setClient(client.getName())
-            order.setStatus(Status.ACCEPTED)
+            order.setStatus(Status.INPROGRESS)
             order.setId(UUIDs.timeBased())
             orderRepository.save(order)
         }

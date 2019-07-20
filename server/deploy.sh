@@ -1,4 +1,4 @@
 #!/bin/bash
 
-FILE=deployment.yml
+FILE=autoshowroom-server.yml
 envsubst < ${FILE} | kubectl --namespace=default apply -f -

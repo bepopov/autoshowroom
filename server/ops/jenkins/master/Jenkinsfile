@@ -1,0 +1,79 @@
+def new-autoshowroom-deployment = 'autoshowroom-server-updated.yml'
+def autoshowroom-deployment = 'autoshowroom-server.yml'
+
+pipeline {
+
+    agent none
+
+    environment {
+        PROJECT_ID = 'green-antonym-244311'
+        CLUSTER_NAME = 'autoshowroom-cluster'
+        LOCATION = 'us-west1-c'
+        CREDENTIALS_ID = 'autoshowroom'
+    }
+
+    options {
+        skipDefaultCheckout(true)
+    }
+
+    stages {
+
+        stage('Build') {
+            steps {
+                checkout scm
+
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'BUILDING...'
+                    echo '------------------------------------------------'
+                    gradle clean
+                    gradle build -x test
+                }
+            }
+        }
+
+        stage('Testing') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'TESTING...'
+                    echo '------------------------------------------------'
+                    sh 'gradle test'
+                }
+            }
+        }
+
+        stage('Containerize') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'CONTAINERIZING...'
+                    echo '------------------------------------------------'
+                    docker -t us.gcr.io/${projectId}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME} .
+                }
+            }
+        }
+
+        stage('Deploying') {
+            steps {
+                dir("server") {
+                    echo '------------------------------------------------'
+                    echo 'DEPLOYING...'
+                    echo '------------------------------------------------'
+                    docker.withRegistry('https://us.gcr.io', 'gcr:autoshowroom') {
+                       app.push("2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
+                       app.push("latest")
+                    }
+                    script {
+                        sh 'envsubst < $autoshowroom-deployment > $new-autoshowroom-deployment'
+                    }
+                    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: $new-autoshowroom-deployment, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                    script {
+                        sh 'rm $new-autoshowroom-deployment'
+                    }
+                }
+            }
+        }
+
+    }
+}
