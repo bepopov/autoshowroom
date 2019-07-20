@@ -13,3 +13,130 @@ master:
     - google-oauth-plugin:0.8
     - docker-workflow:1.18
     - google-kubernetes-engine:0.6.2
+  jobs:
+    autoshowroom-multibranch: |
+      <?xml version='1.1' encoding='UTF-8'?>
+      <org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject plugin="workflow-multibranch@2.21">
+        <actions/>
+        <description></description>
+        <properties>
+          <org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig plugin="pipeline-model-definition@1.3.9">
+            <dockerLabel></dockerLabel>
+            <registry plugin="docker-commons@1.15"/>
+          </org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig>
+        </properties>
+        <folderViews class="jenkins.branch.MultiBranchProjectViewHolder" plugin="branch-api@2.5.3">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </folderViews>
+        <healthMetrics>
+          <com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric plugin="cloudbees-folder@6.9">
+            <nonRecursive>false</nonRecursive>
+          </com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric>
+        </healthMetrics>
+        <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api@2.5.3">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </icon>
+        <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder@6.9">
+          <pruneDeadBranches>true</pruneDeadBranches>
+          <daysToKeep>-1</daysToKeep>
+          <numToKeep>-1</numToKeep>
+        </orphanedItemStrategy>
+        <triggers>
+          <com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger plugin="cloudbees-folder@6.9">
+            <spec>H H/4 * * *</spec>
+            <interval>43200000</interval>
+          </com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger>
+        </triggers>
+        <disabled>false</disabled>
+        <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api@2.5.3">
+          <data>
+            <jenkins.branch.BranchSource>
+              <source class="jenkins.plugins.git.GitSCMSource" plugin="git@3.10.0">
+                <id>33950c96-9bf3-4441-9af2-ee4a4c2b1fb9</id>
+                <remote>https://github.com/bepopov/autoshowroom.git</remote>
+                <credentialsId></credentialsId>
+                <traits>
+                  <jenkins.plugins.git.traits.BranchDiscoveryTrait/>
+                </traits>
+              </source>
+              <strategy class="jenkins.branch.DefaultBranchPropertyStrategy">
+                <properties class="empty-list"/>
+              </strategy>
+            </jenkins.branch.BranchSource>
+          </data>
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+        </sources>
+        <factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory">
+          <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+          <scriptPath>server/ops/jenkins/master/Jenkinsfile</scriptPath>
+        </factory>
+      </org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>
+    JCasC:
+      enabled: true
+      configScripts:
+        config: |
+          jenkins:
+            agentProtocols:
+            - "JNLP4-connect"
+            - "Ping"
+            authorizationStrategy:
+              loggedInUsersCanDoAnything:
+                allowAnonymousRead: false
+            crumbIssuer:
+              standard:
+                excludeClientIPFromCrumb: true
+            disableRememberMe: false
+            labelString: "master"
+            markupFormatter: "plainText"
+            mode: NORMAL
+            myViewsTabBar: "standard"
+            numExecutors: 5
+            primaryView:
+              all:
+                name: "all"
+            projectNamingStrategy: "standard"
+            quietPeriod: 5
+            remotingSecurity:
+              enabled: true
+            scmCheckoutRetryCount: 0
+            securityRealm: "legacy"
+            slaveAgentPort: 50000
+            updateCenter:
+              sites:
+              - id: "default"
+                url: "https://updates.jenkins.io/update-center.json"
+            views:
+            - all:
+                name: "all"
+            viewsTabBar: "standard"
+          security:
+            apiToken:
+              creationOfLegacyTokenEnabled: false
+              tokenGenerationOnCreationEnabled: false
+              usageStatisticsEnabled: true
+            downloadSettings:
+              useBrowser: false
+            sSHD:
+              port: -1
+          unclassified:
+            gitSCM:
+              createAccountBasedOnEmail: false
+            location:
+              adminAddress: "address not configured yet <nobody@nowhere>"
+              url: "http://jenkins:8080/"
+            mailer:
+              adminAddress: "address not configured yet <nobody@nowhere>"
+              charset: "UTF-8"
+              useSsl: false
+            pollSCM:
+              pollingThreadCount: 10
+          tool:
+            git:
+              installations:
+              - home: "git"
+                name: "Default"
+  volumes:
+    - type: HostPath
+      volumeName: docker-sock
+      hostPath: /var/run/docker.sock
+      mountPath: /var/run/docker.sock
