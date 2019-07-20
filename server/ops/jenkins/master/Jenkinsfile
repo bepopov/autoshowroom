@@ -25,8 +25,8 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'BUILDING...'
                     echo '------------------------------------------------'
-                    gradle clean
-                    gradle build -x test
+                    sh 'gradle clean'
+                    sh 'gradle build -x test'
                 }
             }
         }
@@ -59,11 +59,11 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'DEPLOYING...'
                     echo '------------------------------------------------'
-                    docker.withRegistry('https://us.gcr.io', 'gcr:autoshowroom') {
-                       app.push("2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
-                       app.push("latest")
-                    }
                     script {
+                        docker.withRegistry('https://us.gcr.io', 'gcr:autoshowroom') {
+                           app.push("2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
+                           app.push("latest")
+                        }
                         sh 'envsubst < ${AUTOSHOWROOM_DEPLOYMENT} > ${NEW_AUTOSHOWROOM_DEPLOYMENT}'
                     }
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: ${NEW_AUTOSHOWROOM_DEPLOYMENT}, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
