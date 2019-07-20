@@ -1,8 +1,6 @@
 pipeline {
 
-    agent {
-        label "master"
-    }
+    agent none
 
     environment {
         PROJECT_ID = 'green-antonym-244311'
@@ -20,6 +18,7 @@ pipeline {
     stages {
 
         stage('Build') {
+            agent { label 'build-label' }
             steps {
                 checkout scm
 
