@@ -1,6 +1,8 @@
 pipeline {
 
-    agent none
+    agent {
+        "master"
+    }
 
     environment {
         PROJECT_ID = 'green-antonym-244311'
@@ -25,10 +27,8 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'BUILDING...'
                     echo '------------------------------------------------'
-                    node("builder") {
-                        sh 'gradle clean'
-                        sh 'gradle build -x test'
-                    }
+                    sh 'gradle clean'
+                    sh 'gradle build -x test'
                 }
             }
         }
