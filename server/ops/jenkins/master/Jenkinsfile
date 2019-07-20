@@ -50,7 +50,7 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'CONTAINERIZING...'
                     echo '------------------------------------------------'
-                    sh 'docker -t us.gcr.io/${projectId}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME} .'
+                    sh "docker -t us.gcr.io/${projectId}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME} ."
                 }
             }
         }
@@ -66,11 +66,11 @@ pipeline {
                            app.push("2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
                            app.push("latest")
                         }
-                        sh 'envsubst < ${AUTOSHOWROOM_DEPLOYMENT} > ${NEW_AUTOSHOWROOM_DEPLOYMENT}'
+                        sh "envsubst < ${AUTOSHOWROOM_DEPLOYMENT} > ${NEW_AUTOSHOWROOM_DEPLOYMENT}"
                     }
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: ${NEW_AUTOSHOWROOM_DEPLOYMENT}, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                     script {
-                        sh 'rm $new-autoshowroom-deployment'
+                        sh "rm ${NEW_AUTOSHOWROOM_DEPLOYMENT}"
                     }
                 }
             }
