@@ -18,15 +18,17 @@ pipeline {
     stages {
 
         stage('Build') {
-            steps {
-                checkout scm
+            node {
+                steps {
+                    checkout scm
 
-                dir("server") {
-                    echo '------------------------------------------------'
-                    echo 'BUILDING...'
-                    echo '------------------------------------------------'
-                    sh 'gradle clean'
-                    sh 'gradle build -x test'
+                    dir("server") {
+                        echo '------------------------------------------------'
+                        echo 'BUILDING...'
+                        echo '------------------------------------------------'
+                        sh 'gradle clean'
+                        sh 'gradle build -x test'
+                    }
                 }
             }
         }
