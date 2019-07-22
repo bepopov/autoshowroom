@@ -13,6 +13,7 @@ master:
     - google-oauth-plugin:0.8
     - docker-workflow:1.18
     - google-kubernetes-engine:0.6.2
+    - kubernetes:1.14.3
   jobs:
     autoshowroom-multibranch: |
       <?xml version='1.1' encoding='UTF-8'?>
@@ -71,72 +72,3 @@ master:
           <scriptPath>server/ops/jenkins/master/Jenkinsfile</scriptPath>
         </factory>
       </org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>
-    JCasC:
-      enabled: true
-      configScripts:
-        config: |
-          jenkins:
-            agentProtocols:
-            - "JNLP4-connect"
-            - "Ping"
-            authorizationStrategy:
-              loggedInUsersCanDoAnything:
-                allowAnonymousRead: false
-            crumbIssuer:
-              standard:
-                excludeClientIPFromCrumb: true
-            disableRememberMe: false
-            labelString: "master"
-            markupFormatter: "plainText"
-            mode: NORMAL
-            myViewsTabBar: "standard"
-            numExecutors: 5
-            primaryView:
-              all:
-                name: "all"
-            projectNamingStrategy: "standard"
-            quietPeriod: 5
-            remotingSecurity:
-              enabled: true
-            scmCheckoutRetryCount: 0
-            securityRealm: "legacy"
-            slaveAgentPort: 50000
-            updateCenter:
-              sites:
-              - id: "default"
-                url: "https://updates.jenkins.io/update-center.json"
-            views:
-            - all:
-                name: "all"
-            viewsTabBar: "standard"
-          security:
-            apiToken:
-              creationOfLegacyTokenEnabled: false
-              tokenGenerationOnCreationEnabled: false
-              usageStatisticsEnabled: true
-            downloadSettings:
-              useBrowser: false
-            sSHD:
-              port: -1
-          unclassified:
-            gitSCM:
-              createAccountBasedOnEmail: false
-            location:
-              adminAddress: "address not configured yet <nobody@nowhere>"
-              url: "http://jenkins:8080/"
-            mailer:
-              adminAddress: "address not configured yet <nobody@nowhere>"
-              charset: "UTF-8"
-              useSsl: false
-            pollSCM:
-              pollingThreadCount: 10
-          tool:
-            git:
-              installations:
-              - home: "git"
-                name: "Default"
-  volumes:
-    - type: HostPath
-      volumeName: docker-sock
-      hostPath: /var/run/docker.sock
-      mountPath: /var/run/docker.sock

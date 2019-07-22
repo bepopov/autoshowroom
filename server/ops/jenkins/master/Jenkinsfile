@@ -2,6 +2,27 @@ pipeline {
 
     agent {
         label "master"
+        kubernetes {
+              //cloud 'kubernetes'
+              label 'mypod'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                  - name: docker
+                    image: docker:1.11
+                    command: ['cat']
+                    tty: true
+                    volumeMounts:
+                    - name: dockersock
+                      mountPath: /var/run/docker.sock
+                  volumes:
+                  - name: dockersock
+                    hostPath:
+                      path: /var/run/docker.sock
+                """
+        }
     }
 
     environment {
@@ -50,8 +71,10 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'CONTAINERIZING...'
                     echo '------------------------------------------------'
-                    script {
-                        app = docker.build("us.gcr.io/${PROJECT_ID}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
+                    container('docker') {
+                        script {
+                            app = docker.build("us.gcr.io/${PROJECT_ID}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
+                        }
                     }
                 }
             }
