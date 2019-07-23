@@ -242,6 +242,8 @@ spec:
 {{- end }}
             - mountPath: /tmp
               name: tmp
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
             - mountPath: /var/jenkins_home
               name: jenkins-home
               readOnly: false
@@ -319,8 +321,6 @@ spec:
               mountPath: {{ .Values.master.sidecars.configAutoReload.folder | quote }}
             - name: jenkins-home
               mountPath: /var/jenkins_home
-            - name: docker-sock
-              mountPath: /var/run/docker.sock
               {{- if .Values.persistence.subPath }}
                 subPath: {{ .Values.persistence.subPath }}
               {{- end }}
@@ -335,13 +335,14 @@ spec:
 {{- if .Values.persistence.volumes }}
 {{ tpl (toYaml .Values.persistence.volumes | indent 6) . }}
 {{- end }}
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+        type: HostPath
       - name: plugins
         emptyDir: {}
       - name: tmp
         emptyDir: {}
-      - name: docker-sock
-        hostPath: /var/run/docker.soc
-        type: HostPath
       - name: jenkins-config
         configMap:
           name: {{ template "jenkins.fullname" . }}

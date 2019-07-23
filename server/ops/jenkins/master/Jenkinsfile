@@ -64,12 +64,15 @@ pipeline {
                     echo 'DEPLOYING...'
                     echo '------------------------------------------------'
                     script {
+                        echo "Pushing the image..."
                         docker.withRegistry('https://us.gcr.io', 'gcr:autoshowroom') {
                            app.push("2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
                            app.push("latest")
                         }
+                        echo "Changing the version of product..."
                         sh "envsubst < ${AUTOSHOWROOM_DEPLOYMENT} > ${NEW_AUTOSHOWROOM_DEPLOYMENT}"
                     }
+                    echo "Applying changes to Kubernetes..."
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: ${NEW_AUTOSHOWROOM_DEPLOYMENT}, credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                     script {
                         sh "rm ${NEW_AUTOSHOWROOM_DEPLOYMENT}"
