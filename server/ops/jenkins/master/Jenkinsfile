@@ -50,7 +50,9 @@ pipeline {
                     echo '------------------------------------------------'
                     echo 'CONTAINERIZING...'
                     echo '------------------------------------------------'
-                    sh "docker build -t us.gcr.io/${PROJECT_ID}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME} ."
+                    script {
+                        app = docker.build("us.gcr.io/${PROJECT_ID}/autoshowroom-server:2.0.${env.BUILD_NUMBER}-${env.BRANCH_NAME}")
+                    }
                 }
             }
         }
