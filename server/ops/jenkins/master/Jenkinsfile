@@ -74,6 +74,7 @@ pipeline {
                     }
                     echo "Applying changes to Kubernetes..."
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: "${NEW_AUTOSHOWROOM_DEPLOYMENT}", credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                    echo "Changes were applied"
                     script {
                         sh "rm ${NEW_AUTOSHOWROOM_DEPLOYMENT}"
                     }
