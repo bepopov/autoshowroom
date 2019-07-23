@@ -319,6 +319,8 @@ spec:
               mountPath: {{ .Values.master.sidecars.configAutoReload.folder | quote }}
             - name: jenkins-home
               mountPath: /var/jenkins_home
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
               {{- if .Values.persistence.subPath }}
                 subPath: {{ .Values.persistence.subPath }}
               {{- end }}
@@ -337,6 +339,9 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      - name: docker-sock
+        hostPath: /var/run/docker.soc
+        type: HostPath
       - name: jenkins-config
         configMap:
           name: {{ template "jenkins.fullname" . }}
