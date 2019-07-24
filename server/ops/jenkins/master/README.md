@@ -10,4 +10,5 @@ To push the image to the Google Container Registry and use
 [_Google Kubernetes Engine_](https://plugins.jenkins.io/google-kubernetes-engine) plugin you need to add credentials.
 Create Service Account in IAM menu in Google Cloud (or use default), create and download private key in JSON format.
 In Jenkins'es credentials menu (in the left side) choose global scope and click on the "Add credentials". Use type Google
-Service Account with private key, add there file and save (name should be **autoshowroom**).
+Service Account with private key, add there file and save (name should be **autoshowroom**).\
+![alt text](https://github.com/bepopov/autoshowroom/blob/alternative-jenkins/images/jenkins-credentials.png)
