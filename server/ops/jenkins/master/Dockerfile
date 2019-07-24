@@ -3,7 +3,7 @@ COPY --from=groovy /opt/groovy /opt/groovy
 COPY --from=groovy /usr/bin/groovy /usr/bin/groovy
 FROM jenkins/jenkins
 USER root
-ARG KUBECTL_VERSION=v1.13.2
+ARG KUBECTL_VERSION=v1.15.1
 ARG HELM_VERSION=v2.12.3
 RUN apt-get update \
     && apt-get -y install ca-certificates gettext-base certbot python3-pip \
