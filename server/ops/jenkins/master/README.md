@@ -8,7 +8,8 @@ helm install --name jenkins myjenkins-1.4.1.tgz -f ../alternative-settings.yml
 ```
 To push the image to the Google Container Registry and use 
 [_Google Kubernetes Engine_](https://plugins.jenkins.io/google-kubernetes-engine) plugin you need to add credentials.
-Create Service Account in IAM menu in Google Cloud (or use default), create and download private key in JSON format.
+Create Service Account in IAM menu in Google Cloud (or use default), create and download private key in JSON format.\
+![alt text](https://github.com/bepopov/autoshowroom/blob/alternative-jenkins/images/google-cloud-service-account.png)\
 In Jenkins'es credentials menu (in the left side) choose global scope and click on the "Add credentials". Use type Google
 Service Account with private key, add there file and save (name should be **autoshowroom**).\
 ![alt text](https://github.com/bepopov/autoshowroom/blob/alternative-jenkins/images/jenkins-credentials.png)
