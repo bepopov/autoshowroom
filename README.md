@@ -44,7 +44,7 @@ you have installed gcloud, kubectl, helm in your machine. Don't forget configure
 ([_jenkins-slave_](https://github.com/bepopov/autoshowroom/tree/master/server/opt/jenkins/slave), 
 [_autoshowroom-server_](https://github.com/bepopov/autoshowroom/tree/master/server),
 [_autoshowroom-groovy-server_](https://github.com/bepopov/autoshowroom/tree/master/groovy_server)). To deploy 
-Jenkins you can also use [alternative way](https://github.com/bepopov/autoshowroom/tree/alternative-jenkins/server/ops/jenkins/master)
+Jenkins you can also use [alternative way](https://github.com/bepopov/autoshowroom/tree/master/server/ops/jenkins/master)
  that is recommended as it has better performance:
 ```
 gradle build
