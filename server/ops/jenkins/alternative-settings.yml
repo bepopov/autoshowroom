@@ -13,7 +13,6 @@ master:
     - google-oauth-plugin:0.8
     - docker-workflow:1.18
     - google-kubernetes-engine:0.6.2
-    - kubernetes:1.14.3
   jobs:
     autoshowroom-multibranch: |
       <?xml version='1.1' encoding='UTF-8'?>
@@ -72,3 +71,13 @@ master:
           <scriptPath>server/ops/jenkins/master/Jenkinsfile</scriptPath>
         </factory>
       </org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>
+  JCasC:
+    enabled: true
+    configScripts:
+      config: |
+        jenkins:
+          labelString: "master"
+          markupFormatter: "plainText"
+          mode: NORMAL
+          myViewsTabBar: "standard"
+          numExecutors: 5
